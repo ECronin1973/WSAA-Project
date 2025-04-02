@@ -123,10 +123,10 @@ This project is licensed under the Apache License 2.0. See the LICENSE file for 
 
 ## Step 1: Retrieve Road Safety Data via CURL
 
-#### Purpose:
+### Purpose:
 Retrieve structured road fatalities data in JSON-stat format from the API endpoint for analysis and visualization.
 
-#### Command Used:
+### Command Used:
 To make the GET request via Command Prompt, the following CURL command was executed:
 
 ```bash
@@ -134,15 +134,15 @@ curl -X GET "https://ws.cso.ie/public/api.restful/PxStat.Data.Cube_API.ReadDatas
 ```
 This command fetched the data and displayed the results directly in the terminal.
 
-#### Reference:
+### Reference:
 [CURL Documentation](https://curl.se/)
 
 ## Step 2: Retrieve Data Using Postman
 
-#### Purpose:
+### Purpose:
 Use Postman to interact with the API and retrieve road fatalities data in JSON-stat format for analysis and visualization.
 
-#### Command Used:
+### Command Used:
 The following steps were executed in Postman:
 
 - Opened Postman and created a new request.
@@ -151,20 +151,21 @@ The following steps were executed in Postman:
 - Set the Content-Type header to application/json.
 - Sent the request and reviewed the JSON-stat response displayed in Postman.
 
-#### What the Command Did:
+### What the Command Did:
 The GET request fetched structured data from the API endpoint. The response provided detailed road fatalities information, formatted as JSON-stat, which can be further processed for analysis.
 
-**Why It Was Necessary:** This step was critical for verifying the API's functionality and ensuring the data was accessible in a structured format suitable for parsing and visualization.
+### Why It Was Necessary:
+This step was critical for verifying the API's functionality and ensuring the data was accessible in a structured format suitable for parsing and visualization.
 
-#### Reference:
+### Reference:
 [Postman Documentation](https://www.postman.com/)
 
 ## Step 3: Parse and Convert Data
 
-#### Purpose:
+### Purpose:
 Process the retrieved JSON-stat data and convert it into a structured CSV format for monthly road fatalities analysis.
 
-#### Code Used:
+### Code Used:
 The following Python code was implemented to parse the JSON-stat response, structure the data, and save it as a CSV file:
 ```bash
 import requests
@@ -209,34 +210,34 @@ with open(output_file, mode="w", newline="") as file:
 print(f"Data successfully saved to {output_file}")
 # The data is now saved in the CSV file, ready for further analysis or visualization.
 ```
-#### What the Code Did:
+### What the Code Did:
 
 - Parsed the JSON-stat data from the API to extract monthly road fatalities and their corresponding labels.
 - Organized the data into a structured format with months and fatality counts.
 - Saved the processed data into a CSV file (road_fatalities.csv) within a specified directory (../data).
 
-#### Why It Was Necessary:
+### Why It Was Necessary:
 Converting the data into a CSV format allows for easy analysis, visualization, and compatibility with tools such as spreadsheets or Python libraries like pandas
 
-#### Reference:
+### Reference:
 [Requests Library Documentation](https://requests.readthedocs.io/en/latest/).  
 Provides details on how to make HTTP requests, handle responses, and parse JSON data in Python.
 
-[Python CSV Module Documentation](https://docs.python.org/3/library/csv.html)
+[Python CSV Module Documentation](https://docs.python.org/3/library/csv.html).
 Explains how to read from and write to CSV files in Python, ensuring structured data storage.
 
-[JSON-stat Format](https://json-stat.org/)
+[JSON-stat Format](https://json-stat.org/).
 JSON-stat is a lightweight format designed for statistical data.
 
-[OS Module in Python](https://docs.python.org/3/library/os.html)
+[OS Module in Python](https://docs.python.org/3/library/os.html).
 Useful for handling file paths and creating directories dynamically in Python.
 
 ## Step 4: Monthly Trend Analysis
 
-#### Purpose:
+### Purpose:
 Analyze the monthly road fatalities data by grouping it to identify patterns or trends. This step provides insights into variations over time and can serve as a basis for further statistical analysis or visualization.
 
-#### Code Used:
+### Code Used:
 The following Python code loads, filters, and analyzes the data saved in the CSV file and saves the filtered results as a new CSV file for the specified years:
 
 ```bash
@@ -264,30 +265,30 @@ filtered_df.to_csv(output_file, index=False)  # Write to CSV without the index c
 print(f"Filtered data successfully saved to {output_file}")
 
 ```
-#### What the Code did:
+### What the Code did:
 - **Load CSV File:** Reads the road_fatalities.csv file into a pandas DataFrame for analysis.
 - **Extract Year and Month:**  Splits the "Month" column into two parts: "Year" and "Month". The year and month are extracted using the str.split() method.
 - **Filter Relevant Data:** Filters the DataFrame to include only rows corresponding to the years 2024 to 2020 by checking if the "Year" column values are in the specified range.
 - **Save Filtered Data:** Saves the filtered data into a new CSV file titled five_yr_fatalities.csv. This new file is stored in the same directory as the original file, making it easy to locate and use for further analysis or sharing.
 
-#### Why It Was Necessary:
+### Why It Was Necessary:
 Filtering the data to focus on the years 2024 to 2020 narrows the scope to the most recent and relevant period for analysis. Saving the filtered results into a new file ensures a clear, reusable dataset that can be used for further analysis or visualization. This cleaned format simplifies the exploration of trends and patterns.
 
-#### Reference:
-[Pandas Documentation](https://pandas.pydata.org/docs/)
+### Reference:
+[Pandas Documentation](https://pandas.pydata.org/docs/).
 For reading, manipulating, and exporting data in DataFrames.
 
-[Python OS Module](https://docs.python.org/3/library/os.html)
+[Python OS Module](https://docs.python.org/3/library/os.html).
 For constructing paths dynamically and ensuring compatibility across operating systems.
 
 
 
 ## References
-[CURL Documentation](https://curl.se/)
-[JSON-stat Format](https://json-stat.org/)
-[OS Module in Python](https://docs.python.org/3/library/os.html)
-[Postman Documentation](https://www.postman.com/)
-[Python CSV Module Documentation](https://docs.python.org/3/library/csv.html)
-[Pandas Documentation](https://pandas.pydata.org/docs/)
-[Python OS Module](https://docs.python.org/3/library/os.html)
-[Requests Library Documentation](https://requests.readthedocs.io/en/latest/).
+- [CURL Documentation](https://curl.se/)
+- [JSON-stat Format](https://json-stat.org/)
+- [OS Module in Python](https://docs.python.org/3/library/os.html)
+- [Postman Documentation](https://www.postman.com/)
+- [Python CSV Module Documentation](https://docs.python.org/3/library/csv.html)
+- [Pandas Documentation](https://pandas.pydata.org/docs/)
+- [Python OS Module](https://docs.python.org/3/library/os.html)
+- [Requests Library Documentation](https://requests.readthedocs.io/en/latest/).
