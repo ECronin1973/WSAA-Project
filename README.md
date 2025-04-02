@@ -12,20 +12,20 @@ This project aims to analyze road deaths in Ireland over the past five years, as
 
 ## Table of Contents
 
-[Overview](#overview)
-[Author](#author)
-[Features](#features)
-[Technical Stack](#technical-stack)
-[Implementation Steps](#implementation-steps)
-[Pre-Requisites](#prerequisites)
-[How to Download this Repository](#how-to-download-this-repository)
-[Code of Conduct](#code-of-conduct)
-[Dependencies](#dependencies)
-[Data Content Relevant To Task](#data-content-relevant-to-task)
-[Project Structure](#project-structure)
-[Notebooks](#notebooks)
-[Licence](#license)
-[References](#references)
+- [Overview](#overview)
+- [Author](#author)
+- [Features](#features)
+- [Technical Stack](#technical-stack)
+- [Implementation Steps](#implementation-steps)
+- [Pre-Requisites](#prerequisites)
+- [How to Download this Repository](#how-to-download-this-repository)
+- [Code of Conduct](#code-of-conduct)
+- [Dependencies](#dependencies)
+- [Data Content Relevant To Task](#data-content-relevant-to-task)
+- [Project Structure](#project-structure)
+- [Notebooks](#notebooks)
+- [Licence](#license)
+- [References](#references)
 
 ## Features
 
