@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project aims to analyze road deaths in Ireland over the past five years, assessing monthly trends to determine whether fatalities have increased or decreased. The program also investigates correlations between road safety campaigns and reductions in road deaths. Users can update or delete data via the API, ensuring a dynamic and user-friendly experience.
+This project focuses on examining road fatalities in Ireland over the past five years, highlighting monthly patterns to identify trends in fatality rates—whether they have risen or declined. It also analyzes fatalities relative to the population size, offering insights into deaths per million inhabitants. Additionally, the project features an API that allows users to efficiently update or remove data, providing a flexible and intuitive user experience.
 
 ## Author
 
@@ -23,7 +23,6 @@ This project aims to analyze road deaths in Ireland over the past five years, as
 - [Dependencies](#dependencies)
 - [Data Content Relevant To Task](#data-content-relevant-to-task)
 - [Project Structure](#project-structure)
-- [Notebooks](#notebooks)
 - [Licence](#license)
 - [References](#references)
 
@@ -41,6 +40,7 @@ This project aims to analyze road deaths in Ireland over the past five years, as
 1. **Backend**
    - RESTful API development with Flask.
    - Integration with the Road Safety Authority API for data retrieval and updates.
+   - Integration with the Central Statistics Office API for data retrieval and updates
 2. **Frontend**
    - Interactive web interface using jQuery and AJAX.
    - Hosted on a cloud platform
@@ -57,6 +57,7 @@ This project aims to analyze road deaths in Ireland over the past five years, as
 1. **Accessing the API**
    - Retrieve road safety data using HTTP methods (`GET`) via CURL or Postman.
    - Parse data from CSV, XML, or JSON formats for monthly analysis.
+   - Retrieve irish population data using HTTP methods (`POST`) via CURL or Postman
 
 2. **Data Analysis**
    - Analyze road deaths for trends using Python libraries.
@@ -111,15 +112,12 @@ https://ws.cso.ie/public/api.restful/PxStat.Data.Cube_API.ReadDataset/ROA29/JSON
 
 To Be Added
 
-## Notebooks
-
-To Be Added
 
 ## License
 
 This project is licensed under the Apache License 2.0. See the LICENSE file for details.
 
-# Part A:  Access the API and Fetch the Data
+# Part A:  Access the API's and Fetch the Data
 
 ## Step 1: Retrieve Road Safety Data via CURL
 
@@ -280,6 +278,92 @@ For reading, manipulating, and exporting data in DataFrames.
 
 [Python OS Module](https://docs.python.org/3/library/os.html).
 For constructing paths dynamically and ensuring compatibility across operating systems.
+
+## Step 5 Retrieve population data from the CSO API 
+Retrieve population data from the CSO API in JSON-stat format, parse the data, and export it to an Excel sheet for visualization and analysis
+
+### Code Used:
+The following Python code was implemented to parse the JSON-stat response, structure the data, and save it as a CSV file:
+
+```bash
+import requests
+import pandas as pd
+import os
+
+# API endpoint URL
+url = "https://ws.cso.ie/public/api.jsonrpc"
+
+# POST request payload
+payload = {
+    "jsonrpc": "2.0",
+    "method": "PxStat.Data.Cube_API.ReadDataset",
+    "params": {
+        "class": "query",
+        "id": ["TLIST(A1)", "C02076V02508", "C02199V02655"],
+        "dimension": {
+            "TLIST(A1)": {"category": {"index": ["2024", "2023", "2022", "2021", "2020"]}},
+            "C02076V02508": {"category": {"index": ["-"]}},
+            "C02199V02655": {"category": {"index": ["-"]}},
+        },
+        "extension": {
+            "pivot": None,
+            "codes": False,
+            "language": {"code": "en"},
+            "format": {"type": "JSON-stat", "version": "2.0"},
+            "matrix": "PEA01"
+        },
+        "version": "2.0"
+    }
+}
+
+# Send POST request to the API
+response = requests.post(url, json=payload)
+
+# Check if the request was successful
+if response.status_code == 200:
+    data = response.json()  # Parse JSON-stat response
+    print("Population data retrieved successfully!")
+else:
+    print(f"Failed to fetch data. Status code: {response.status_code}")
+    exit()
+
+# Parse and structure data
+values = data["result"]["value"]  # Population values
+years = data["result"]["dimension"]["TLIST(A1)"]["category"]["label"]  # Year labels
+
+# Combine data into a DataFrame
+df = pd.DataFrame({"Year": list(years.values()), "Population (Thousand)": values})
+
+# Save to a CSV file
+output_dir = os.path.join(os.path.dirname(__file__), "../data")  # Relative directory
+output_file = os.path.join(output_dir, "population_breakdown.csv")
+os.makedirs(output_dir, exist_ok=True)  # Ensure the directory exists
+
+df.to_csv(output_file, index=False)
+print(f"Population data successfully saved to {output_file}")
+```
+
+### What the Code did:
+- **Retrieves Data:** Uses a POST request to interact with the CSO API and fetch population data for the years 2020–2024.
+- **Structures Data:** Parses the JSON-stat response, organizes the population data alongside year labels, and stores them in a pandas DataFrame.
+- **Exports Data:** Writes the DataFrame into an Excel file (population_breakdown.csv) within the ../data directory for convenient storage and usage.
+
+### Why is it necessary:
+Converting population data into a structured CSV format ensures compatibility with a wide range of analytical tools and platforms, such as Python, Excel, or data visualization software.
+
+### Reference
+- [Requests Library Documentation](https://requests.readthedocs.io/en/latest/)
+- [Pandas Documentation](https://pandas.pydata.org/)
+- [JSON-stat Format](https://json-stat.org/)
+
+
+
+
+
+
+
+
+
 
 
 
