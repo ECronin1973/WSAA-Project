@@ -2,20 +2,20 @@
 
 ## Overview
 
-This project focuses on examining road fatalities in Ireland over the past five years, highlighting monthly patterns to identify trends in fatality rates—whether they have risen or declined. It also analyzes fatalities relative to the population size, offering insights into deaths per million inhabitants. Additionally, the project features an API that allows users to efficiently update or remove data, providing a flexible and intuitive user experience.
+The Road Safety Analysis Project examines road fatalities in Ireland over the past five years, identifying trends and patterns in fatality rates. The project integrates data from the Central Statistics Office (CSO) API and provides a custom API for CRUD operations on locally stored data. It also includes data visualization and analysis tools to offer insights into road safety trends. The project is designed to be user-friendly, secure, and extensible.
 
-### Limitations to Task
-The task of reading, writing, deleting, and modifying content stored in the API located at https://ws.cso.ie/public/api.restful/PxStat.Data.Cube_API.ReadDataset/ROA29/JSON-stat/1.0/en, required interacting with the API using HTTP methods (GET, POST, PUT, DELETE). However, the API is a read-only API (it only supports GET requests for fetching data). It does not support POST, PUT, or DELETE operations for modifying data.  In order to complete this task which requires full CRUD (Create, Read, Update, Delete) operations, the following was completed:
-
-- Fetch the data from the API using GET.
-- Stored the data locally in file five_yr_fatalities.csv.
-- A custom API (using Flask) was implemented to allow CRUD operations on the locally stored data.
+### Key Features:
+- **Data Integration**: Fetches road safety data from the CSO API and processes it for analysis.
+- **Custom API**: Implements a Flask-based API to enable CRUD operations on locally stored data.
+- **Data Analysis**: Analyzes trends in road fatalities and visualizes them using charts.
+- **Frontend Interface**: Provides an interactive web interface for data visualization and management.
+- **Secure Access**: Incorporates OAuth for secure data access (future scope).
 
 ## Author
 
-- Name: Edward Cronin
-- Student ID: g00425645
-- Email: g00425645@atu.ie
+- **Name**: Edward Cronin  
+- **Student ID**: g00425645  
+- **Email**: g00425645@atu.ie  
 
 ## Table of Contents
 
@@ -24,65 +24,59 @@ The task of reading, writing, deleting, and modifying content stored in the API 
 - [Features](#features)
 - [Technical Stack](#technical-stack)
 - [Implementation Steps](#implementation-steps)
-- [Pre-Requisites](#prerequisites)
+- [Pre-Requisites](#pre-requisites)
 - [How to Download this Repository](#how-to-download-this-repository)
 - [Code of Conduct](#code-of-conduct)
 - [Dependencies](#dependencies)
 - [Data Content Relevant To Task](#data-content-relevant-to-task)
 - [Project Structure](#project-structure)
-- [Licence](#license)
-- [References](#references)
+- [License](#license)
+- [Part A: Access the API's and Fetch the Data](#part-a-access-the-api's-and-fetch-the-data)
+- [Part B: Analysis](#part-b-analysis)
+- [Part C: CRUD API](#part-c-crud-api)
+- [Part D: Front End Development](#front-end-development)
+- [Part E: OAuth (Open Authorization)](#Oauth-open-authorization)
+- [Project References](#Project-References)
 
 ## Features
 
 - **Data Representation**: Handles data in CSV, XML, and JSON formats.
-- **Data Analysis**: Identifies monthly trends in road fatalities over five years and visualizes them with charts.
-- **API Integration**: Fetches and interacts with data from the Road Safety Authority of Ireland API.
-- **CRUD Functionality**: Allows users to Create, Read, Update, and Delete data directly from the application.
-- **Authentication**: Uses OAuth for secure access and data management.
-- **Visualization**: Provides user-friendly charts for clear trend analysis.
+- **Data Analysis**: Identifies monthly trends in road fatalities and visualizes them with charts.
+- **Custom API**: Enables CRUD operations on locally stored data using Flask.
+- **Frontend Interface**: Provides a web-based interface for data visualization and management.
+- **Authentication**: Implements OAuth for secure access (future scope).
 
 ## Technical Stack
 
-1. **Backend**
-   - RESTful API development with Flask.
-   - Integration with the Road Safety Authority API for data retrieval and updates.
-   - Integration with the Central Statistics Office API for data retrieval and updates
-2. **Frontend**
-   - Interactive web interface using jQuery and AJAX.
-   - Hosted on a cloud platform
-3. **Data Analysis**
-   - Data manipulation and analysis with `pandas`.
-   - Visualization with `matplotlib` or `seaborn`.
-4. **Testing**
-   - API testing with Postman or CURL.
-5. **Authentication**
-   - Secure access using OAuth. (To Be Explored Further!!)
+1. **Backend**:
+   - Flask for RESTful API development.
+   - Integration with the CSO API for data retrieval.
+2. **Frontend**:
+   - Interactive web interface using HTML, CSS, jQuery, and AJAX.
+3. **Data Analysis**:
+   - Data manipulation and visualization using `pandas`, `matplotlib`, and `seaborn`.
+4. **Testing**:
+   - API testing with Postman and CURL.
+5. **Authentication**:
+   - OAuth for secure access (future scope).
 
 ## Implementation Steps
 
-1. **Accessing the API**
-   - Retrieve road safety data using HTTP methods (`GET`) via CURL or Postman.
-   - Parse data from CSV, XML, or JSON formats for monthly analysis.
-   - Retrieve irish population data using HTTP methods (`POST`) via CURL or Postman
+1. **Data Retrieval**:
+   - Fetch road safety data from the CSO API using HTTP GET requests.
+   - Parse and convert the data into CSV format for analysis.
+2. **Data Analysis**:
+   - Analyze trends in road fatalities using Python libraries.
+   - Visualize data with charts and graphs.
+3. **Custom API Development**:
+   - Implement a Flask-based API to enable CRUD operations on the locally stored data.
+4. **Frontend Development**:
+   - Create a web interface for data visualization and management.
+   - Use AJAX for seamless data retrieval and updates.
+5. **Authentication**:
+   - Explore OAuth for secure access to the API (future scope).
 
-2. **Data Analysis**
-   - Analyze road deaths for trends using Python libraries.
-   - Generate charts and visualizations to highlight changes in road fatalities.
-   - Integrate quarterly trend data into the analysis.
-
-3. **Interactive CRUD Operations**
-   - Enable users to update or delete data directly via the API.
-   - Develop CRUD functionalities using Flask for the backend.
-
-4. **Frontend Development**
-   - Create a user-friendly web interface for data visualization.
-   - Use jQuery and AJAX for seamless asynchronous data retrieval.
-
-5. **Authentication**
-   - Implement OAuth for secure and authenticated data access.
-
-## Prerequisites
+## Pre-Requisites
 
 - **Languages**: Python, JavaScript, HTML, CSS.
 - **Tools**: Postman, CURL, Git, Flask.
@@ -90,7 +84,7 @@ The task of reading, writing, deleting, and modifying content stored in the API 
 
 ## How to Download this Repository
 
-To download this repository, you can use the following command:
+To download this repository, use the following command:
 
 ```bash
 git clone https://github.com/ECronin1973/WSAA-Project
@@ -102,14 +96,38 @@ Please read the CODE_OF_CONDUCT.md file for details on our code of conduct.
 
 ## Dependencies
 
-The dependencies for this project are listed in the requirements.txt file.
+The dependencies for this project are listed in the `requirements.txt` file.
 
 ## Data Content Relevant To Task
+
 - [CSO Website - STATS API](https://ws.cso.ie/public/api.restful/PxStat.Data.Cube_API.ReadDataset/ROA29/JSON-stat/1.0/en)
 
 ## Project Structure
 
-To Be Added
+The project is organized as follows:
+
+```plaintext
+WSAA-Project/
+│
+├── data/
+│   ├── five_yr_fatalities.csv       # Filtered road fatalities data
+│   ├── population_breakdown.csv     # Population data from CSO API
+│   ├── fatality_trends.csv          # Trend analysis results
+│   ├── fatalities_trend_graph.png   # Visualization of trends
+│   └── terminal_message_crud_api.png # Terminal output for CRUD API
+│
+├── static/
+│   ├── index.html                   # Frontend HTML file
+│   ├── app.js                       # Frontend JavaScript file
+│   └── styles.css                   # Frontend CSS file
+│
+├── api/
+│   └── app.py                       # Flask API for CRUD operations
+│
+├── README.md                        # Project documentation
+├── requirements.txt                 # Python dependencies
+└── LICENSE                          # License file
+```
 
 ## License
 
@@ -528,7 +546,7 @@ Year,Month,Fatalities,Change,Trend
 - 2023: Significant spike to 22 in October, followed by a stabilization.
 - 2024: Fluctuating trend, peaking at 17 in November
 
-## PART C
+## PART C : CRUD API
 
 A functional CRUD API for managing road fatalities data using Flask and Flask-RESTful is designed to efficiently handle Create, Read, Update, and Delete operations on road fatalities records. This API ensures seamless data management and enables users to interact with road fatalities data through a user-friendly and scalable interface. It supports data validation, modular design, and integration with external tools like Postman for testing and documentation, making it suitable for analysis, visualization, and tracking trends over time.
 
@@ -875,7 +893,7 @@ The project is primarily for coursework, development, or testing purposes, imple
   Microsoft's guide to implementing OAuth 2.0 for Azure and Microsoft services.
 
 
-## References
+## Project References
 - [CURL Documentation](https://curl.se/)
 - [Flask Official Documentation](https://flask.palletsprojects.com/en/stable/)
 - [Flask-RESTful Documentation](https://flask-restful.readthedocs.io/en/latest/)
@@ -891,6 +909,6 @@ The project is primarily for coursework, development, or testing purposes, imple
 - [OAuth 2.0 Authorization Framework (RFC 6749)](https://datatracker.ietf.org/doc/html/rfc6749)  
 - [OAuth 2.0 Simplified](https://aaronparecki.com/oauth-2-simplified/)  
 - [OAuth.net](https://oauth.net/)  
-- [Google Identity Platform OAuth 2.0 Documentation](https://developers.google.com/identity/protocols/oauth2)  
-- [Microsoft Identity Platform OAuth 2.0 Documentation](https://learn.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow) 
+- [Google Identity Platform OAuth 2.0 Documentation](https://developers.google.com/identity/protocols/oauth2)
+- [Microsoft Identity Platform OAuth 2.0 Documentation](https://learn.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow)
 
