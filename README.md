@@ -4,6 +4,13 @@
 
 This project focuses on examining road fatalities in Ireland over the past five years, highlighting monthly patterns to identify trends in fatality rates—whether they have risen or declined. It also analyzes fatalities relative to the population size, offering insights into deaths per million inhabitants. Additionally, the project features an API that allows users to efficiently update or remove data, providing a flexible and intuitive user experience.
 
+### Limitations to Task
+The task of reading, writing, deleting, and modifying content stored in the API located at https://ws.cso.ie/public/api.restful/PxStat.Data.Cube_API.ReadDataset/ROA29/JSON-stat/1.0/en, required interacting with the API using HTTP methods (GET, POST, PUT, DELETE). However, the API is a read-only API (it only supports GET requests for fetching data). It does not support POST, PUT, or DELETE operations for modifying data.  In order to complete this task which requires full CRUD (Create, Read, Update, Delete) operations, the following was completed:
+
+- Fetch the data from the API using GET.
+- Stored the data locally in file five_yr_fatalities.csv.
+- A custom API (using Flask) was implemented to allow CRUD operations on the locally stored data.
+
 ## Author
 
 - Name: Edward Cronin
@@ -72,10 +79,7 @@ This project focuses on examining road fatalities in Ireland over the past five 
    - Create a user-friendly web interface for data visualization.
    - Use jQuery and AJAX for seamless asynchronous data retrieval.
 
-5. **Deployment**
-   - Host the project on ? (To be determindes during project).
-
-6. **Authentication**
+5. **Authentication**
    - Implement OAuth for secure and authenticated data access.
 
 ## Prerequisites
@@ -609,16 +613,22 @@ The following is the code used
 ```python
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
+from flask_cors import CORS  # Import CORS
+import pandas as pd  # Import pandas for reading CSV files
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for the entire app
 api = Api(app)
 
-# In-memory data store (for demonstration purposes)
-data_store = [
-    {"id": 1, "year": 2020, "month": "January", "fatalities": 9},
-    {"id": 2, "year": 2020, "month": "February", "fatalities": 19},
-    {"id": 3, "year": 2020, "month": "March", "fatalities": 17},
-]
+# Path to the CSV file
+csv_file_path = "../data/five_yr_fatalities.csv"
+
+# Load data from the CSV file
+try:
+    df = pd.read_csv(csv_file_path)
+    data_store = df.to_dict(orient="records")  # Convert DataFrame to a list of dictionaries
+except FileNotFoundError:
+    data_store = []  # If the file is not found, initialize an empty data store
 
 # Auto-increment ID for new entries
 next_id = len(data_store) + 1
@@ -678,8 +688,6 @@ api.add_resource(FatalitiesResource, '/api/fatalities', '/api/fatalities/<int:re
 # Run the Flask app
 if __name__ == '__main__':
     app.run(debug=True)
-# This code provides a simple CRUD API for managing road fatalities data.
-# it uses Flask and Flask-RESTful to create the API endpoints.
 ```
 
 ### Terminal Output
@@ -788,6 +796,51 @@ Useful for testing CRUD API endpoints.
 **Python Requests Library**
 [Requests Library Documentation](https://requests.readthedocs.io/en/latest/)
 Covers how to make HTTP requests and handle responses, which is useful for testing APIs programmatically.
+
+## Part D : Frontend Development
+
+The frontend of the project was designed to provide a user-friendly web interface for visualizing road safety data. It allows users to view monthly road fatalities over the last five years in both tabular and graphical formats. The interface dynamically fetches data from the backend API and updates the table and chart without requiring a page reload.
+
+### Purpose
+**Create a User-Friendly Web Interface:**
+- Provide an intuitive and visually appealing interface for users to interact with the data.
+- Display road fatalities data in a clear and organized table.
+- Visualize trends in road fatalities using a line chart.
+**Use jQuery and AJAX for Asynchronous Data Retrieval:**
+- Fetch data dynamically from the backend API (/api/grouped-fatalities) without reloading the page.
+- Ensure seamless integration between the frontend and backend.
+
+### Implementation
+**HTML Structure:**
+The index.html file provides the structure for the web interface, including:
+-  A table (#fatalitiesTable) to display monthly fatalities data.
+-  A chart (#fatalitiesChart) to visualize trends in fatalities.
+**Dynamic Data Handling:**
+- The app.js file uses jQuery and AJAX to fetch data from the backend API and dynamically populate the table and chart.
+**Chart Visualization:**
+- The Chart.js library is used to render a line chart that shows monthly fatalities over the last five years.
+**Styling:**
+- The styles.css file ensures the interface is visually appealing and easy to navigate
+
+### Outcome
+**1. User-Friendly Web Interface:**
+- The interface successfully displays road fatalities data in a table and a line chart.
+- Users can easily view trends and patterns in the data.
+**2. Seamless Asynchronous Data Retrieval:**
+- Data is fetched dynamically from the backend API using jQuery and AJAX.
+- The table and chart update automatically without requiring a page reload.
+**3.Visualization of Trends:**
+- The line chart provides a clear visualization of monthly fatalities trends over the last five years.
+- The table complements the chart by providing detailed numerical data.
+
+### Screenshots
+Image 'monthly_fatalities_over_the_last_5_years.png' displays an interactive chart with data displayed by hovering over each monthly point in the site http://127.0.0.1:5500/WSAA-Project/static/index.html
+![Monthly Fatalities Image](./data/monthly_fatalites_over_the_last_5_years.png)
+
+Image 'Fatalities_Data.png' displays a chart with headings 'ID, Year, Month, Fatalities'.
+![Fatalities Data](./data/fatalities_data.png)
+
+This interface is intuitive, visually appealing, and effectively displays the data in both tabular and graphical formats.  Data is dynamically fetched from the backend API and displayed in real-time without requiring a page reload.  This method of accessing data is preferred as it negates the necessity to re run programs when CRUD actions are undertaken.
 
 ## References
 - [CURL Documentation](https://curl.se/)
