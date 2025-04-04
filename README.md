@@ -13,9 +13,9 @@ The Road Safety Analysis Project examines road fatalities in Ireland over the pa
 
 ## Author
 
-- **Name**: Edward Cronin  
-- **Student ID**: g00425645  
-- **Email**: g00425645@atu.ie  
+- **Name**: Edward Cronin
+- **Student ID**: g00425645
+- **Email**: g00425645@atu.ie
 
 ## Table of Contents
 
@@ -53,7 +53,7 @@ The Road Safety Analysis Project examines road fatalities in Ireland over the pa
    - Integration with the CSO API for data retrieval.
 2. **Frontend**:
    - Interactive web interface using HTML, CSS, jQuery, and AJAX.
-3. **Data Analysis**:
+   3. **Data Analysis**:
    - Data manipulation and visualization using `pandas`, `matplotlib`, and `seaborn`.
 4. **Testing**:
    - API testing with Postman and CURL.
@@ -65,9 +65,10 @@ The Road Safety Analysis Project examines road fatalities in Ireland over the pa
 1. **Data Retrieval**:
    - Fetch road safety data from the CSO API using HTTP GET requests.
    - Parse and convert the data into CSV format for analysis.
-2. **Data Analysis**:
+   2. **Data Analysis**:
    - Analyze trends in road fatalities using Python libraries.
    - Visualize data with charts and graphs.
+   - Analyse yearly fatality totals per capita and per 100,000 population.
 3. **Custom API Development**:
    - Implement a Flask-based API to enable CRUD operations on the locally stored data.
 4. **Frontend Development**:
@@ -372,7 +373,9 @@ Converting population data into a structured CSV format ensures compatibility wi
 - [Pandas Documentation](https://pandas.pydata.org/)
 - [JSON-stat Format](https://json-stat.org/)
 
-## PART B : Analysis
+## PART B : Analysis 
+
+### Part One : Road Fatalities Analysis
 
 ### Purpose:
 The purpose of this analysis is to examine road fatalities over the last five years, identify trends, and visualize the data. The analysis includes detecting increases or decreases in fatalities, splitting the data into quarters for better insights, and saving the results for further use. The results are presented in a line graph with quarterly splits and saved as a CSV file for trend analysis.
@@ -545,6 +548,132 @@ Year,Month,Fatalities,Change,Trend
 - 2022: Saw mixed trends, ending with a decline.
 - 2023: Significant spike to 22 in October, followed by a stabilization.
 - 2024: Fluctuating trend, peaking at 17 in November
+
+### Part Two : Analyse yearly fatality totals per capita and per 100,000 population
+
+### Tasks performed by the code:
+
+The code performs the following tasks:
+
+**Load Data:** Reads road fatalities and population data from CSV files into pandas DataFrames.
+
+**Calculate Yearly Fatalities:** Groups the fatalities data by year and calculates the total fatalities for each year.
+
+**Merge Data:** Combines the yearly fatalities data with the population data based on the year.
+Merge Data: Combines the yearly fatalities data with the population data based on the year.
+
+**Calculate Metrics:** Computes two key metrics:
+  - Fatalities per Capita: Calculates fatalities as a proportion of the total population.
+  - Fatalities per 100,000 Population: Normalizes fatalities to a standard scale for easier comparison across years.
+
+**Output Results:** Displays the merged data, including the calculated metrics, in the console and saves it to a new CSV file (fatality_analysis.csv).
+
+**Visualize Data:** Creates visualizations:
+  - A line chart titled 'Fatalities_per_1000.png' displaying fatalities per 100,000 population over the years.
+  ![Fatalities_per_1000.png](./data/Fatalities_per_1000.png)
+  - A dual-axis chart titled 'fatality_analysis_chart.png' combining the bar chart (total fatalities) and line chart (fatalities per 100,000) for a comprehensive view.
+  ![fatality_analysis_chart.png](./data/fatality_analysis_chart.png)
+  - The dual-axis chart allows for simultaneous visualization of total fatalities and fatalities per 100,000 population, providing a clearer understanding of trends.
+ 
+- **Save Chart:** Exports the dual-axis chart as an image file (fatality_analysis_chart.png) to the data folder.
+
+### Code Used to conduct analysis:
+
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load data from CSV files
+fatalities_df = pd.read_csv(
+    r"c:\Users\eCron\OneDrive\Documents\ATU_CourseWork\Web Services and Applications\Assessments\Project\WSAA-Project\data\five_yr_fatalities.csv"
+)
+population_df = pd.read_csv(
+    r"c:\Users\eCron\OneDrive\Documents\ATU_CourseWork\Web Services and Applications\Assessments\Project\WSAA-Project\data\population_breakdown.csv"
+)
+
+# Calculate yearly fatality totals
+yearly_fatalities = fatalities_df.groupby("Year")["Fatalities"].sum().reset_index()
+
+# Merge with population data
+merged_df = pd.merge(yearly_fatalities, population_df, left_on="Year", right_on="Year")
+
+# Calculate fatalities per capita and per 100,000 population
+merged_df["Fatalities per Capita"] = merged_df["Fatalities"] / (merged_df["Population (Thousand)"] * 1000)
+merged_df["Fatalities per 100,000"] = (merged_df["Fatalities"] / (merged_df["Population (Thousand)"] * 1000)) * 100000
+
+# Output results
+print(merged_df[["Year", "Fatalities", "Fatalities per Capita", "Fatalities per 100,000"]])
+
+# Save results to a new CSV file
+output_path = r"c:\Users\eCron\OneDrive\Documents\ATU_CourseWork\Web Services and Applications\Assessments\Project\WSAA-Project\data\fatality_analysis.csv"
+merged_df.to_csv(output_path, index=False)
+
+# Plot total fatalities as a bar chart
+plt.figure(figsize=(10, 6))
+plt.bar(merged_df["Year"], merged_df["Fatalities"], color="skyblue", label="Total Fatalities")
+plt.xlabel("Year")
+plt.ylabel("Total Fatalities")
+plt.title("Yearly Fatalities")
+plt.legend()
+plt.show()
+
+# Plot fatalities per 100,000 as a line chart
+plt.figure(figsize=(10, 6))
+plt.plot(merged_df["Year"], merged_df["Fatalities per 100,000"], marker="o", color="orange", label="Fatalities per 100,000")
+plt.xlabel("Year")
+plt.ylabel("Fatalities per 100,000")
+plt.title("Fatalities per 100,000 Population")
+plt.legend()
+plt.show()
+
+# Dual-axis chart: Total Fatalities (bar) and Fatalities per 100,000 (line)
+fig, ax1 = plt.subplots(figsize=(10, 6))
+
+# Bar chart for total fatalities
+ax1.bar(merged_df["Year"], merged_df["Fatalities"], color="skyblue", label="Total Fatalities")
+ax1.set_xlabel("Year")
+ax1.set_ylabel("Total Fatalities", color="blue")
+ax1.tick_params(axis="y", labelcolor="blue")
+
+# Line chart for fatalities per 100,000
+ax2 = ax1.twinx()
+ax2.plot(merged_df["Year"], merged_df["Fatalities per 100,000"], marker="o", color="orange", label="Fatalities per 100,000")
+ax2.set_ylabel("Fatalities per 100,000", color="orange")
+ax2.tick_params(axis="y", labelcolor="orange")
+
+fig.suptitle("Yearly Fatalities and Fatalities per 100,000 Population")
+fig.tight_layout()
+
+# Save the chart to the data folder
+output_chart_path = r"c:\Users\eCron\OneDrive\Documents\ATU_CourseWork\Web Services and Applications\Assessments\Project\WSAA-Project\data\fatality_analysis_chart.png"
+plt.savefig(output_chart_path)
+
+plt.show()
+```
+
+### Insights on Fatalities and Population Data
+
+![terminal_output_fatalities_per_capita.png](./data/terminal_output_fatalities_per_capita.png)
+
+1. **Yearly Fatalities**: The total number of fatalities as displayed in the 'terminal_output_fatalities_per_capita.png' image varies each year, with the highest being 180 in 2023 and the lowest being 132 in 2021.
+
+2. **Population Growth**: The population increases steadily each year, starting at 5,029.9 thousand in 2020 and reaching 5,380.3 thousand in 2024.
+
+3. **Fatalities per Capita**: This metric, which represents fatalities relative to the total population, is very small (in the range of 0.00003) and increases slightly over the years.
+
+4. **Fatalities per 100,000 Population**: This metric provides a normalized view of fatalities, making it easier to compare across years. It ranges from 2.60 in 2021 to 3.41 in 2023.
+
+5. **Trend in Fatalities**: Fatalities generally increase from 2021 to 2023, peaking in 2023, before slightly decreasing in 2024.
+
+6. **Population Impact**: Despite the growing population, the fatalities per capita and per 100,000 population show that the rate of fatalities is not directly proportional to population growth.
+
+7. **Lowest Fatality Rate**: The year 2021 has the lowest fatalities per 100,000 population (2.60), indicating a relatively safer year compared to others.
+
+8. **Highest Fatality Rate**: The year 2023 has the highest fatalities per 100,000 population (3.41), suggesting a significant increase in fatalities relative to the population.
+
+9. **Fatalities vs. Population**: While the population grows steadily, the number of fatalities does not follow a consistent trend, indicating other factors influencing fatalities.
+
+10. **Data Normalization**: The inclusion of "Fatalities per Capita" and "Fatalities per 100,000" provides a normalized perspective, making it easier to compare the impact of fatalities across years with varying population sizes.
 
 ## PART C : CRUD API
 
@@ -909,6 +1038,6 @@ The project is primarily for coursework, development, or testing purposes, imple
 - [OAuth 2.0 Authorization Framework (RFC 6749)](https://datatracker.ietf.org/doc/html/rfc6749)  
 - [OAuth 2.0 Simplified](https://aaronparecki.com/oauth-2-simplified/)  
 - [OAuth.net](https://oauth.net/)  
-- [Google Identity Platform OAuth 2.0 Documentation](https://developers.google.com/identity/protocols/oauth2)
-- [Microsoft Identity Platform OAuth 2.0 Documentation](https://learn.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow)
+- [Google Identity Platform OAuth 2.0 Documentation](https://developers.google.com/identity/protocols/oauth2)  
+- [Microsoft Identity Platform OAuth 2.0 Documentation](https://learn.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow) 
 
