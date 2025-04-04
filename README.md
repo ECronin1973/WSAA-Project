@@ -983,6 +983,49 @@ The index.html file provides the structure for the web interface, including:
 **Styling:**
 - The styles.css file ensures the interface is visually appealing and easy to navigate
 
+### Steps to Run the Frontend
+1. Ensure the backend API (05_app.py) is running (Flask app).
+- Open a terminal, navigate to the directory containing the backend file, and execute:
+```python
+python 05_app.py
+```
+- Confirm the API is accessible at
+```
+http://127.0.0.1:5000/api/grouped-fatalities
+```
+
+2. Verify Frontend Files
+- Ensure the following files are in the static folder:
+  - index.html in the static directory.
+  - styles.css in the static/css directory.
+  - app.js in the static/js directory.
+
+3. Open the Frontend in a Browser
+ - Open the index.html file in a web browser (e.g., Chrome, Firefox).
+ - Use a local web server if necessary (e.g., Python's HTTP server):
+ ```python
+python -m http.server
+```
+Navigate to http://127.0.0.1:8000/static/index.html in the browser.
+
+4. Verify Data Fetching 
+ - Check the browser console (Developer Tools > Console) for any errors.
+ - Ensure the table and chart are populated with data fetched from the backend API.
+
+5. Inspect the Table
+- Verify that the table (#fatalitiesTable) displays the correct data:
+ - Columns: ID, Year, Month, Fatalities.
+ - Rows dynamically populated with API data.
+
+ 6. Inspect the Chart
+ - Confirm that the chart renders correctly:
+ - A line chart showing monthly fatalities over the last five years.
+ - Labels and data points match the API data.
+
+7. Interact with the Interface
+- Users can interact with the chart and table to view trends in road fatalities.
+- Data is fetched asynchronously, allowing for real-time updates without page reloads.
+
 ### Outcome
 **1. User-Friendly Web Interface:**
 - The interface successfully displays road fatalities data in a table and a line chart.
