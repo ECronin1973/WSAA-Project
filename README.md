@@ -693,7 +693,7 @@ When the application was running, the terminal displayed the following messages.
 
 The following image captures output when API Usage is performed.
 
-![Image of Terminal Output](WSAA-Project/data/terminal_message_crud_api.png)
+![Image of Terminal Output](./data/terminal_message_crud_api.png)
 
 #### API Usage
 
