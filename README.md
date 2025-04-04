@@ -356,6 +356,216 @@ Converting population data into a structured CSV format ensures compatibility wi
 - [Pandas Documentation](https://pandas.pydata.org/)
 - [JSON-stat Format](https://json-stat.org/)
 
+## PART B : Analysis
+
+### Purpose:
+The purpose of this analysis is to examine road fatalities over the last five years, identify trends, and visualize the data. The analysis includes detecting increases or decreases in fatalities, splitting the data into quarters for better insights, and saving the results for further use. The results are presented in a line graph with quarterly splits and saved as a CSV file for trend analysis.
+
+### Code Used:
+
+---
+
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import os
+
+# Load the data
+csv_file = os.path.join(os.path.dirname(__file__), "../data/five_yr_fatalities.csv")
+df = pd.read_csv(csv_file)
+
+# Group data by Year and Month to calculate total fatalities
+df_grouped = df.groupby(["Year", "Month"], as_index=False).sum()
+
+# Sort the data by Year and Month for proper visualization
+month_order = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+]
+df_grouped["Month"] = pd.Categorical(df_grouped["Month"], categories=month_order, ordered=True)
+df_grouped = df_grouped.sort_values(by=["Year", "Month"])
+
+# Detect increases or decreases in fatalities
+df_grouped["Change"] = df_grouped["Fatalities"].diff().fillna(0)  # Calculate the difference between consecutive rows
+df_grouped["Trend"] = df_grouped["Change"].apply(lambda x: "Increase" if x > 0 else "Decrease" if x < 0 else "No Change")
+
+# Save the trend data to a CSV file
+trend_data_file = os.path.join(os.path.dirname(__file__), "../data/fatality_trends.csv")
+df_grouped.to_csv(trend_data_file, index=False)
+print(f"Trend data saved to {trend_data_file}")
+
+# Visualization: Line plot for fatalities over time with quarterly splits
+plt.figure(figsize=(12, 6))
+sns.lineplot(data=df_grouped, x="Month", y="Fatalities", hue="Year", marker="o")
+
+# Add vertical lines to split quarters
+quarter_splits = ["March", "June", "September"]
+for quarter in quarter_splits:
+    plt.axvline(x=quarter, color="red", linestyle="--", alpha=0.7)
+
+# Annotate quarters
+plt.text(1.5, df_grouped["Fatalities"].max() + 2, "Q1", ha="center", fontsize=10, color="black")
+plt.text(4.5, df_grouped["Fatalities"].max() + 2, "Q2", ha="center", fontsize=10, color="black")
+plt.text(7.5, df_grouped["Fatalities"].max() + 2, "Q3", ha="center", fontsize=10, color="black")
+plt.text(10.5, df_grouped["Fatalities"].max() + 2, "Q4", ha="center", fontsize=10, color="black")
+
+# Add labels to the points (totals over each value)
+for i, row in df_grouped.iterrows():
+    plt.text(row["Month"], row["Fatalities"] + 0.5, str(row["Fatalities"]), ha="center", fontsize=8)
+
+# Chart details
+plt.title("Monthly Road Fatalities Over the Last 5 Years with Quarterly Splits")
+plt.xlabel("Month")
+plt.ylabel("Fatalities")
+plt.legend(title="Year")
+plt.xticks(rotation=45)
+plt.tight_layout()
+
+# Save the graph to the data folder
+graph_file = os.path.join(os.path.dirname(__file__), "../data/fatalities_trend_graph.png")
+plt.savefig(graph_file)
+print(f"Graph saved to {graph_file}")
+
+plt.show()
+```
+
+---
+
+### What the Code Did:
+
+1. **Load Data**:
+   - The code reads the `five_yr_fatalities.csv` file, which contains monthly road fatalities data for the last five years.
+
+2. **Group and Sort Data**:
+   - Groups the data by `Year` and `Month` to calculate total fatalities for each month.
+   - Sorts the months in calendar order for proper visualization.
+
+3. **Detect Trends**:
+   - Calculates the change in fatalities between consecutive months.
+   - Categorizes the trend as "Increase," "Decrease," or "No Change."
+
+4. **Save Trend Data**:
+   - Saves the grouped and processed data, including the trend information, to a CSV file named fatality_trends.csv.
+
+5. **Visualize Data**:
+   - Creates a line graph showing monthly fatalities for each year.
+   - Adds vertical dashed lines to split the graph into quarters (Q1, Q2, Q3, Q4).
+   - Annotates the quarters and adds labels above each data point to display the exact fatality totals.
+
+6. **Save Graph**:
+   - Saves the graph as an image file (`fatalities_trend_graph.png`) in the `data` folder.
+
+---
+
+### Output:
+
+#### 1. **Trend Data (`fatality_trends.csv`)**:
+The trend data includes the following columns:
+- `Year`: The year of the data.
+- `Month`: The month of the data.
+- `Fatalities`: The total fatalities for the month.
+- `Change`: The difference in fatalities compared to the previous month.
+- `Trend`: Indicates whether the fatalities increased, decreased, or remained the same.
+
+Example:
+```csv
+Year,Month,Fatalities,Change,Trend
+2020,January,9,0.0,No Change
+2020,February,19,10.0,Increase
+2020,March,17,-2.0,Decrease
+...
+```
+
+#### 2. **Graph (`fatalities_trend_graph.png`)**:
+- A line graph showing monthly fatalities for each year.
+- Vertical dashed lines split the graph into quarters (Q1, Q2, Q3, Q4).
+- Labels above each data point display the exact fatality totals.
+
+---
+
+### Why It Was Necessary:
+- **Trend Analysis**: Helps identify patterns in road fatalities over time, such as seasonal trends or sudden spikes.
+- **Quarterly Insights**: Splitting the data into quarters provides a clearer understanding of how fatalities vary throughout the year.
+- **Data Storage**: Saving the trend data and graph ensures the results are reusable for further analysis or reporting.
+
+---
+
+### References:
+- [Pandas Documentation](https://pandas.pydata.org/docs/)
+- [Matplotlib Documentation](https://matplotlib.org/stable/contents.html)
+- [Seaborn Documentation](https://seaborn.pydata.org/)
+- [Python OS Module](https://docs.python.org/3/library/os.html)
+
+### Summary of Analysis
+
+Steady Decrease in Early 2021: The first quarter (January-March) of 2021 showed a significant drop in fatalities, starting at 3 in January, then climbing slightly by March. This reflects a potential stabilization.
+
+Highest Single-Year Increase: December 2021 saw the highest single-month increase in fatalities (+16).
+
+Consistent Seasonal Declines: Across all years, October-December consistently experienced decreases in fatalities.
+
+Notable Decline in Early 2023: January to March 2023 showed a consistent decrease in fatalities, ending March at only 11 fatalities.
+
+Rise in August Each Year: August generally experienced increases in fatalities across most years, notably in 2021 (+4), 2023 (+9), and 2020 (+6).
+
+Volatility in June: June saw fluctuating trends year-on-year, ranging from increases in 2021 (+2) to sharp decreases in 2023 (-10).
+
+Overall Decrease in 2022: Year 2022 exhibited more months of decreasing fatalities compared to prior years, indicating a calmer trend overall.
+
+Spike in May 2023: A sharp increase was recorded in May 2023, with fatalities reaching 20 (+10).
+
+Decreasing Trends in Q4: Quarter 4 (October-December) consistently exhibited declining trends in fatalities, highlighting seasonal patterns.
+
+Recurring Stability in September: Several Septembers showed minimal change or minor decreases, suggesting consistency.
+
+#### Quarterly Summary:
+
+**January to March:**
+2020: Fatalities fluctuated from 9 to 17.
+
+2021: Dropped to as low as 3, then slowly rebounded to 9.
+
+2022: Stable increase from 13 to 16.
+
+2023: Decline from 16 to 11.
+
+2024: Minor fluctuations, ending at 18 fatalities in March.
+
+**April to June:**
+2020: Fatalities reduced sharply, hitting a low of 6 in May, then rose in June.
+
+2021: Spiked sharply to 18 in April, then fluctuated.
+
+2022: Gradual increase, peaking at 13 in June.
+
+2023: Fatalities sharply declined in June (-10).
+
+2024: Fluctuated minimally, reaching 11 in June.
+
+**July to September:**
+2020: Steady increases by September to 17.
+
+2021: Volatility peaked at 21 in August, before dipping sharply in September.
+
+2022: Relatively stable trend, reducing to 9 in September.
+
+2023: Extreme fluctuation, from 26 in August to 9 in September.
+
+2024: Stable trends with minor changes, staying within 12-21 fatalities.
+
+**October to December:**
+2020: Declined consistently, ending at 8 fatalities.
+
+2021: Volatile, peaking at 19 in December.
+
+2022: Saw mixed trends, ending with a decline.
+
+2023: Significant spike to 22 in October, followed by a stabilization.
+
+2024: Fluctuating trend, peaking at 17 in November
+
+
 
 
 
@@ -370,9 +580,12 @@ Converting population data into a structured CSV format ensures compatibility wi
 ## References
 - [CURL Documentation](https://curl.se/)
 - [JSON-stat Format](https://json-stat.org/)
+- [Matplotlib Documentation](https://matplotlib.org/stable/contents.html)
 - [OS Module in Python](https://docs.python.org/3/library/os.html)
 - [Postman Documentation](https://www.postman.com/)
 - [Python CSV Module Documentation](https://docs.python.org/3/library/csv.html)
 - [Pandas Documentation](https://pandas.pydata.org/docs/)
 - [Python OS Module](https://docs.python.org/3/library/os.html)
 - [Requests Library Documentation](https://requests.readthedocs.io/en/latest/).
+- [Seaborn Documentation](https://seaborn.pydata.org/)
+
