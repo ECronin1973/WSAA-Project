@@ -1078,23 +1078,29 @@ The project is primarily for coursework, development, or testing purposes, imple
 - [Microsoft Identity Platform OAuth 2.0 Documentation](https://learn.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow)  
   Microsoft's guide to implementing OAuth 2.0 for Azure and Microsoft services.
 
+#### Acknowledgements
+Github Copilot. "This work was partially supported by GitHub Copilot, an AI-powered code completion tool developed by GitHub, which assisted in generating parts of the code."
 
 ## Project References
+
+- [Chart.js Documentation](https://www.chartjs.org/docs/latest/)
 - [CURL Documentation](https://curl.se/)
 - [Flask Official Documentation](https://flask.palletsprojects.com/en/stable/)
 - [Flask-RESTful Documentation](https://flask-restful.readthedocs.io/en/latest/)
+- [GitHub Copilot](https://github.com/features/copilot)
+- [Google Identity Platform OAuth 2.0 Documentation](https://developers.google.com/identity/protocols/oauth2)
 - [JSON-stat Format](https://json-stat.org/)
+- [Markdown Guide](https://www.markdownguide.org/)
 - [Matplotlib Documentation](https://matplotlib.org/stable/contents.html)
+- [Microsoft Identity Platform OAuth 2.0 Documentation](https://learn.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow)
+- [OAuth 2.0 Authorization Framework (RFC 6749)](https://datatracker.ietf.org/doc/html/rfc6749)
+- [OAuth 2.0 Simplified](https://aaronparecki.com/oauth-2-simplified/)
+- [OAuth.net](https://oauth.net/)
 - [OS Module in Python](https://docs.python.org/3/library/os.html)
+- [Pandas Documentation](https://pandas.pydata.org/docs/)
 - [Postman Documentation](https://www.postman.com/)
 - [Python CSV Module Documentation](https://docs.python.org/3/library/csv.html)
-- [Pandas Documentation](https://pandas.pydata.org/docs/)
-- [Python OS Module](https://docs.python.org/3/library/os.html)
-- [Requests Library Documentation](https://requests.readthedocs.io/en/latest/).
+- [Requests Library Documentation](https://requests.readthedocs.io/en/latest/)
 - [Seaborn Documentation](https://seaborn.pydata.org/)
-- [OAuth 2.0 Authorization Framework (RFC 6749)](https://datatracker.ietf.org/doc/html/rfc6749)  
-- [OAuth 2.0 Simplified](https://aaronparecki.com/oauth-2-simplified/)  
-- [OAuth.net](https://oauth.net/)  
-- [Google Identity Platform OAuth 2.0 Documentation](https://developers.google.com/identity/protocols/oauth2)  
-- [Microsoft Identity Platform OAuth 2.0 Documentation](https://learn.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow) 
-- [Chart.js Documentation](https://www.chartjs.org/docs/latest/)
+
+# END
