@@ -62,23 +62,20 @@ This project focuses on examining road fatalities in Ireland over the past five 
 2. **Data Analysis**
    - Analyze road deaths for trends using Python libraries.
    - Generate charts and visualizations to highlight changes in road fatalities.
+   - Integrate quarterly trend data into the analysis.
 
-3. **Connecting Campaign Data**
-   - Cross-reference road safety campaigns and initiatives for potential correlations.
-   - Integrate campaign data into the analysis.
-
-4. **Interactive CRUD Operations**
+3. **Interactive CRUD Operations**
    - Enable users to update or delete data directly via the API.
    - Develop CRUD functionalities using Flask for the backend.
 
-5. **Frontend Development**
+4. **Frontend Development**
    - Create a user-friendly web interface for data visualization.
    - Use jQuery and AJAX for seamless asynchronous data retrieval.
 
-6. **Deployment**
+5. **Deployment**
    - Host the project on ? (To be determindes during project).
 
-7. **Authentication**
+6. **Authentication**
    - Implement OAuth for secure and authenticated data access.
 
 ## Prerequisites
@@ -565,11 +562,265 @@ Recurring Stability in September: Several Septembers showed minimal change or mi
 
 2024: Fluctuating trend, peaking at 17 in November
 
+## PART C
+
+A functional CRUD API for managing road fatalities data using Flask and Flask-RESTful is designed to efficiently handle Create, Read, Update, and Delete operations on road fatalities records. This API ensures seamless data management and enables users to interact with road fatalities data through a user-friendly and scalable interface. It supports data validation, modular design, and integration with external tools like Postman for testing and documentation, making it suitable for analysis, visualization, and tracking trends over time.
+
+Below are the steps and functionalities implemented in the code:
+
+### 1. Setup and Initialization
+**Flask and Flask-RESTful:**
+- The Flask framework is used to create the web application.
+- Flask-RESTful simplifies the creation of RESTful APIs by providing a Resource class for defining endpoints.
+**App Initialization:**
+- app = Flask(__name__) initializes the Flask application.
+- api = Api(app) initializes the RESTful API.
+
+### 2. In-Memory Data Store
+**Purpose:**
+- The data_store list is used as a temporary in-memory database to store road fatalities data.
+**Each record contains:**
+- id: A unique identifier for the record.
+- year: The year of the record.
+- month: The month of the record.
+- fatalities: The number of fatalities for that month.
+**Auto-Increment ID:**
+The next_id variable ensures that each new record gets a unique id.
+
+### 3. CRUD Operations
+The FatalitiesResource class defines the CRUD operations for managing the data.
+
+##### a. READ (GET)
+**Functionality:**
+- Fetches all records or a specific record by id.
+- If an id is provided as a query parameter, it searches for the record with that id.
+- If no id is provided, it returns all records.
+**Error Handling:**
+- Returns a 404 status code with a "Record not found" message if the record does not exist.
+
+##### b. CREATE (POST)
+**Functionality:**
+- Accepts a JSON payload to create a new record.
+- Adds the record to the data_store with a unique id.
+**Validation:**
+- Ensures that the required fields (year, month, fatalities) are present in the request.
+- Validates that fatalities is a non-negative integer.
+**Response:**
+- Returns a 201 status code with a success message and the created record.
+
+##### c. UPDATE (PUT)
+**Functionality:**
+- Updates an existing record by id with the provided JSON payload.
+- earches for the record with the specified id and updates its fields.
+**Error Handling:**
+- Returns a 404 status code with a "Record not found" message if the record does not exist.
+**Response:**
+- Returns a 200 status code with a success message and the updated record.
+
+##### d. DELETE (DELETE)
+**Functionality:**
+- Deletes a record by id.
+- Removes the record from the data_store.
+**Error Handling:**
+- Returns a 404 status code with a "Record not found" message if the record does not exist.
+**Response:**
+- Returns a 200 status code with a success message.
+
+### 4. API Routes
+
+**Endpoints:**
+- - /api/fatalities: Handles GET and POST requests.
+/api/fatalities/<int:record_id>: Handles PUT and DELETE requests for a specific record by id.
+**Route Registration:**
+api.add_resource(FatalitiesResource, '/api/fatalities', '/api/fatalities/<int:record_id>') registers the resource with the specified routes.
+
+### 5. Running the Application
+**Debug Mode:**
+- The application runs in debug mode (app.run(debug=True)), which provides detailed error messages and auto-reloads the server during development.
+**Access:**
+- The API is accessible at http://127.0.0.1:5000/api/fatalities.
+
+### Code used
+The following is the code used
+
+```python
+from flask import Flask, request, jsonify
+from flask_restful import Resource, Api
+
+app = Flask(__name__)
+api = Api(app)
+
+# In-memory data store (for demonstration purposes)
+data_store = [
+    {"id": 1, "year": 2020, "month": "January", "fatalities": 9},
+    {"id": 2, "year": 2020, "month": "February", "fatalities": 19},
+    {"id": 3, "year": 2020, "month": "March", "fatalities": 17},
+]
+
+# Auto-increment ID for new entries
+next_id = len(data_store) + 1
+
+# API Resource for CRUD operations
+class FatalitiesResource(Resource):
+    # READ: Get all records or a specific record by ID
+    def get(self):
+        record_id = request.args.get('id')
+        if record_id:
+            record = next((item for item in data_store if item["id"] == int(record_id)), None)
+            if record:
+                return record, 200
+            return {"message": "Record not found"}, 404
+        return data_store, 200
+
+    # CREATE: Add a new record
+    def post(self):
+        global next_id
+        new_record = request.json
+
+        # Validation
+        if not all(k in new_record for k in ("year", "month", "fatalities")):
+            return {"message": "Missing required fields"}, 400
+        if not isinstance(new_record["fatalities"], int) or new_record["fatalities"] < 0:
+            return {"message": "Invalid fatalities value"}, 400
+
+        new_record["id"] = next_id
+        data_store.append(new_record)
+        next_id += 1
+        return {"message": "Record created successfully", "record": new_record}, 201
+
+    # UPDATE: Update an existing record by ID
+    def put(self, record_id):
+        record = next((item for item in data_store if item["id"] == record_id), None)
+        if not record:
+            return {"message": "Record not found"}, 404
+
+        updated_data = request.json
+        record.update(updated_data)
+        return {"message": "Record updated successfully", "record": record}, 200
+
+    # DELETE: Delete a record by ID
+    def delete(self, record_id):
+        global data_store
+        record = next((item for item in data_store if item["id"] == record_id), None)
+        if not record:
+            return {"message": "Record not found"}, 404
+
+        data_store = [item for item in data_store if item["id"] != record_id]
+        return {"message": "Record deleted successfully"}, 200
 
 
+# Add routes to the API
+api.add_resource(FatalitiesResource, '/api/fatalities', '/api/fatalities/<int:record_id>')
 
+# Run the Flask app
+if __name__ == '__main__':
+    app.run(debug=True)
+# This code provides a simple CRUD API for managing road fatalities data.
+# it uses Flask and Flask-RESTful to create the API endpoints.
+```
 
+### Terminal Output
 
+When the application was running, the terminal displayed the following messages.  
+
+* Restarting with watchdog (windowsapi)
+* Debugger is active!
+* Debugger PIN: 397-799-927 
+
+![Image of Terminal Output](WSAA-Project\data\terminal_message_crud_api.png)
+
+#### API Usage
+
+##### 1. Create a New Record
+
+**Request:**
+```
+POST http://127.0.0.1:5000/api/fatalities
+Content-Type: application/json
+
+{
+    "year": 2021,
+    "month": "April",
+    "fatalities": 18
+}
+```
+**Response:**
+{
+    "message": "Record created successfully",
+    "record": {
+        "year": 2021,
+        "month": "April",
+        "fatalities": 18,
+        "id": 4
+    }
+}
+
+##### 2. Read All records
+
+**Request:**
+```
+GET /api/fatalities
+```
+
+**Response**
+[
+    { "id": 1, "year": 2020, "month": "January", "fatalities": 9 },
+    { "id": 2, "year": 2020, "month": "February", "fatalities": 19},
+    { "id": 3, "year": 2020, "month": "March", "fatalities": 17 },
+    { "year": 2021, "month": "April", "fatalities": 18, "id": 4 }
+]
+
+##### 3. Update a Record
+
+**Request:**
+```
+PUT /api/fatalities/2
+Content-Type: application/json
+
+{
+    "fatalities": 20
+}
+```
+
+**Response**
+{
+    "message": "Record updated successfully",
+    "record": {
+        "id": 2,
+        "year": 2020,
+        "month": "February",
+        "fatalities": 20
+    }
+}
+
+##### 3. Delete a Record
+
+**Request:**
+```
+DELETE /api/fatalities/3
+```
+
+**Response**
+{
+    "message": "Record deleted successfully"
+}
+
+### References
+**Flask Documentation**
+[Flask Official Documentation](https://flask.palletsprojects.com/en/stable/)
+Provides detailed information on how to build web applications using Flask.
+
+**Flask-RESTful Documentation**
+[Flask-RESTful Documentation](https://flask-restful.readthedocs.io/en/latest/)
+Explains how to create RESTful APIs using Flask-RESTful, including the Resource class and route management.
+
+**Postman Documentation**
+[Postman Documentation](https://www.postman.com/)
+Useful for testing CRUD API endpoints.
+
+**Python Requests Library**
+[Requests Library Documentation](https://requests.readthedocs.io/en/latest/)
+Covers how to make HTTP requests and handle responses, which is useful for testing APIs programmatically.
 
 
 
@@ -579,6 +830,8 @@ Recurring Stability in September: Several Septembers showed minimal change or mi
 
 ## References
 - [CURL Documentation](https://curl.se/)
+- [Flask Official Documentation](https://flask.palletsprojects.com/en/stable/)
+- [Flask-RESTful Documentation](https://flask-restful.readthedocs.io/en/latest/)
 - [JSON-stat Format](https://json-stat.org/)
 - [Matplotlib Documentation](https://matplotlib.org/stable/contents.html)
 - [OS Module in Python](https://docs.python.org/3/library/os.html)
