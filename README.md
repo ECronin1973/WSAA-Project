@@ -26,8 +26,6 @@ This project focuses on examining road fatalities in Ireland over the past five 
 - [Licence](#license)
 - [References](#references)
 
----
-
 ## Features
 
 - **Data Representation**: Handles data in CSV, XML, and JSON formats.
@@ -36,8 +34,6 @@ This project focuses on examining road fatalities in Ireland over the past five 
 - **CRUD Functionality**: Allows users to Create, Read, Update, and Delete data directly from the application.
 - **Authentication**: Uses OAuth for secure access and data management.
 - **Visualization**: Provides user-friendly charts for clear trend analysis.
-
----
 
 ## Technical Stack
 
@@ -55,8 +51,6 @@ This project focuses on examining road fatalities in Ireland over the past five 
    - API testing with Postman or CURL.
 5. **Authentication**
    - Secure access using OAuth. (To Be Explored Further!!)
-
----
 
 ## Implementation Steps
 
@@ -84,15 +78,11 @@ This project focuses on examining road fatalities in Ireland over the past five 
 6. **Authentication**
    - Implement OAuth for secure and authenticated data access.
 
----
-
 ## Prerequisites
 
 - **Languages**: Python, JavaScript, HTML, CSS.
 - **Tools**: Postman, CURL, Git, Flask.
 - **Libraries**: `pandas`, `numpy`, `matplotlib`, `seaborn`, jQuery, AJAX.
-
----
 
 ## How to Download this Repository
 
@@ -102,36 +92,24 @@ To download this repository, you can use the following command:
 git clone https://github.com/ECronin1973/WSAA-Project
 ```
 
----
-
 ## Code of Conduct
 
 Please read the CODE_OF_CONDUCT.md file for details on our code of conduct.
-
----
 
 ## Dependencies
 
 The dependencies for this project are listed in the requirements.txt file.
 
----
-
 ## Data Content Relevant To Task
 - [CSO Website - STATS API](https://ws.cso.ie/public/api.restful/PxStat.Data.Cube_API.ReadDataset/ROA29/JSON-stat/1.0/en)
-
----
 
 ## Project Structure
 
 To Be Added
 
----
-
 ## License
 
 This project is licensed under the Apache License 2.0. See the LICENSE file for details.
-
----
 
 # Part A:  Access the API's and Fetch the Data
 
@@ -150,8 +128,6 @@ This command fetched the data and displayed the results directly in the terminal
 
 ### Reference:
 [CURL Documentation](https://curl.se/)
-
----
 
 ## Step 2: Retrieve Data Using Postman
 
@@ -175,8 +151,6 @@ This step was critical for verifying the API's functionality and ensuring the da
 
 ### Reference:
 [Postman Documentation](https://www.postman.com/)
-
----
 
 ## Step 3: Parse and Convert Data
 
@@ -250,8 +224,6 @@ JSON-stat is a lightweight format designed for statistical data.
 [OS Module in Python](https://docs.python.org/3/library/os.html).
 Useful for handling file paths and creating directories dynamically in Python.
 
----
-
 ## Step 4: Monthly Trend Analysis
 
 ### Purpose:
@@ -300,8 +272,6 @@ For reading, manipulating, and exporting data in DataFrames.
 
 [Python OS Module](https://docs.python.org/3/library/os.html).
 For constructing paths dynamically and ensuring compatibility across operating systems.
-
----
 
 ## Step 5 Retrieve population data from the CSO API 
 Retrieve population data from the CSO API in JSON-stat format, parse the data, and export it to an Excel sheet for visualization and analysis
@@ -379,8 +349,6 @@ Converting population data into a structured CSV format ensures compatibility wi
 - [Requests Library Documentation](https://requests.readthedocs.io/en/latest/)
 - [Pandas Documentation](https://pandas.pydata.org/)
 - [JSON-stat Format](https://json-stat.org/)
-
----
 
 ## PART B : Analysis
 
@@ -502,7 +470,6 @@ Year,Month,Fatalities,Change,Trend
 - Vertical dashed lines split the graph into quarters (Q1, Q2, Q3, Q4).
 - Labels above each data point display the exact fatality totals.
 
-
 ### Why It Was Necessary:
 - **Trend Analysis**: Helps identify patterns in road fatalities over time, such as seasonal trends or sudden spikes.
 - **Quarterly Insights**: Splitting the data into quarters provides a clearer understanding of how fatalities vary throughout the year.
@@ -513,8 +480,6 @@ Year,Month,Fatalities,Change,Trend
 - [Matplotlib Documentation](https://matplotlib.org/stable/contents.html)
 - [Seaborn Documentation](https://seaborn.pydata.org/)
 - [Python OS Module](https://docs.python.org/3/library/os.html)
-
----
 
 ### Summary of Analysis
 
@@ -558,8 +523,6 @@ Year,Month,Fatalities,Change,Trend
 - 2022: Saw mixed trends, ending with a decline.
 - 2023: Significant spike to 22 in October, followed by a stabilization.
 - 2024: Fluctuating trend, peaking at 17 in November
-
----
 
 ## PART C
 
@@ -825,13 +788,6 @@ Useful for testing CRUD API endpoints.
 **Python Requests Library**
 [Requests Library Documentation](https://requests.readthedocs.io/en/latest/)
 Covers how to make HTTP requests and handle responses, which is useful for testing APIs programmatically.
-
----
-
-
-
-
-
 
 ## References
 - [CURL Documentation](https://curl.se/)
