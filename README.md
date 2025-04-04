@@ -53,7 +53,7 @@ The Road Safety Analysis Project examines road fatalities in Ireland over the pa
    - Integration with the CSO API for data retrieval.
 2. **Frontend**:
    - Interactive web interface using HTML, CSS, jQuery, and AJAX.
-   3. **Data Analysis**:
+3. **Data Analysis**:
    - Data manipulation and visualization using `pandas`, `matplotlib`, and `seaborn`.
 4. **Testing**:
    - API testing with Postman and CURL.
@@ -65,7 +65,7 @@ The Road Safety Analysis Project examines road fatalities in Ireland over the pa
 1. **Data Retrieval**:
    - Fetch road safety data from the CSO API using HTTP GET requests.
    - Parse and convert the data into CSV format for analysis.
-   2. **Data Analysis**:
+2. **Data Analysis**:
    - Analyze trends in road fatalities using Python libraries.
    - Visualize data with charts and graphs.
    - Analyse yearly fatality totals per capita and per 100,000 population.
@@ -391,6 +391,8 @@ Converting population data into a structured CSV format ensures compatibility wi
 
 ### Purpose:
 The purpose of this analysis is to examine road fatalities over the last five years, identify trends, and visualize the data. The analysis includes detecting increases or decreases in fatalities, splitting the data into quarters for better insights, and saving the results for further use. The results are presented in a line graph with quarterly splits and saved as a CSV file for trend analysis.
+
+![Fatalities_trend_graph.png](./data/fatalities_trend_graph.png)
 
 ### Code Used:
 
