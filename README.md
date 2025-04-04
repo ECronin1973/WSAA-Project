@@ -834,13 +834,46 @@ The index.html file provides the structure for the web interface, including:
 - The table complements the chart by providing detailed numerical data.
 
 ### Screenshots
-Image 'monthly_fatalities_over_the_last_5_years.png' displays an interactive chart with data displayed by hovering over each monthly point in the site http://127.0.0.1:5500/WSAA-Project/static/index.html
+Image 'monthly_fatalities_over_the_last_5_years.png' displays an interactive chart with data displayed by hovering over each monthly point accessible at http://127.0.0.1:5500/WSAA-Project/static/index.html
 ![Monthly Fatalities Image](./data/monthly_fatalites_over_the_last_5_years.png)
 
-Image 'Fatalities_Data.png' displays a chart with headings 'ID, Year, Month, Fatalities'.
+Image 'Fatalities_Data.png' displays a chart with headings 'ID, Year, Month, Fatalities' which is accessed at http://127.0.0.1:5500/WSAA-Project/static/index.html
 ![Fatalities Data](./data/fatalities_data.png)
 
 This interface is intuitive, visually appealing, and effectively displays the data in both tabular and graphical formats.  Data is dynamically fetched from the backend API and displayed in real-time without requiring a page reload.  This method of accessing data is preferred as it negates the necessity to re run programs when CRUD actions are undertaken.
+
+## Part E: OAuth (Open Authorization)
+
+OAuth (Open Authorization) is an open standard protocol that allows secure, delegated access to resources on behalf of a user. It is commonly used to grant third-party applications limited access to a user's resources (e.g., data or services) without exposing the user's credentials (like passwords).
+
+OAuth was not considered necessary in this project for the following reasons
+
+**Private Repository:**
+- A private GitHub repository is already secure and accessible only to authorized users with the appropriate permissions.
+- GitHub handles authentication and access control for private repositories, so additional layers like OAuth are redundant in this context.
+
+**No Public API Exposure:**
+- If the API is not being hosted on a public server and is only being used locally (e.g., http://127.0.0.1:5000), there is no need for OAuth since the API is not exposed to external users.
+
+**Limited Scope:**
+- The project is focused on analyzing and visualizing road safety data, with CRUD operations on a local dataset. There is no sensitive or user-specific data that requires advanced authentication mechanisms like OAuth.
+
+**Development and Testing Context:**
+The project is primarily for coursework, development, or testing purposes, implementing OAuth would add unnecessary complexity without providing significant benefits.
+
+## References
+
+- [OAuth 2.0 Authorization Framework (RFC 6749)](https://datatracker.ietf.org/doc/html/rfc6749)  
+  The official specification for OAuth 2.0, detailing the protocol and its components.
+- [OAuth 2.0 Simplified](https://aaronparecki.com/oauth-2-simplified/)  
+  A beginner-friendly guide to understanding OAuth 2.0.
+- [OAuth.net](https://oauth.net/)  
+  A comprehensive resource for learning about OAuth, including tutorials and libraries.
+- [Google Identity Platform OAuth 2.0 Documentation](https://developers.google.com/identity/protocols/oauth2)  
+  Google's implementation of OAuth 2.0 for accessing Google APIs.
+- [Microsoft Identity Platform OAuth 2.0 Documentation](https://learn.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow)  
+  Microsoft's guide to implementing OAuth 2.0 for Azure and Microsoft services.
+
 
 ## References
 - [CURL Documentation](https://curl.se/)
@@ -855,4 +888,9 @@ This interface is intuitive, visually appealing, and effectively displays the da
 - [Python OS Module](https://docs.python.org/3/library/os.html)
 - [Requests Library Documentation](https://requests.readthedocs.io/en/latest/).
 - [Seaborn Documentation](https://seaborn.pydata.org/)
+- [OAuth 2.0 Authorization Framework (RFC 6749)](https://datatracker.ietf.org/doc/html/rfc6749)  
+- [OAuth 2.0 Simplified](https://aaronparecki.com/oauth-2-simplified/)  
+- [OAuth.net](https://oauth.net/)  
+- [Google Identity Platform OAuth 2.0 Documentation](https://developers.google.com/identity/protocols/oauth2)  
+- [Microsoft Identity Platform OAuth 2.0 Documentation](https://learn.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow) 
 
