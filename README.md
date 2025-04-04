@@ -26,6 +26,8 @@ This project focuses on examining road fatalities in Ireland over the past five 
 - [Licence](#license)
 - [References](#references)
 
+---
+
 ## Features
 
 - **Data Representation**: Handles data in CSV, XML, and JSON formats.
@@ -34,6 +36,8 @@ This project focuses on examining road fatalities in Ireland over the past five 
 - **CRUD Functionality**: Allows users to Create, Read, Update, and Delete data directly from the application.
 - **Authentication**: Uses OAuth for secure access and data management.
 - **Visualization**: Provides user-friendly charts for clear trend analysis.
+
+---
 
 ## Technical Stack
 
@@ -51,6 +55,8 @@ This project focuses on examining road fatalities in Ireland over the past five 
    - API testing with Postman or CURL.
 5. **Authentication**
    - Secure access using OAuth. (To Be Explored Further!!)
+
+---
 
 ## Implementation Steps
 
@@ -78,11 +84,15 @@ This project focuses on examining road fatalities in Ireland over the past five 
 6. **Authentication**
    - Implement OAuth for secure and authenticated data access.
 
+---
+
 ## Prerequisites
 
 - **Languages**: Python, JavaScript, HTML, CSS.
 - **Tools**: Postman, CURL, Git, Flask.
 - **Libraries**: `pandas`, `numpy`, `matplotlib`, `seaborn`, jQuery, AJAX.
+
+---
 
 ## How to Download this Repository
 
@@ -92,27 +102,36 @@ To download this repository, you can use the following command:
 git clone https://github.com/ECronin1973/WSAA-Project
 ```
 
+---
+
 ## Code of Conduct
 
 Please read the CODE_OF_CONDUCT.md file for details on our code of conduct.
+
+---
 
 ## Dependencies
 
 The dependencies for this project are listed in the requirements.txt file.
 
+---
+
 ## Data Content Relevant To Task
-```bash
-https://ws.cso.ie/public/api.restful/PxStat.Data.Cube_API.ReadDataset/ROA29/JSON-stat/1.0/en
-```
+- [CSO Website - STATS API](https://ws.cso.ie/public/api.restful/PxStat.Data.Cube_API.ReadDataset/ROA29/JSON-stat/1.0/en)
+
+---
 
 ## Project Structure
 
 To Be Added
 
+---
 
 ## License
 
 This project is licensed under the Apache License 2.0. See the LICENSE file for details.
+
+---
 
 # Part A:  Access the API's and Fetch the Data
 
@@ -131,6 +150,8 @@ This command fetched the data and displayed the results directly in the terminal
 
 ### Reference:
 [CURL Documentation](https://curl.se/)
+
+---
 
 ## Step 2: Retrieve Data Using Postman
 
@@ -154,6 +175,8 @@ This step was critical for verifying the API's functionality and ensuring the da
 
 ### Reference:
 [Postman Documentation](https://www.postman.com/)
+
+---
 
 ## Step 3: Parse and Convert Data
 
@@ -227,6 +250,8 @@ JSON-stat is a lightweight format designed for statistical data.
 [OS Module in Python](https://docs.python.org/3/library/os.html).
 Useful for handling file paths and creating directories dynamically in Python.
 
+---
+
 ## Step 4: Monthly Trend Analysis
 
 ### Purpose:
@@ -275,6 +300,8 @@ For reading, manipulating, and exporting data in DataFrames.
 
 [Python OS Module](https://docs.python.org/3/library/os.html).
 For constructing paths dynamically and ensuring compatibility across operating systems.
+
+---
 
 ## Step 5 Retrieve population data from the CSO API 
 Retrieve population data from the CSO API in JSON-stat format, parse the data, and export it to an Excel sheet for visualization and analysis
@@ -353,14 +380,14 @@ Converting population data into a structured CSV format ensures compatibility wi
 - [Pandas Documentation](https://pandas.pydata.org/)
 - [JSON-stat Format](https://json-stat.org/)
 
+---
+
 ## PART B : Analysis
 
 ### Purpose:
 The purpose of this analysis is to examine road fatalities over the last five years, identify trends, and visualize the data. The analysis includes detecting increases or decreases in fatalities, splitting the data into quarters for better insights, and saving the results for further use. The results are presented in a line graph with quarterly splits and saved as a CSV file for trend analysis.
 
 ### Code Used:
-
----
 
 ```python
 import pandas as pd
@@ -427,8 +454,6 @@ print(f"Graph saved to {graph_file}")
 plt.show()
 ```
 
----
-
 ### What the Code Did:
 
 1. **Load Data**:
@@ -452,8 +477,6 @@ plt.show()
 
 6. **Save Graph**:
    - Saves the graph as an image file (`fatalities_trend_graph.png`) in the `data` folder.
-
----
 
 ### Output:
 
@@ -479,14 +502,11 @@ Year,Month,Fatalities,Change,Trend
 - Vertical dashed lines split the graph into quarters (Q1, Q2, Q3, Q4).
 - Labels above each data point display the exact fatality totals.
 
----
 
 ### Why It Was Necessary:
 - **Trend Analysis**: Helps identify patterns in road fatalities over time, such as seasonal trends or sudden spikes.
 - **Quarterly Insights**: Splitting the data into quarters provides a clearer understanding of how fatalities vary throughout the year.
 - **Data Storage**: Saving the trend data and graph ensures the results are reusable for further analysis or reporting.
-
----
 
 ### References:
 - [Pandas Documentation](https://pandas.pydata.org/docs/)
@@ -509,7 +529,7 @@ Year,Month,Fatalities,Change,Trend
 - **Decreasing Trends in Q4:** Quarter 4 (October-December) consistently exhibited declining trends in fatalities, highlighting seasonal patterns.
 - **Recurring Stability in September:** Several Septembers showed minimal change or minor decreases, suggesting consistency.
 
-#### Quarterly Summary:
+### Quarterly Summary:
 
 **January to March:**
 - 2020: Fatalities fluctuated from 9 to 17.
@@ -539,6 +559,8 @@ Year,Month,Fatalities,Change,Trend
 - 2023: Significant spike to 22 in October, followed by a stabilization.
 - 2024: Fluctuating trend, peaking at 17 in November
 
+---
+
 ## PART C
 
 A functional CRUD API for managing road fatalities data using Flask and Flask-RESTful is designed to efficiently handle Create, Read, Update, and Delete operations on road fatalities records. This API ensures seamless data management and enables users to interact with road fatalities data through a user-friendly and scalable interface. It supports data validation, modular design, and integration with external tools like Postman for testing and documentation, making it suitable for analysis, visualization, and tracking trends over time.
@@ -553,8 +575,6 @@ Below are the steps and functionalities implemented in the code:
 - app = Flask(__name__) initializes the Flask application.
 - api = Api(app) initializes the RESTful API.
 
----
-
 ### 2. In-Memory Data Store
 **Purpose:**
 - The data_store list is used as a temporary in-memory database to store road fatalities data.
@@ -566,12 +586,10 @@ Below are the steps and functionalities implemented in the code:
 **Auto-Increment ID:**
 The next_id variable ensures that each new record gets a unique id.
 
----
-
 ### 3. CRUD Operations
 The FatalitiesResource class defines the CRUD operations for managing the data.
 
-##### a. READ (GET)
+#### a. READ (GET)
 **Functionality:**
 - Fetches all records or a specific record by id.
 - If an id is provided as a query parameter, it searches for the record with that id.
@@ -579,7 +597,7 @@ The FatalitiesResource class defines the CRUD operations for managing the data.
 **Error Handling:**
 - Returns a 404 status code with a "Record not found" message if the record does not exist.
 
-##### b. CREATE (POST)
+#### b. CREATE (POST)
 **Functionality:**
 - Accepts a JSON payload to create a new record.
 - Adds the record to the data_store with a unique id.
@@ -589,7 +607,7 @@ The FatalitiesResource class defines the CRUD operations for managing the data.
 **Response:**
 - Returns a 201 status code with a success message and the created record.
 
-##### c. UPDATE (PUT)
+#### c. UPDATE (PUT)
 **Functionality:**
 - Updates an existing record by id with the provided JSON payload.
 - earches for the record with the specified id and updates its fields.
@@ -598,7 +616,7 @@ The FatalitiesResource class defines the CRUD operations for managing the data.
 **Response:**
 - Returns a 200 status code with a success message and the updated record.
 
-##### d. DELETE (DELETE)
+#### d. DELETE (DELETE)
 **Functionality:**
 - Deletes a record by id.
 - Removes the record from the data_store.
@@ -607,17 +625,14 @@ The FatalitiesResource class defines the CRUD operations for managing the data.
 **Response:**
 - Returns a 200 status code with a success message.
 
----
-
 ### 4. API Routes
 
 **Endpoints:**
-- - /api/fatalities: Handles GET and POST requests.
-/api/fatalities/<int:record_id>: Handles PUT and DELETE requests for a specific record by id.
+- /api/fatalities: Handles GET and POST requests.
+- /api/fatalities/<int:record_id>: Handles PUT and DELETE requests for a specific record by id.
+
 **Route Registration:**
 api.add_resource(FatalitiesResource, '/api/fatalities', '/api/fatalities/<int:record_id>') registers the resource with the specified routes.
-
----
 
 ### 5. Running the Application
 **Debug Mode:**
@@ -717,12 +732,9 @@ The following image captures output when API Usage is performed.
 
 ![Image of Terminal Output](WSAA-Project/data/terminal_message_crud_api.png)
 
----
-
 #### API Usage
 
 ##### 1. Create a New Record
-
 **Request:**
 ```
 POST http://127.0.0.1:5000/api/fatalities
@@ -748,12 +760,10 @@ Content-Type: application/json
 ```
 
 ##### 2. Read All records
-
 **Request:**
 ```
 GET /api/fatalities
 ```
-
 **Response**
 ```
 [
@@ -765,7 +775,6 @@ GET /api/fatalities
 ```
 
 ##### 3. Update a Record
-
 **Request:**
 ```
 PUT /api/fatalities/2
@@ -775,7 +784,6 @@ Content-Type: application/json
     "fatalities": 20
 }
 ```
-
 **Response**
 ```
 {
@@ -790,12 +798,10 @@ Content-Type: application/json
 ```
 
 ##### 3. Delete a Record
-
 **Request:**
 ```
 DELETE /api/fatalities/3
 ```
-
 **Response**
 ```
 {
@@ -820,6 +826,7 @@ Useful for testing CRUD API endpoints.
 [Requests Library Documentation](https://requests.readthedocs.io/en/latest/)
 Covers how to make HTTP requests and handle responses, which is useful for testing APIs programmatically.
 
+---
 
 
 
