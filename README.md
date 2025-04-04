@@ -1079,7 +1079,7 @@ The project is primarily for coursework, development, or testing purposes, imple
 - [Microsoft Identity Platform OAuth 2.0 Documentation](https://learn.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow)  
   Microsoft's guide to implementing OAuth 2.0 for Azure and Microsoft services.
 
-### Conclusion
+## Conclusion
 
 The Road Safety Analysis Project successfully achieved its objectives of analyzing and visualizing road fatalities in Ireland over the past five years. By integrating data from the Central Statistics Office (CSO) API and implementing a custom Flask-based API, the project provided a robust platform for CRUD operations and data management. The frontend interface, developed using HTML, CSS, jQuery, and Chart.js, offered an intuitive and interactive way for users to explore trends and patterns in road safety data.
 
