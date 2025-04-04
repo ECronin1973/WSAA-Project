@@ -494,73 +494,50 @@ Year,Month,Fatalities,Change,Trend
 - [Seaborn Documentation](https://seaborn.pydata.org/)
 - [Python OS Module](https://docs.python.org/3/library/os.html)
 
+---
+
 ### Summary of Analysis
 
-Steady Decrease in Early 2021: The first quarter (January-March) of 2021 showed a significant drop in fatalities, starting at 3 in January, then climbing slightly by March. This reflects a potential stabilization.
-
-Highest Single-Year Increase: December 2021 saw the highest single-month increase in fatalities (+16).
-
-Consistent Seasonal Declines: Across all years, October-December consistently experienced decreases in fatalities.
-
-Notable Decline in Early 2023: January to March 2023 showed a consistent decrease in fatalities, ending March at only 11 fatalities.
-
-Rise in August Each Year: August generally experienced increases in fatalities across most years, notably in 2021 (+4), 2023 (+9), and 2020 (+6).
-
-Volatility in June: June saw fluctuating trends year-on-year, ranging from increases in 2021 (+2) to sharp decreases in 2023 (-10).
-
-Overall Decrease in 2022: Year 2022 exhibited more months of decreasing fatalities compared to prior years, indicating a calmer trend overall.
-
-Spike in May 2023: A sharp increase was recorded in May 2023, with fatalities reaching 20 (+10).
-
-Decreasing Trends in Q4: Quarter 4 (October-December) consistently exhibited declining trends in fatalities, highlighting seasonal patterns.
-
-Recurring Stability in September: Several Septembers showed minimal change or minor decreases, suggesting consistency.
+- **Steady Decrease in Early 2021:** The first quarter (January-March) of 2021 showed a significant drop in fatalities, starting at 3 in January, then climbing slightly by March. This reflects a potential stabilization.
+- **Highest Single-Year Increase:** December 2021 saw the highest single-month increase in fatalities (+16).
+- **Consistent Seasonal Declines:** Across all years, October-December consistently experienced decreases in fatalities.
+- **Notable Decline in Early 2023:** January to March 2023 showed a consistent decrease in fatalities, ending March at only 11 fatalities.
+- **Rise in August Each Year:** August generally experienced increases in fatalities across most years, notably in 2021 (+4), 2023 (+9), and 2020 (+6).
+- **Volatility in June:** June saw fluctuating trends year-on-year, ranging from increases in 2021 (+2) to sharp decreases in 2023 (-10).
+- **Overall Decrease in 2022:** Year 2022 exhibited more months of decreasing fatalities compared to prior years, indicating a calmer trend overall.
+- **Spike in May 2023:** A sharp increase was recorded in May 2023, with fatalities reaching 20 (+10).
+- **Decreasing Trends in Q4:** Quarter 4 (October-December) consistently exhibited declining trends in fatalities, highlighting seasonal patterns.
+- **Recurring Stability in September:** Several Septembers showed minimal change or minor decreases, suggesting consistency.
 
 #### Quarterly Summary:
 
 **January to March:**
-2020: Fatalities fluctuated from 9 to 17.
-
-2021: Dropped to as low as 3, then slowly rebounded to 9.
-
-2022: Stable increase from 13 to 16.
-
-2023: Decline from 16 to 11.
-
-2024: Minor fluctuations, ending at 18 fatalities in March.
+- 2020: Fatalities fluctuated from 9 to 17.
+- 2021: Dropped to as low as 3, then slowly rebounded to 9.
+- 2022: Stable increase from 13 to 16.
+- 2023: Decline from 16 to 11.
+- 2024: Minor fluctuations, ending at 18 fatalities in March.
 
 **April to June:**
-2020: Fatalities reduced sharply, hitting a low of 6 in May, then rose in June.
-
-2021: Spiked sharply to 18 in April, then fluctuated.
-
-2022: Gradual increase, peaking at 13 in June.
-
-2023: Fatalities sharply declined in June (-10).
-
-2024: Fluctuated minimally, reaching 11 in June.
+- 2020: Fatalities reduced sharply, hitting a low of 6 in May, then rose in June.
+- 2021: Spiked sharply to 18 in April, then fluctuated.
+- 2022: Gradual increase, peaking at 13 in June.
+- 2023: Fatalities sharply declined in June (-10).
+- 2024: Fluctuated minimally, reaching 11 in June.
 
 **July to September:**
-2020: Steady increases by September to 17.
-
-2021: Volatility peaked at 21 in August, before dipping sharply in September.
-
-2022: Relatively stable trend, reducing to 9 in September.
-
-2023: Extreme fluctuation, from 26 in August to 9 in September.
-
-2024: Stable trends with minor changes, staying within 12-21 fatalities.
+- 2020: Steady increases by September to 17.
+- 2021: Volatility peaked at 21 in August, before dipping sharply in September.
+- 2022: Relatively stable trend, reducing to 9 in September.
+- 2023: Extreme fluctuation, from 26 in August to 9 in September.
+- 2024: Stable trends with minor changes, staying within 12-21 fatalities.
 
 **October to December:**
-2020: Declined consistently, ending at 8 fatalities.
-
-2021: Volatile, peaking at 19 in December.
-
-2022: Saw mixed trends, ending with a decline.
-
-2023: Significant spike to 22 in October, followed by a stabilization.
-
-2024: Fluctuating trend, peaking at 17 in November
+- 2020: Declined consistently, ending at 8 fatalities.
+- 2021: Volatile, peaking at 19 in December.
+- 2022: Saw mixed trends, ending with a decline.
+- 2023: Significant spike to 22 in October, followed by a stabilization.
+- 2024: Fluctuating trend, peaking at 17 in November
 
 ## PART C
 
@@ -576,6 +553,8 @@ Below are the steps and functionalities implemented in the code:
 - app = Flask(__name__) initializes the Flask application.
 - api = Api(app) initializes the RESTful API.
 
+---
+
 ### 2. In-Memory Data Store
 **Purpose:**
 - The data_store list is used as a temporary in-memory database to store road fatalities data.
@@ -586,6 +565,8 @@ Below are the steps and functionalities implemented in the code:
 - fatalities: The number of fatalities for that month.
 **Auto-Increment ID:**
 The next_id variable ensures that each new record gets a unique id.
+
+---
 
 ### 3. CRUD Operations
 The FatalitiesResource class defines the CRUD operations for managing the data.
@@ -626,6 +607,8 @@ The FatalitiesResource class defines the CRUD operations for managing the data.
 **Response:**
 - Returns a 200 status code with a success message.
 
+---
+
 ### 4. API Routes
 
 **Endpoints:**
@@ -633,6 +616,8 @@ The FatalitiesResource class defines the CRUD operations for managing the data.
 /api/fatalities/<int:record_id>: Handles PUT and DELETE requests for a specific record by id.
 **Route Registration:**
 api.add_resource(FatalitiesResource, '/api/fatalities', '/api/fatalities/<int:record_id>') registers the resource with the specified routes.
+
+---
 
 ### 5. Running the Application
 **Debug Mode:**
@@ -722,12 +707,17 @@ if __name__ == '__main__':
 ### Terminal Output
 
 When the application was running, the terminal displayed the following messages.  
-
+```
 * Restarting with watchdog (windowsapi)
 * Debugger is active!
 * Debugger PIN: 397-799-927 
+```
 
-![Image of Terminal Output](WSAA-Project\data\terminal_message_crud_api.png)
+The following image captures output when API Usage is performed.
+
+![Image of Terminal Output](WSAA-Project/data/terminal_message_crud_api.png)
+
+---
 
 #### API Usage
 
@@ -745,6 +735,7 @@ Content-Type: application/json
 }
 ```
 **Response:**
+```
 {
     "message": "Record created successfully",
     "record": {
@@ -754,6 +745,7 @@ Content-Type: application/json
         "id": 4
     }
 }
+```
 
 ##### 2. Read All records
 
@@ -763,12 +755,14 @@ GET /api/fatalities
 ```
 
 **Response**
+```
 [
     { "id": 1, "year": 2020, "month": "January", "fatalities": 9 },
     { "id": 2, "year": 2020, "month": "February", "fatalities": 19},
     { "id": 3, "year": 2020, "month": "March", "fatalities": 17 },
     { "year": 2021, "month": "April", "fatalities": 18, "id": 4 }
 ]
+```
 
 ##### 3. Update a Record
 
@@ -783,6 +777,7 @@ Content-Type: application/json
 ```
 
 **Response**
+```
 {
     "message": "Record updated successfully",
     "record": {
@@ -792,6 +787,7 @@ Content-Type: application/json
         "fatalities": 20
     }
 }
+```
 
 ##### 3. Delete a Record
 
@@ -801,9 +797,11 @@ DELETE /api/fatalities/3
 ```
 
 **Response**
+```
 {
     "message": "Record deleted successfully"
 }
+```
 
 ### References
 **Flask Documentation**
