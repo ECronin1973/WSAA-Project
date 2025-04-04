@@ -111,19 +111,31 @@ The project is organized as follows:
 WSAA-Project/
 │
 ├── data/
-│   ├── five_yr_fatalities.csv       # Filtered road fatalities data
-│   ├── population_breakdown.csv     # Population data from CSO API
-│   ├── fatality_trends.csv          # Trend analysis results
-│   ├── fatalities_trend_graph.png   # Visualization of trends
-│   └── terminal_message_crud_api.png # Terminal output for CRUD API
+│   ├── fatalities_data.png                                 # Visualization of road fatalities data
+│   ├── Fatalities_per_1000.png                             # Fatalities per 100,000 population graph
+│   ├── fatalities_trend_graph.png                          # Visualization of trends
+│   ├── fatality_analysis_chart.png                         # Dual-axis chart for fatalities analysis
+│   ├── fatality_analysis.csv                               # Yearly fatalities analysis results
+│   ├── fatality_trends.csv                                 # Trend analysis results
+│   ├── five_yr_fatalities.csv                              # Filtered road fatalities data
+│   ├── monthly_fatalities_over_the_last_5_years.png        # Monthly fatalities graph
+│   ├── population_breakdown.csv                            # Population data from CSO API
+│   ├── road_fatalities.csv                                 # Processed road fatalities data
+│   ├── terminal_message_crud_api.png                       # Terminal output for CRUD API   
+│   └── terminal_output_fatalities_per_capita.png          # Terminal output for fatalities per capita
+│
+├── src_files/
+│   ├── 01_fatalities.py                                    # Script to fetch data from CSO API
+│   ├── 02_trendanalysis.py                                 # Script for trend analysis
+│   ├── 03_population.py                                    # Script to fetch population data from CSO API
+│   ├── 04_data_analysis.py                                 # Script for data analysis and visualization
+│   ├── 05_app.py                                           # Flask API for CRUD operations
+│   └── 06_analyze_fatalities.py                           # Script for analyzing fatalities per capita
 │
 ├── static/
 │   ├── index.html                   # Frontend HTML file
 │   ├── app.js                       # Frontend JavaScript file
 │   └── styles.css                   # Frontend CSS file
-│
-├── api/
-│   └── app.py                       # Flask API for CRUD operations
 │
 ├── README.md                        # Project documentation
 ├── requirements.txt                 # Python dependencies
@@ -1040,4 +1052,4 @@ The project is primarily for coursework, development, or testing purposes, imple
 - [OAuth.net](https://oauth.net/)  
 - [Google Identity Platform OAuth 2.0 Documentation](https://developers.google.com/identity/protocols/oauth2)  
 - [Microsoft Identity Platform OAuth 2.0 Documentation](https://learn.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow) 
-
+- [Chart.js Documentation](https://www.chartjs.org/docs/latest/)
