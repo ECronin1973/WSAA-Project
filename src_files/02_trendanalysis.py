@@ -1,23 +1,36 @@
 import pandas as pd
 import os
 
-# Construct the relative path to the CSV file
+# Define the relative path to the input CSV file containing road fatalities data
 csv_file = os.path.join(os.path.dirname(__file__), "../data/road_fatalities.csv")
 
-# Load data from CSV
-df = pd.read_csv(csv_file)
+try:
+    # Load data from the CSV file into a DataFrame
+    data_frame = pd.read_csv(csv_file)
+except FileNotFoundError:
+    print(f"Error: The file {csv_file} does not exist.")
+    exit()
+except Exception as e:
+    print(f"An unexpected error occurred while reading the file: {e}")
+    exit()
 
-# Split the "Month" column into "Year" and "Month" columns
-df["Year"] = df["Month"].str.split(" ").str[0]  # Extract Year
-df["Month"] = df["Month"].str.split(" ").str[1]  # Extract Month
+# Split the "Month" column into separate "Year" and "Month" columns
+# This assumes the "Month" column is in the format "Year Month" (e.g., "2024 January")
+data_frame[["Year", "Month"]] = data_frame["Month"].str.extract(r"(\d{4})\s+(.*)")
 
-# Filter the DataFrame to include only rows corresponding to years 2024 to 2020
-filtered_years = ["2024", "2023", "2022", "2021", "2020"]
-filtered_df = df[df["Year"].isin(filtered_years)]  # Filter for relevant years
+# Filter the DataFrame to include rows for the last five years dynamically
+current_year = 2024  # Replace this with dynamic calculation if needed
+filtered_data = data_frame[data_frame["Year"].astype(int).between(current_year - 4, current_year)]
 
-# Save the filtered data to a new Excel sheet
-output_file = os.path.join(os.path.dirname(__file__), "../data/five_yr_fatalities.csv")
-filtered_df.to_csv(output_file, index=False)  # Write to CSV without the index column
+# Define the output directory and file path for saving the filtered data
+output_dir = os.path.join(os.path.dirname(__file__), "../data")
+output_file = os.path.join(output_dir, "five_yr_fatalities.csv")
+os.makedirs(output_dir, exist_ok=True)  # Create the directory if it doesn't exist
 
-print(f"Filtered data successfully saved to {output_file}")
-# The filtered data is now saved in the CSV file, ready for further analysis or visualization.
+try:
+    # Save the filtered data to a new CSV file
+    filtered_data.to_csv(output_file, index=False)
+    print(f"Filtered data successfully saved to {output_file}")
+except Exception as e:
+    print(f"An error occurred while writing the file: {e}")
+    exit()

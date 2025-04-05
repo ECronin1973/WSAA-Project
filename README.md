@@ -193,50 +193,51 @@ This step was critical for verifying the API's functionality and ensuring the da
 ### Purpose:
 Process the retrieved JSON-stat data and convert it into a structured CSV format for monthly road fatalities analysis.
 
-### Code Used:
-The following Python code was implemented to parse the JSON-stat response, structure the data, and save it as a CSV file:
-```bash
+### Code Used in file '01_fatalities.py':
+The following Python code from '01_fatalities.py' file was implemented to parse the JSON-stat response, structure the data, and save it as a CSV file:
+```python
 import requests
 import csv
 import os
 
-# API endpoint
+# Define the API endpoint for fetching road fatalities data
 url = "https://ws.cso.ie/public/api.restful/PxStat.Data.Cube_API.ReadDataset/ROA29/JSON-stat/1.0/en"
 
-# Fetch data using GET request
+# Fetch data using a GET request
 response = requests.get(url, headers={"Content-Type": "application/json"})
 
-# Check if the request was successful
+# Check if the API request was successful
 if response.status_code == 200:
-    data = response.json()  # Parse JSON response
+    data = response.json()  # Parse the JSON response
     print("Data retrieved successfully!")
 else:
-    print(f"Failed to fetch data. Status code: {response.status_code}")
-    exit()
+    print(f"Failed to fetch data. HTTP Status code: {response.status_code}")
+    exit()  # Terminate the program if data fetch fails
 
-# Parse the JSON-stat response for road fatalities
-values = data["dataset"]["value"]
-months = data["dataset"]["dimension"]["TLIST(M1)"]["category"]["label"]
+# Extract fatalities data and corresponding months from the JSON-stat response
+road_fatalities = data["dataset"]["value"]
+month_labels = data["dataset"]["dimension"]["TLIST(M1)"]["category"]["label"]
 
-# Combine data into a structured format
-formatted_data = []
-for index, fatalities in enumerate(values):
-    month = months[str(list(months.keys())[index])]
-    formatted_data.append({"Month": month, "Fatalities": int(fatalities)})  # Convert to integer
+# Combine the parsed data into a structured format (list of dictionaries)
+formatted_data = [
+    {"Month": month_labels[str(key)], "Fatalities": int(road_fatalities[idx])}
+    for idx, key in enumerate(month_labels.keys())
+]
+
+# Define the directory and file path for saving the data
+output_dir = os.path.join(os.path.dirname(__file__), "../data")
+output_file = os.path.join(output_dir, "road_fatalities.csv")
+os.makedirs(output_dir, exist_ok=True)  # Create the directory if it doesn't exist
 
 # Save the structured data to a CSV file
-output_dir = os.path.join(os.path.dirname(__file__), "../data")  # Relative directory
-output_file = os.path.join(output_dir, "road_fatalities.csv")
-os.makedirs(output_dir, exist_ok=True)  # Ensure the directory exists
-
 with open(output_file, mode="w", newline="") as file:
     writer = csv.writer(file)
-    writer.writerow(["Month", "Fatalities"])  # Header row
+    writer.writerow(["Month", "Fatalities"])  # Write CSV header row
     for entry in formatted_data:
         writer.writerow([entry["Month"], entry["Fatalities"]])
 
 print(f"Data successfully saved to {output_file}")
-# The data is now saved in the CSV file, ready for further analysis or visualization.
+
 ```
 ### What the Code Did:
 
@@ -265,33 +266,46 @@ Useful for handling file paths and creating directories dynamically in Python.
 ### Purpose:
 Analyze the monthly road fatalities data by grouping it to identify patterns or trends. This step provides insights into variations over time and can serve as a basis for further statistical analysis or visualization.
 
-### Code Used:
+### Code Used in file '02_trendanalysis.py':
 The following Python code loads, filters, and analyzes the data saved in the CSV file and saves the filtered results as a new CSV file for the specified years:
 
-```bash
+```python
 import pandas as pd
 import os
 
-# Construct the relative path to the CSV file
+# Define the relative path to the input CSV file containing road fatalities data
 csv_file = os.path.join(os.path.dirname(__file__), "../data/road_fatalities.csv")
 
-# Load data from CSV
-df = pd.read_csv(csv_file)
+try:
+    # Load data from the CSV file into a DataFrame
+    data_frame = pd.read_csv(csv_file)
+except FileNotFoundError:
+    print(f"Error: The file {csv_file} does not exist.")
+    exit()
+except Exception as e:
+    print(f"An unexpected error occurred while reading the file: {e}")
+    exit()
 
-# Split the "Month" column into "Year" and "Month" columns
-df["Year"] = df["Month"].str.split(" ").str[0]  # Extract Year
-df["Month"] = df["Month"].str.split(" ").str[1]  # Extract Month
+# Split the "Month" column into separate "Year" and "Month" columns
+# This assumes the "Month" column is in the format "Year Month" (e.g., "2024 January")
+data_frame[["Year", "Month"]] = data_frame["Month"].str.extract(r"(\d{4})\s+(.*)")
 
-# Filter the DataFrame to include only rows corresponding to years 2024 to 2020
-filtered_years = ["2024", "2023", "2022", "2021", "2020"]
-filtered_df = df[df["Year"].isin(filtered_years)]  # Filter for relevant years
+# Filter the DataFrame to include rows for the last five years dynamically
+current_year = 2024  # Replace this with dynamic calculation if needed
+filtered_data = data_frame[data_frame["Year"].astype(int).between(current_year - 4, current_year)]
 
-# Save the filtered data to a new Excel sheet
-output_file = os.path.join(os.path.dirname(__file__), "../data/five_yr_fatalities.csv")
-filtered_df.to_csv(output_file, index=False)  # Write to CSV without the index column
+# Define the output directory and file path for saving the filtered data
+output_dir = os.path.join(os.path.dirname(__file__), "../data")
+output_file = os.path.join(output_dir, "five_yr_fatalities.csv")
+os.makedirs(output_dir, exist_ok=True)  # Create the directory if it doesn't exist
 
-print(f"Filtered data successfully saved to {output_file}")
-
+try:
+    # Save the filtered data to a new CSV file
+    filtered_data.to_csv(output_file, index=False)
+    print(f"Filtered data successfully saved to {output_file}")
+except Exception as e:
+    print(f"An error occurred while writing the file: {e}")
+    exit()
 ```
 ### What the Code did:
 - **Load CSV File:** Reads the road_fatalities.csv file into a pandas DataFrame for analysis.
@@ -312,18 +326,21 @@ For constructing paths dynamically and ensuring compatibility across operating s
 ## Step 5 Retrieve population data from the CSO API 
 Retrieve population data from the CSO API in JSON-stat format, parse the data, and export it to an Excel sheet for visualization and analysis
 
-### Code Used:
+### Code Used in file '03_population.py':
 The following Python code was implemented to parse the JSON-stat response, structure the data, and save it as a CSV file:
 
-```bash
+```python
 import requests
 import pandas as pd
 import os
 
-# API endpoint URL
+# Define the API endpoint URL for fetching population data
 url = "https://ws.cso.ie/public/api.jsonrpc"
 
-# POST request payload
+# Construct POST request payload
+current_year = 2024  # Replace this with dynamic calculation if needed
+year_range = [str(year) for year in range(current_year, current_year - 5, -1)]  # Last 5 years dynamically
+
 payload = {
     "jsonrpc": "2.0",
     "method": "PxStat.Data.Cube_API.ReadDataset",
@@ -331,7 +348,7 @@ payload = {
         "class": "query",
         "id": ["TLIST(A1)", "C02076V02508", "C02199V02655"],
         "dimension": {
-            "TLIST(A1)": {"category": {"index": ["2024", "2023", "2022", "2021", "2020"]}},
+            "TLIST(A1)": {"category": {"index": year_range}},
             "C02076V02508": {"category": {"index": ["-"]}},
             "C02199V02655": {"category": {"index": ["-"]}},
         },
@@ -346,31 +363,45 @@ payload = {
     }
 }
 
-# Send POST request to the API
-response = requests.post(url, json=payload)
-
-# Check if the request was successful
-if response.status_code == 200:
+try:
+    # Send POST request to the API
+    response = requests.post(url, json=payload)
+    response.raise_for_status()  # Check for HTTP request errors
     data = response.json()  # Parse JSON-stat response
     print("Population data retrieved successfully!")
-else:
-    print(f"Failed to fetch data. Status code: {response.status_code}")
+except requests.exceptions.RequestException as e:
+    print(f"Error while fetching data: {e}")
+    exit()
+except KeyError:
+    print("Unexpected data structure in JSON response.")
     exit()
 
-# Parse and structure data
-values = data["result"]["value"]  # Population values
-years = data["result"]["dimension"]["TLIST(A1)"]["category"]["label"]  # Year labels
+# Extract population values and corresponding year labels
+try:
+    population_values = data["result"]["value"]  # Population values
+    year_labels = data["result"]["dimension"]["TLIST(A1)"]["category"]["label"]  # Year labels
+except KeyError:
+    print("Failed to extract necessary data from the JSON response.")
+    exit()
 
-# Combine data into a DataFrame
-df = pd.DataFrame({"Year": list(years.values()), "Population (Thousand)": values})
+# Combine the extracted data into a DataFrame
+population_data = pd.DataFrame({
+    "Year": list(year_labels.values()),
+    "Population (Thousand)": population_values
+})
 
-# Save to a CSV file
-output_dir = os.path.join(os.path.dirname(__file__), "../data")  # Relative directory
+# Define the output directory and file path for saving the data
+output_dir = os.path.join(os.path.dirname(__file__), "../data")
 output_file = os.path.join(output_dir, "population_breakdown.csv")
-os.makedirs(output_dir, exist_ok=True)  # Ensure the directory exists
+os.makedirs(output_dir, exist_ok=True)  # Create directory if it doesn't exist
 
-df.to_csv(output_file, index=False)
-print(f"Population data successfully saved to {output_file}")
+try:
+    # Save the DataFrame to a CSV file
+    population_data.to_csv(output_file, index=False)
+    print(f"Population data successfully saved to {output_file}")
+except Exception as e:
+    print(f"An error occurred while writing the file: {e}")
+    exit()
 ```
 
 ### What the Code did:
@@ -395,7 +426,7 @@ The purpose of this analysis is to examine road fatalities over the last five ye
 
 ![Fatalities_trend_graph.png](./data/fatalities_trend_graph.png)
 
-### Code Used:
+### Code Used in file '04_data_analysis.py':
 
 ```python
 import pandas as pd
@@ -403,50 +434,67 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 
-# Load the data
+# Define the path to the input CSV file containing road fatality data
 csv_file = os.path.join(os.path.dirname(__file__), "../data/five_yr_fatalities.csv")
-df = pd.read_csv(csv_file)
 
-# Group data by Year and Month to calculate total fatalities
-df_grouped = df.groupby(["Year", "Month"], as_index=False).sum()
+try:
+    # Load data from CSV file into a DataFrame
+    fatality_data = pd.read_csv(csv_file)
+    print("Data successfully loaded!")
+except FileNotFoundError:
+    print(f"Error: File {csv_file} not found.")
+    exit()
+except Exception as e:
+    print(f"An unexpected error occurred: {e}")
+    exit()
+
+# Group and aggregate data by Year and Month to calculate total fatalities
+grouped_fatality_data = fatality_data.groupby(["Year", "Month"], as_index=False).sum()
 
 # Sort the data by Year and Month for proper visualization
 month_order = [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
 ]
-df_grouped["Month"] = pd.Categorical(df_grouped["Month"], categories=month_order, ordered=True)
-df_grouped = df_grouped.sort_values(by=["Year", "Month"])
+grouped_fatality_data["Month"] = pd.Categorical(
+    grouped_fatality_data["Month"], categories=month_order, ordered=True
+)
+grouped_fatality_data = grouped_fatality_data.sort_values(by=["Year", "Month"])
 
-# Detect increases or decreases in fatalities
-df_grouped["Change"] = df_grouped["Fatalities"].diff().fillna(0)  # Calculate the difference between consecutive rows
-df_grouped["Trend"] = df_grouped["Change"].apply(lambda x: "Increase" if x > 0 else "Decrease" if x < 0 else "No Change")
+# Detect trends (increases or decreases) in fatalities
+grouped_fatality_data["Change"] = grouped_fatality_data["Fatalities"].diff().fillna(0)
+grouped_fatality_data["Trend"] = grouped_fatality_data["Change"].apply(
+    lambda x: "Increase" if x > 0 else "Decrease" if x < 0 else "No Change"
+)
 
 # Save the trend data to a CSV file
 trend_data_file = os.path.join(os.path.dirname(__file__), "../data/fatality_trends.csv")
-df_grouped.to_csv(trend_data_file, index=False)
-print(f"Trend data saved to {trend_data_file}")
+try:
+    grouped_fatality_data.to_csv(trend_data_file, index=False)
+    print(f"Trend data successfully saved to {trend_data_file}")
+except Exception as e:
+    print(f"Error while saving trend data: {e}")
+    exit()
 
-# Visualization: Line plot for fatalities over time with quarterly splits
+# Create line plot for fatalities grouped by Year and Month
 plt.figure(figsize=(12, 6))
-sns.lineplot(data=df_grouped, x="Month", y="Fatalities", hue="Year", marker="o")
+sns.lineplot(data=grouped_fatality_data, x="Month", y="Fatalities", hue="Year", marker="o")
 
 # Add vertical lines to split quarters
 quarter_splits = ["March", "June", "September"]
 for quarter in quarter_splits:
     plt.axvline(x=quarter, color="red", linestyle="--", alpha=0.7)
 
-# Annotate quarters
-plt.text(1.5, df_grouped["Fatalities"].max() + 2, "Q1", ha="center", fontsize=10, color="black")
-plt.text(4.5, df_grouped["Fatalities"].max() + 2, "Q2", ha="center", fontsize=10, color="black")
-plt.text(7.5, df_grouped["Fatalities"].max() + 2, "Q3", ha="center", fontsize=10, color="black")
-plt.text(10.5, df_grouped["Fatalities"].max() + 2, "Q4", ha="center", fontsize=10, color="black")
+# Annotate quarters on the graph
+quarters = {"Q1": 1.5, "Q2": 4.5, "Q3": 7.5, "Q4": 10.5}
+for quarter, position in quarters.items():
+    plt.text(position, grouped_fatality_data["Fatalities"].max() + 2, quarter, ha="center", fontsize=10, color="black")
 
-# Add labels to the points (totals over each value)
-for i, row in df_grouped.iterrows():
+# Annotate each data point with fatality count
+for _, row in grouped_fatality_data.iterrows():
     plt.text(row["Month"], row["Fatalities"] + 0.5, str(row["Fatalities"]), ha="center", fontsize=8)
 
-# Chart details
+# Chart details and formatting
 plt.title("Monthly Road Fatalities Over the Last 5 Years with Quarterly Splits")
 plt.xlabel("Month")
 plt.ylabel("Fatalities")
@@ -454,10 +502,14 @@ plt.legend(title="Year")
 plt.xticks(rotation=45)
 plt.tight_layout()
 
-# Save the graph to the data folder
+# Save the graph to the output directory
 graph_file = os.path.join(os.path.dirname(__file__), "../data/fatalities_trend_graph.png")
-plt.savefig(graph_file)
-print(f"Graph saved to {graph_file}")
+try:
+    plt.savefig(graph_file)
+    print(f"Graph successfully saved to {graph_file}")
+except Exception as e:
+    print(f"Error while saving graph: {e}")
+    exit()
 
 plt.show()
 ```
@@ -592,78 +644,95 @@ Merge Data: Combines the yearly fatalities data with the population data based o
  
 - **Save Chart:** Exports the dual-axis chart as an image file (fatality_analysis_chart.png) to the data folder.
 
-### Code Used to conduct analysis:
+### Code Used in file '06_analyze_fatalities.py' to conduct analysis:
 
 ```python
 import pandas as pd
 import matplotlib.pyplot as plt
+import os
 
-# Load data from CSV files
-fatalities_df = pd.read_csv(
-    r"c:\Users\eCron\OneDrive\Documents\ATU_CourseWork\Web Services and Applications\Assessments\Project\WSAA-Project\data\five_yr_fatalities.csv"
-)
-population_df = pd.read_csv(
-    r"c:\Users\eCron\OneDrive\Documents\ATU_CourseWork\Web Services and Applications\Assessments\Project\WSAA-Project\data\population_breakdown.csv"
-)
+# Define file paths for input data
+fatalities_file = r"c:\Users\eCron\OneDrive\Documents\ATU_CourseWork\Web Services and Applications\Assessments\Project\WSAA-Project\data\five_yr_fatalities.csv"
+population_file = r"c:\Users\eCron\OneDrive\Documents\ATU_CourseWork\Web Services and Applications\Assessments\Project\WSAA-Project\data\population_breakdown.csv"
+
+try:
+    # Load fatality data and population data from CSV files
+    fatalities_df = pd.read_csv(fatalities_file)
+    population_df = pd.read_csv(population_file)
+    print("Data successfully loaded!")
+except FileNotFoundError as e:
+    print(f"Error: File not found. {e}")
+    exit()
+except pd.errors.EmptyDataError as e:
+    print(f"Error: File is empty or invalid. {e}")
+    exit()
+except Exception as e:
+    print(f"An unexpected error occurred: {e}")
+    exit()
 
 # Calculate yearly fatality totals
 yearly_fatalities = fatalities_df.groupby("Year")["Fatalities"].sum().reset_index()
 
-# Merge with population data
-merged_df = pd.merge(yearly_fatalities, population_df, left_on="Year", right_on="Year")
+try:
+    # Merge yearly fatalities with population data
+    merged_df = pd.merge(yearly_fatalities, population_df, on="Year")
+except KeyError as e:
+    print(f"Error: Failed to merge dataframes. {e}")
+    exit()
 
 # Calculate fatalities per capita and per 100,000 population
 merged_df["Fatalities per Capita"] = merged_df["Fatalities"] / (merged_df["Population (Thousand)"] * 1000)
 merged_df["Fatalities per 100,000"] = (merged_df["Fatalities"] / (merged_df["Population (Thousand)"] * 1000)) * 100000
 
-# Output results
-print(merged_df[["Year", "Fatalities", "Fatalities per Capita", "Fatalities per 100,000"]])
-
 # Save results to a new CSV file
-output_path = r"c:\Users\eCron\OneDrive\Documents\ATU_CourseWork\Web Services and Applications\Assessments\Project\WSAA-Project\data\fatality_analysis.csv"
-merged_df.to_csv(output_path, index=False)
+output_csv_path = r"c:\Users\eCron\OneDrive\Documents\ATU_CourseWork\Web Services and Applications\Assessments\Project\WSAA-Project\data\fatality_analysis.csv"
+try:
+    merged_df.to_csv(output_csv_path, index=False)
+    print(f"Analysis results saved to {output_csv_path}")
+except Exception as e:
+    print(f"Error while saving analysis results: {e}")
+    exit()
 
-# Plot total fatalities as a bar chart
-plt.figure(figsize=(10, 6))
-plt.bar(merged_df["Year"], merged_df["Fatalities"], color="skyblue", label="Total Fatalities")
-plt.xlabel("Year")
-plt.ylabel("Total Fatalities")
-plt.title("Yearly Fatalities")
-plt.legend()
-plt.show()
+# Function for bar chart visualization
+def plot_bar_chart(data, x, y, title, xlabel, ylabel, save_path, color="skyblue"):
+    plt.figure(figsize=(10, 6))
+    plt.bar(data[x], data[y], color=color)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.title(title)
+    plt.tight_layout()
+    try:
+        plt.savefig(save_path)
+        print(f"Chart saved to {save_path}")
+    except Exception as e:
+        print(f"Error while saving chart: {e}")
+    plt.show()
 
-# Plot fatalities per 100,000 as a line chart
+# Plot total fatalities bar chart
+plot_bar_chart(
+    merged_df,
+    x="Year",
+    y="Fatalities",
+    title="Yearly Fatalities",
+    xlabel="Year",
+    ylabel="Total Fatalities",
+    save_path=r"c:\Users\eCron\OneDrive\Documents\ATU_CourseWork\Web Services and Applications\Assessments\Project\WSAA-Project\data\yearly_fatalities_chart.png"
+)
+
+# Plot fatalities per 100,000 line chart
 plt.figure(figsize=(10, 6))
-plt.plot(merged_df["Year"], merged_df["Fatalities per 100,000"], marker="o", color="orange", label="Fatalities per 100,000")
+plt.plot(merged_df["Year"], merged_df["Fatalities per 100,000"], marker="o", color="orange")
 plt.xlabel("Year")
 plt.ylabel("Fatalities per 100,000")
 plt.title("Fatalities per 100,000 Population")
-plt.legend()
+plt.tight_layout()
+try:
+    plt.savefig(r"c:\Users\eCron\OneDrive\Documents\ATU_CourseWork\Web Services and Applications\Assessments\Project\WSAA-Project\data\fatalities_per_100k_chart.png")
+    print("Fatalities per 100,000 chart saved successfully.")
+except Exception as e:
+    print(f"Error while saving fatalities per 100,000 chart: {e}")
 plt.show()
 
-# Dual-axis chart: Total Fatalities (bar) and Fatalities per 100,000 (line)
-fig, ax1 = plt.subplots(figsize=(10, 6))
-
-# Bar chart for total fatalities
-ax1.bar(merged_df["Year"], merged_df["Fatalities"], color="skyblue", label="Total Fatalities")
-ax1.set_xlabel("Year")
-ax1.set_ylabel("Total Fatalities", color="blue")
-ax1.tick_params(axis="y", labelcolor="blue")
-
-# Line chart for fatalities per 100,000
-ax2 = ax1.twinx()
-ax2.plot(merged_df["Year"], merged_df["Fatalities per 100,000"], marker="o", color="orange", label="Fatalities per 100,000")
-ax2.set_ylabel("Fatalities per 100,000", color="orange")
-ax2.tick_params(axis="y", labelcolor="orange")
-
-fig.suptitle("Yearly Fatalities and Fatalities per 100,000 Population")
-fig.tight_layout()
-
-# Save the chart to the data folder
-output_chart_path = r"c:\Users\eCron\OneDrive\Documents\ATU_CourseWork\Web Services and Applications\Assessments\Project\WSAA-Project\data\fatality_analysis_chart.png"
-plt.savefig(output_chart_path)
-
-plt.show()
 ```
 
 ### Insights on Fatalities and Population Data
@@ -769,87 +838,119 @@ api.add_resource(FatalitiesResource, '/api/fatalities', '/api/fatalities/<int:re
 **Access:**
 - The API is accessible at http://127.0.0.1:5000/api/fatalities.
 
-### Code used
-The following is the code used
+### Code used in file '06_api.py' to implement the CRUD API
 
 ```python
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
-from flask_cors import CORS  # Import CORS
-import pandas as pd  # Import pandas for reading CSV files
+from flask_cors import CORS
+import pandas as pd
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for the entire app
+CORS(app)
 api = Api(app)
 
 # Path to the CSV file
 csv_file_path = "../data/five_yr_fatalities.csv"
 
-# Load data from the CSV file
-try:
-    df = pd.read_csv(csv_file_path)
-    data_store = df.to_dict(orient="records")  # Convert DataFrame to a list of dictionaries
-except FileNotFoundError:
-    data_store = []  # If the file is not found, initialize an empty data store
+# Helper class to manage data storage
+class DataStore:
+    def __init__(self, csv_file):
+        self.csv_file = csv_file
+        try:
+            self.df = pd.read_csv(self.csv_file)
+            if "id" not in self.df.columns:
+                self.df.insert(0, "id", range(1, len(self.df) + 1))
+                self.save()
+        except FileNotFoundError:
+            print(f"Error: {self.csv_file} not found. Initializing an empty data store.")
+            self.df = pd.DataFrame(columns=["id", "Year", "Month", "Fatalities"])
 
-# Auto-increment ID for new entries
-next_id = len(data_store) + 1
+    def save(self):
+        self.df.to_csv(self.csv_file, index=False)
 
-# API Resource for CRUD operations
+    def get_all(self):
+        return self.df.to_dict(orient="records")
+
+    def get_by_id(self, record_id):
+        return self.df.loc[self.df["id"] == record_id].to_dict(orient="records")
+
+    def add_record(self, record):
+        new_id = self.df["id"].max() + 1 if not self.df.empty else 1
+        record["id"] = new_id
+        self.df = self.df.append(record, ignore_index=True)
+        self.save()
+        return record
+
+    def update_record(self, record_id, updates):
+        index = self.df.index[self.df["id"] == record_id].tolist()
+        if not index:
+            return None
+        self.df.loc[index[0], updates.keys()] = updates.values()
+        self.save()
+        return self.df.loc[index[0]].to_dict()
+
+    def delete_record(self, record_id):
+        index = self.df.index[self.df["id"] == record_id].tolist()
+        if not index:
+            return None
+        self.df = self.df.drop(index[0])
+        self.save()
+        return True
+
+# Initialize the data store
+data_store = DataStore(csv_file_path)
+
 class FatalitiesResource(Resource):
-    # READ: Get all records or a specific record by ID
     def get(self):
-        record_id = request.args.get('id')
+        record_id = request.args.get("id")
         if record_id:
-            record = next((item for item in data_store if item["id"] == int(record_id)), None)
+            record = data_store.get_by_id(int(record_id))
             if record:
-                return record, 200
+                return record[0], 200
             return {"message": "Record not found"}, 404
-        return data_store, 200
+        return data_store.get_all(), 200
 
-    # CREATE: Add a new record
     def post(self):
-        global next_id
         new_record = request.json
-
-        # Validation
-        if not all(k in new_record for k in ("year", "month", "fatalities")):
+        required_fields = {"Year", "Month", "Fatalities"}
+        if not required_fields.issubset(new_record):
             return {"message": "Missing required fields"}, 400
-        if not isinstance(new_record["fatalities"], int) or new_record["fatalities"] < 0:
+        if not isinstance(new_record["Fatalities"], int) or new_record["Fatalities"] < 0:
             return {"message": "Invalid fatalities value"}, 400
+        created_record = data_store.add_record(new_record)
+        return {"message": "Record created successfully", "record": created_record}, 201
 
-        new_record["id"] = next_id
-        data_store.append(new_record)
-        next_id += 1
-        return {"message": "Record created successfully", "record": new_record}, 201
-
-    # UPDATE: Update an existing record by ID
     def put(self, record_id):
-        record = next((item for item in data_store if item["id"] == record_id), None)
-        if not record:
+        updates = request.json
+        updated_record = data_store.update_record(record_id, updates)
+        if not updated_record:
             return {"message": "Record not found"}, 404
+        return {"message": "Record updated successfully", "record": updated_record}, 200
 
-        updated_data = request.json
-        record.update(updated_data)
-        return {"message": "Record updated successfully", "record": record}, 200
-
-    # DELETE: Delete a record by ID
     def delete(self, record_id):
-        global data_store
-        record = next((item for item in data_store if item["id"] == record_id), None)
-        if not record:
-            return {"message": "Record not found"}, 404
+        if data_store.delete_record(record_id):
+            return {"message": "Record deleted successfully"}, 200
+        return {"message": "Record not found"}, 404
 
-        data_store = [item for item in data_store if item["id"] != record_id]
-        return {"message": "Record deleted successfully"}, 200
+class GroupedFatalitiesResource(Resource):
+    def get(self):
+        df = data_store.df
+        grouped_df = df.groupby(["Year", "Month"], as_index=False).sum()
+        month_order = [
+            "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ]
+        grouped_df["Month"] = pd.Categorical(grouped_df["Month"], categories=month_order, ordered=True)
+        grouped_df = grouped_df.sort_values(by=["Year", "Month"])
+        return grouped_df.to_dict(orient="records"), 200
 
+api.add_resource(FatalitiesResource, "/api/fatalities", "/api/fatalities/<int:record_id>")
+api.add_resource(GroupedFatalitiesResource, "/api/grouped-fatalities")
 
-# Add routes to the API
-api.add_resource(FatalitiesResource, '/api/fatalities', '/api/fatalities/<int:record_id>')
-
-# Run the Flask app
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
+
 ```
 
 ### Terminal Output
@@ -977,8 +1078,160 @@ The frontend of the project was designed to provide a user-friendly web interfac
 The index.html file provides the structure for the web interface, including:
 -  A table (#fatalitiesTable) to display monthly fatalities data.
 -  A chart (#fatalitiesChart) to visualize trends in fatalities.
-**Dynamic Data Handling:**
+
+**Code used in file 'index.html' to implement the frontend:**
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Road Safety Analysis</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/app.js"></script>
+</head>
+<body>
+    <header class="header">
+        <h1>Road Safety Analysis</h1>
+    </header>
+    <main>
+        <section id="chart-section" class="chart-section">
+            <h2>Monthly Fatalities Over the Last 5 Years</h2>
+            <canvas id="fatalitiesChart" aria-label="Line chart showing monthly fatalities"></canvas>
+        </section>
+        <section id="data-section" class="data-section">
+            <h2>Fatalities Data</h2>
+            <table id="fatalitiesTable" aria-label="Fatalities Data Table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Year</th>
+                        <th>Month</th>
+                        <th>Fatalities</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data will be dynamically fetched from the API and inserted here -->
+                </tbody>
+            </table>
+            <div id="error-message" class="error-message" hidden></div>
+        </section>
+    </main>
+</body>
+</html>
+```
+
+#### Dynamic Data Handling:
 - The app.js file uses jQuery and AJAX to fetch data from the backend API and dynamically populate the table and chart.
+
+**Code used in file 'app.js' to implement the frontend:**
+
+```javascript
+$(document).ready(function () {
+    const apiUrl = "http://127.0.0.1:5000/api/grouped-fatalities"; // API endpoint for grouped data
+    let fatalitiesChart; // Declare chart instance globally to manage updates
+
+    // Fetch data from the API
+    function fetchData() {
+        $.ajax({
+            url: apiUrl,
+            method: "GET",
+            success: function (data) {
+                console.log("Data fetched successfully:", data); // Debugging
+                populateTable(data);
+                renderChart(data);
+            },
+            error: function () {
+                console.error("Error fetching data");
+                displayError("Failed to load data from the server.");
+            }
+        });
+    }
+
+    // Populate the table with data
+    function populateTable(data) {
+        const tableBody = $("#fatalitiesTable tbody");
+        tableBody.empty(); // Clear existing rows
+        data.forEach((record, index) => {
+            const row = `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${record.Year}</td>
+                    <td>${record.Month}</td>
+                    <td>${record.Fatalities}</td>
+                </tr>
+            `;
+            tableBody.append(row);
+        });
+    }
+
+    // Display error messages to the user
+    function displayError(message) {
+        const errorDiv = $("#errorMessage");
+        errorDiv.text(message).show(); // Show error message
+    }
+
+    // Render the chart using Chart.js
+    function renderChart(data) {
+        const ctx = document.getElementById("fatalitiesChart").getContext("2d");
+
+        // Prepare data for the chart
+        const labels = data.map(record => `${record.Month} ${record.Year}`);
+        const fatalities = data.map(record => record.Fatalities);
+
+        // Clear the existing chart if it exists
+        if (fatalitiesChart) {
+            fatalitiesChart.destroy();
+        }
+
+        // Create a new chart instance
+        fatalitiesChart = new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "Monthly Fatalities",
+                    data: fatalities,
+                    borderColor: "rgba(75, 192, 192, 1)",
+                    backgroundColor: "rgba(75, 192, 192, 0.2)",
+                    borderWidth: 2,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: "top"
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: "Month"
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: "Fatalities"
+                        },
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+
+    // Fetch data on page load
+    fetchData();
+});
+```
+
 **Chart Visualization:**
 - The Chart.js library is used to render a line chart that shows monthly fatalities over the last five years.
 **Styling:**
@@ -1120,7 +1373,7 @@ The Road Safety Analysis Project successfully achieved its objectives of analyzi
 
 This project demonstrates the effective use of modern web technologies and data analysis tools to address a real-world problem. It provides a strong foundation for further development and serves as a valuable resource for understanding road safety trends in Ireland.
 
-#### Acknowledgements
+## Acknowledgements
 Github Copilot. "This work was partially supported by GitHub Copilot, an AI-powered code completion tool developed by GitHub, which assisted in generating parts of the code."
 
 ## Project References

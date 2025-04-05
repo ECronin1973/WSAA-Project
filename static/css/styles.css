@@ -1,15 +1,25 @@
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #f4f4f9;
+    --border-color: #ddd;
+    --hover-color: #e0e0e0;
+    --padding: 1rem;
+}
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f9;
+    background-color: var(--secondary-color);
 }
 
 header {
-    background-color: #007bff;
+    background: linear-gradient(to right, #0056b3, var(--primary-color));
     color: white;
-    padding: 1rem;
+    padding: var(--padding);
     text-align: center;
+    font-size: 1.5rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 main {
@@ -24,10 +34,11 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 1rem;
+    font-size: 1rem;
 }
 
 table, th, td {
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
 }
 
 th, td {
@@ -36,6 +47,20 @@ th, td {
 }
 
 th {
-    background-color: #007bff;
+    background-color: var(--primary-color);
     color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+tr:hover {
+    background-color: var(--hover-color);
+}
+
+@media (max-width: 600px) {
+    table {
+        font-size: 12px;
+    }
+    th, td {
+        padding: 0.25rem;
+    }
 }

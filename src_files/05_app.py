@@ -1,111 +1,109 @@
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
-from flask_cors import CORS  # Import CORS
-import pandas as pd  # Import pandas for reading CSV files
+from flask_cors import CORS
+import pandas as pd
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for the entire app
+CORS(app)
 api = Api(app)
 
 # Path to the CSV file
 csv_file_path = "../data/five_yr_fatalities.csv"
 
-# Load data from the CSV file
-try:
-    df = pd.read_csv(csv_file_path)
-    if "id" not in df.columns:
-        # Add an 'id' column if missing
-        df.insert(0, "id", range(1, len(df) + 1))
-        df.to_csv(csv_file_path, index=False)  # Save the updated CSV file
-    data_store = df.to_dict(orient="records")  # Convert DataFrame to a list of dictionaries
-except FileNotFoundError:
-    print(f"Error: {csv_file_path} not found. Initializing an empty data store.")
-    data_store = []  # If the file is not found, initialize an empty data store
+# Helper class to manage data storage
+class DataStore:
+    def __init__(self, csv_file):
+        self.csv_file = csv_file
+        try:
+            self.df = pd.read_csv(self.csv_file)
+            if "id" not in self.df.columns:
+                self.df.insert(0, "id", range(1, len(self.df) + 1))
+                self.save()
+        except FileNotFoundError:
+            print(f"Error: {self.csv_file} not found. Initializing an empty data store.")
+            self.df = pd.DataFrame(columns=["id", "Year", "Month", "Fatalities"])
 
-# Auto-increment ID for new entries
-next_id = len(data_store) + 1
+    def save(self):
+        self.df.to_csv(self.csv_file, index=False)
 
-# Helper function to save data back to the CSV file
-def save_to_csv():
-    df = pd.DataFrame(data_store)
-    df.to_csv(csv_file_path, index=False)
+    def get_all(self):
+        return self.df.to_dict(orient="records")
 
-# API Resource for CRUD operations
+    def get_by_id(self, record_id):
+        return self.df.loc[self.df["id"] == record_id].to_dict(orient="records")
+
+    def add_record(self, record):
+        new_id = self.df["id"].max() + 1 if not self.df.empty else 1
+        record["id"] = new_id
+        self.df = self.df.append(record, ignore_index=True)
+        self.save()
+        return record
+
+    def update_record(self, record_id, updates):
+        index = self.df.index[self.df["id"] == record_id].tolist()
+        if not index:
+            return None
+        self.df.loc[index[0], updates.keys()] = updates.values()
+        self.save()
+        return self.df.loc[index[0]].to_dict()
+
+    def delete_record(self, record_id):
+        index = self.df.index[self.df["id"] == record_id].tolist()
+        if not index:
+            return None
+        self.df = self.df.drop(index[0])
+        self.save()
+        return True
+
+# Initialize the data store
+data_store = DataStore(csv_file_path)
+
 class FatalitiesResource(Resource):
-    # READ: Get all records or a specific record by ID
     def get(self):
-        record_id = request.args.get('id')
+        record_id = request.args.get("id")
         if record_id:
-            record = next((item for item in data_store if item["id"] == int(record_id)), None)
+            record = data_store.get_by_id(int(record_id))
             if record:
-                return record, 200
+                return record[0], 200
             return {"message": "Record not found"}, 404
-        return data_store, 200
+        return data_store.get_all(), 200
 
-    # CREATE: Add a new record
     def post(self):
-        global next_id
         new_record = request.json
-
-        # Validation
-        if not all(k in new_record for k in ("year", "month", "fatalities")):
+        required_fields = {"Year", "Month", "Fatalities"}
+        if not required_fields.issubset(new_record):
             return {"message": "Missing required fields"}, 400
-        if not isinstance(new_record["fatalities"], int) or new_record["fatalities"] < 0:
+        if not isinstance(new_record["Fatalities"], int) or new_record["Fatalities"] < 0:
             return {"message": "Invalid fatalities value"}, 400
+        created_record = data_store.add_record(new_record)
+        return {"message": "Record created successfully", "record": created_record}, 201
 
-        new_record["id"] = next_id
-        data_store.append(new_record)
-        next_id += 1
-        save_to_csv()  # Save changes to the CSV file
-        return {"message": "Record created successfully", "record": new_record}, 201
-
-    # UPDATE: Update an existing record by ID
     def put(self, record_id):
-        record = next((item for item in data_store if item["id"] == int(record_id)), None)
-        if not record:
+        updates = request.json
+        updated_record = data_store.update_record(record_id, updates)
+        if not updated_record:
             return {"message": "Record not found"}, 404
+        return {"message": "Record updated successfully", "record": updated_record}, 200
 
-        updated_data = request.json
-        record.update(updated_data)
-        save_to_csv()  # Save changes to the CSV file
-        return {"message": "Record updated successfully", "record": record}, 200
-
-    # DELETE: Delete a record by ID
     def delete(self, record_id):
-        global data_store
-        record = next((item for item in data_store if item["id"] == int(record_id)), None)
-        if not record:
-            return {"message": "Record not found"}, 404
+        if data_store.delete_record(record_id):
+            return {"message": "Record deleted successfully"}, 200
+        return {"message": "Record not found"}, 404
 
-        data_store = [item for item in data_store if item["id"] != int(record_id)]
-        save_to_csv()  # Save changes to the CSV file
-        return {"message": "Record deleted successfully"}, 200
-
-# API Resource for grouped data
 class GroupedFatalitiesResource(Resource):
     def get(self):
-        # Load the data into a DataFrame
-        df = pd.DataFrame(data_store)
-
-        # Group data by Year and Month
+        df = data_store.df
         grouped_df = df.groupby(["Year", "Month"], as_index=False).sum()
-
-        # Sort the data by Year and Month
         month_order = [
             "January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"
         ]
         grouped_df["Month"] = pd.Categorical(grouped_df["Month"], categories=month_order, ordered=True)
         grouped_df = grouped_df.sort_values(by=["Year", "Month"])
+        return grouped_df.to_dict(orient="records"), 200
 
-        # Convert to a list of dictionaries
-        grouped_data = grouped_df.to_dict(orient="records")
-        return grouped_data, 200
+api.add_resource(FatalitiesResource, "/api/fatalities", "/api/fatalities/<int:record_id>")
+api.add_resource(GroupedFatalitiesResource, "/api/grouped-fatalities")
 
-# Add routes to the API
-api.add_resource(FatalitiesResource, '/api/fatalities', '/api/fatalities/<int:record_id>')
-api.add_resource(GroupedFatalitiesResource, '/api/grouped-fatalities')
-
-# Run the Flask app
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)

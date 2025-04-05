@@ -1,5 +1,6 @@
 $(document).ready(function () {
     const apiUrl = "http://127.0.0.1:5000/api/grouped-fatalities"; // API endpoint for grouped data
+    let fatalitiesChart; // Declare chart instance globally to manage updates
 
     // Fetch data from the API
     function fetchData() {
@@ -11,8 +12,9 @@ $(document).ready(function () {
                 populateTable(data);
                 renderChart(data);
             },
-            error: function (error) {
-                console.error("Error fetching data:", error); // Debugging
+            error: function () {
+                console.error("Error fetching data");
+                displayError("Failed to load data from the server.");
             }
         });
     }
@@ -34,6 +36,12 @@ $(document).ready(function () {
         });
     }
 
+    // Display error messages to the user
+    function displayError(message) {
+        const errorDiv = $("#errorMessage");
+        errorDiv.text(message).show(); // Show error message
+    }
+
     // Render the chart using Chart.js
     function renderChart(data) {
         const ctx = document.getElementById("fatalitiesChart").getContext("2d");
@@ -42,7 +50,13 @@ $(document).ready(function () {
         const labels = data.map(record => `${record.Month} ${record.Year}`);
         const fatalities = data.map(record => record.Fatalities);
 
-        new Chart(ctx, {
+        // Clear the existing chart if it exists
+        if (fatalitiesChart) {
+            fatalitiesChart.destroy();
+        }
+
+        // Create a new chart instance
+        fatalitiesChart = new Chart(ctx, {
             type: "line",
             data: {
                 labels: labels,

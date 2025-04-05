@@ -10,17 +10,17 @@
     <script src="js/app.js"></script>
 </head>
 <body>
-    <header>
+    <header class="header">
         <h1>Road Safety Analysis</h1>
     </header>
     <main>
-        <section id="chart-section">
+        <section id="chart-section" class="chart-section">
             <h2>Monthly Fatalities Over the Last 5 Years</h2>
-            <canvas id="fatalitiesChart"></canvas>
+            <canvas id="fatalitiesChart" aria-label="Line chart showing monthly fatalities"></canvas>
         </section>
-        <section id="data-section">
+        <section id="data-section" class="data-section">
             <h2>Fatalities Data</h2>
-            <table id="fatalitiesTable" border="1">
+            <table id="fatalitiesTable" aria-label="Fatalities Data Table">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -30,9 +30,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Data will be dynamically inserted here -->
+                    <!-- Data will be dynamically fetched from the API and inserted here -->
                 </tbody>
             </table>
+            <div id="error-message" class="error-message" hidden></div>
         </section>
     </main>
 </body>
