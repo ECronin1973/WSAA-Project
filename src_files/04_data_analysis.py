@@ -1,3 +1,8 @@
+# 04_data_analysis.py
+# This script analyzes road fatalities data over the last five years.
+# It loads the data from a CSV file, groups it by year and month, detects trends, and visualizes the results.
+# Author: Edward Cronin (g00425645)
+
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns

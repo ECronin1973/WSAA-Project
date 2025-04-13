@@ -1,3 +1,8 @@
+# 02_trendanalysis.py
+# This script processes the road fatalities data saved in a CSV file.
+# It filters the data for the last five years and saves the filtered data to a new CSV file.
+# Author: Edward Cronin (g00425645)
+
 import pandas as pd
 import os
 
@@ -19,7 +24,7 @@ except Exception as e:
 data_frame[["Year", "Month"]] = data_frame["Month"].str.extract(r"(\d{4})\s+(.*)")
 
 # Filter the DataFrame to include rows for the last five years dynamically
-current_year = 2024  # Replace this with dynamic calculation if needed
+current_year = 2024 
 filtered_data = data_frame[data_frame["Year"].astype(int).between(current_year - 4, current_year)]
 
 # Define the output directory and file path for saving the filtered data

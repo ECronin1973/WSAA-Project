@@ -1,3 +1,8 @@
+# 01_fatalities.py
+# This script fetches road fatalities data from the CSO API and saves it to a CSV file.
+# It uses the requests library to make an API call and the csv library to write the data to a file.
+# Author: Edward Cronin (g00425645)
+
 import requests
 import csv
 import os

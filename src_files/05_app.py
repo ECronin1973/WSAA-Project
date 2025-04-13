@@ -1,3 +1,8 @@
+# 05_app.py
+# This script sets up a Flask web application to serve road fatalities data.
+# It provides RESTful API endpoints for CRUD operations on the data stored in a CSV file.
+# Author: Edward Cronin (g00425645)
+
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
 from flask_cors import CORS

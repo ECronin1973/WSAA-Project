@@ -1,3 +1,8 @@
+# 03_population.py
+# This script fetches population data from the CSO API and saves it to a CSV file.
+# It uses the requests library to make an API call and pandas to handle data manipulation.
+# Author: Edward Cronin (g00425645)
+
 import requests
 import pandas as pd
 import os

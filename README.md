@@ -47,7 +47,7 @@ The Road Safety Analysis Project examines road fatalities in Ireland over the pa
 - **Frontend Interface**: Provides a web-based interface for data visualization and management.
 - **Authentication**: Implements OAuth for secure access (future scope).
 
-## Technical Stack
+## Technical Set Up
 
 1. **Backend**:
    - Flask for RESTful API development.
@@ -291,7 +291,7 @@ except Exception as e:
 data_frame[["Year", "Month"]] = data_frame["Month"].str.extract(r"(\d{4})\s+(.*)")
 
 # Filter the DataFrame to include rows for the last five years dynamically
-current_year = 2024  # Replace this with dynamic calculation if needed
+current_year = 2024
 filtered_data = data_frame[data_frame["Year"].astype(int).between(current_year - 4, current_year)]
 
 # Define the output directory and file path for saving the filtered data
