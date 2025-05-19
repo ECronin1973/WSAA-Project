@@ -1,15 +1,17 @@
 # Road Safety Analysis Project
 
+A data-driven approach to understanding road fatalities in Ireland.
+
 ## Overview
 
 The Road Safety Analysis Project examines road fatalities in Ireland over the past five years, identifying trends and patterns in fatality rates. The project integrates data from the Central Statistics Office (CSO) API and provides a custom API for CRUD operations on locally stored data. It also includes data visualization and analysis tools to offer insights into road safety trends. The project is designed to be user-friendly, secure, and extensible.
 
-### Key Features:
-- **Data Integration**: Fetches road safety data from the CSO API and processes it for analysis.
-- **Custom API**: Implements a Flask-based API to enable CRUD operations on locally stored data.
-- **Data Analysis**: Analyzes trends in road fatalities and visualizes them using charts.
-- **Frontend Interface**: Provides an interactive web interface for data visualization and management.
-- **Secure Access**: Incorporates OAuth for secure data access (future scope).
+### Features:
+- **Data Integration**: Retrieves road safety data from the CSO API.
+- **Custom API**: Enables CRUD operations on locally stored fatality data using Flask.
+- **Data Analysis**: Identifies trends in road fatalities and visualizes them using charts.
+- **Frontend Interface**: A web-based dashboard for data exploration.
+- **Secure Access**: Future implementation of OAuth authentication for secure data handling.
 
 ## Author
 
@@ -22,7 +24,8 @@ The Road Safety Analysis Project examines road fatalities in Ireland over the pa
 - [Overview](#overview)
 - [Author](#author)
 - [Features](#features)
-- [Technical Stack](#technical-stack)
+- [Technical Set Up](#technical-set-up)
+- [Project Structure](#project-structure)
 - [Implementation Steps](#implementation-steps)
 - [Pre-Requisites](#pre-requisites)
 - [How to Download this Repository](#how-to-download-this-repository)
@@ -38,14 +41,6 @@ The Road Safety Analysis Project examines road fatalities in Ireland over the pa
 - [Part E: OAuth (Open Authorization)](#Oauth-open-authorization)
 - [Project References](#Project-References)
 - [Conclusion](#conclusion)
-
-## Features
-
-- **Data Representation**: Handles data in CSV, XML, and JSON formats.
-- **Data Analysis**: Identifies monthly trends in road fatalities and visualizes them with charts.
-- **Custom API**: Enables CRUD operations on locally stored data using Flask.
-- **Frontend Interface**: Provides a web-based interface for data visualization and management.
-- **Authentication**: Implements OAuth for secure access (future scope).
 
 ## Technical Set Up
 
