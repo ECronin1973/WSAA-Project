@@ -22,18 +22,18 @@ The Road Safety Analysis Project examines road fatalities in Ireland over the pa
 ## Table of Contents
 
 - [Overview](#overview)
-- [Author](#author)
 - [Features](#features)
+- [Author](#author)
+- [License](#license)
 - [Technical Set Up](#technical-set-up)
 - [Project Structure](#project-structure)
 - [Implementation Steps](#implementation-steps)
 - [Pre-Requisites](#pre-requisites)
+- [Getting Started](#getting-started)
 - [How to Download this Repository](#how-to-download-this-repository)
 - [Code of Conduct](#code-of-conduct)
 - [Dependencies](#dependencies)
 - [Data Content Relevant To Task](#data-content-relevant-to-task)
-- [Project Structure](#project-structure)
-- [License](#license)
 - [Part A: Access the API's and Fetch the Data](#part-a-access-the-api's-and-fetch-the-data)
 - [Part B: Analysis](#part-b-analysis)
 - [Part C: CRUD API](#part-c-crud-api)
@@ -41,6 +41,10 @@ The Road Safety Analysis Project examines road fatalities in Ireland over the pa
 - [Part E: OAuth (Open Authorization)](#Oauth-open-authorization)
 - [Project References](#Project-References)
 - [Conclusion](#conclusion)
+
+## License
+
+This project is licensed under the Apache License 2.0. See the LICENSE file for details.
 
 ## Technical Set Up
 
@@ -79,21 +83,65 @@ The Road Safety Analysis Project examines road fatalities in Ireland over the pa
 - **Tools**: Postman, CURL, Git, Flask.
 - **Libraries**: `pandas`, `numpy`, `matplotlib`, `seaborn`, jQuery, AJAX.
 
-## How to Download this Repository
+## Getting Started
+
+Follow these steps to set up and use the Road Safety Analysis Project.
+
+### 1. Clone the Repository
 
 To download this repository, use the following command:
 
 ```bash
 git clone https://github.com/ECronin1973/WSAA-Project
+cd WSAA-Project
 ```
+
+### 2. Install Dependencies
+
+Ensure you have Python 3.8+ installed. Then run:
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Generate Data Files
+
+Run the following scripts in order (from the `src_files/` directory) to fetch and process data.  
+**Note:** Each script depends on the output of the previous one.
+
+```bash
+python 01_fatalities.py         # Fetch and save road fatalities data
+python 02_trendanalysis.py      # Analyze trends, output: five_yr_fatalities.csv
+python 03_population.py         # Fetch and save population data
+python 04_data_analysis.py      # Generate trend graphs and CSVs
+python 06_analyze_fatalities.py # Analyze fatalities per capita and per 100,000
+```
+
+### 4. Run the Backend API
+
+From the `src_files/` directory:
+
+```bash
+python 05_app.py
+```
+
+The API will be available at [http://127.0.0.1:5000/api/fatalities](http://127.0.0.1:5000/api/fatalities).
+
+### 5. Run the Frontend
+
+Open `static/index.html` in your browser, or start a simple server:
+
+```bash
+python -m http.server
+```
+
+Then visit [http://127.0.0.1:8000/static/index.html](http://127.0.0.1:8000/static/index.html).
+
+**Tip:** For public deployment, consider using a production-ready server (e.g., Gunicorn for Flask) and adjust the API base URL as needed.
 
 ## Code of Conduct
 
 Please read the CODE_OF_CONDUCT.md file for details on our code of conduct.
-
-## Dependencies
-
-The dependencies for this project are listed in the `requirements.txt` file.
 
 ## Data Content Relevant To Task
 
@@ -137,10 +185,6 @@ WSAA-Project/
 ├── requirements.txt                                        # Python dependencies
 └── LICENSE                                                 # License file
 ```
-
-## License
-
-This project is licensed under the Apache License 2.0. See the LICENSE file for details.
 
 # Part A:  Access the API's and Fetch the Data
 
