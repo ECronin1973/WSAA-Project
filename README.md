@@ -128,17 +128,29 @@ python 05_app.py
 
 The API will be available at [http://127.0.0.1:5000/api/fatalities](http://127.0.0.1:5000/api/fatalities).
 
+---
+
 ### 5. Run the Frontend
 
-Open `static/index.html` in your browser, or start a simple server:
+To access the application, ensure the backend is running. You can retrieve data using:
 
 ```bash
-python -m http.server
+curl http://localhost:5000/api/fatalities
 ```
 
-Then visit [http://127.0.0.1:8000/static/index.html](http://127.0.0.1:8000/static/index.html).
+### 6. Live Preview (Optional)
 
-**Tip:** For public deployment, consider using a production-ready server (e.g., Gunicorn for Flask) and adjust the API base URL as needed.
+You can view the frontend and see live data from the backend API using the `index.html` file in the `static` folder.
+
+**To use Live Server in VS Code:**
+
+1. Install the [Live Server extension](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) from the VS Code Extensions Marketplace.
+2. In VS Code, right-click on `index.html` inside the `static` folder and select **Open with Live Server**.
+3. Your default browser will open and display the web interface, which fetches and displays live data from the backend API.
+4. Any changes you make to `index.html`, `app.js`, or `styles.css` will be reflected automatically in the browser.
+
+> **Note:** The frontend expects the backend API to be running at `http://127.0.0.1:5000`. Make sure to start the Flask server before opening the live preview.
+
 
 ## Code of Conduct
 
@@ -612,21 +624,15 @@ plt.show()
 #### 1. **Trend Data (`fatality_trends.csv`)**:
 
 ![![fatality_trends.csv](./data/fatality_trends.png)]
+
+** This is a partial view of the CSV file. The actual file contains more rows and columns.**
+
 The trend data includes the following columns:
 - `Year`: The year of the data.
 - `Month`: The month of the data.
 - `Fatalities`: The total fatalities for the month.
 - `Change`: The difference in fatalities compared to the previous month.
 - `Trend`: Indicates whether the fatalities increased, decreased, or remained the same.
-
-Example:
-```csv
-Year,Month,Fatalities,Change,Trend
-2020,January,9,0.0,No Change
-2020,February,19,10.0,Increase
-2020,March,17,-2.0,Decrease
-...
-```
 
 #### 2. **Graph (`fatalities_trend_graph.png`)**:
 
@@ -1073,53 +1079,58 @@ The following image captures output when API Usage is performed.
 ### API Usage
 
 ##### 1. Create a New Record
+
 **Request:**
 ```
 POST http://127.0.0.1:5000/api/fatalities
 Content-Type: application/json
 
 {
-    "year": 2021,
-    "month": "April",
-    "fatalities": 18
+    "id": 1,
+    "month": "January",
+    "fatalities": 186,
+    "Year": 2020
 }
 ```
 **Response:**
 ```
 {
-    "message": "Record created successfully",
-    "record": {
-        "year": 2021,
-        "month": "April",
-        "fatalities": 18,
-        "id": 4
-    }
+    "message": "200 OK, Request Successful, the server has responded as required",}
 }
 ```
 
 ##### 2. Read All records
+
 **Request:**
 ```
 GET /api/fatalities
 ```
 **Response**
 ```
-[
-    { "id": 1, "year": 2020, "month": "January", "fatalities": 9 },
-    { "id": 2, "year": 2020, "month": "February", "fatalities": 19},
-    { "id": 3, "year": 2020, "month": "March", "fatalities": 17 },
-    { "year": 2021, "month": "April", "fatalities": 18, "id": 4 }
-]
-```
+{
+        "id": 29,
+        "Month": "May",
+        "Fatalities": 12,
+        "Year": 2022
+    },
+    {
+        "id": 30,
+        "Month": "June",
+        "Fatalities": 13,
+        "Year": 2022
+    }
 
+```
 ##### 3. Update a Record
+
 **Request:**
 ```
 PUT /api/fatalities/2
 Content-Type: application/json
 
 {
-    "fatalities": 20
+    "fatalities": 186
+
 }
 ```
 **Response**
@@ -1128,17 +1139,36 @@ Content-Type: application/json
     "message": "Record updated successfully",
     "record": {
         "id": 2,
-        "year": 2020,
-        "month": "February",
-        "fatalities": 20
+        "Month": "February",
+        "Fatalities": 19,
+        "Year": 2020,
+        "fatalities": 186.0
     }
 }
 ```
 
-##### 4. Delete a Record
+##### Verify if record was updated
+
 **Request:**
 ```
-DELETE /api/fatalities/3
+GET /api/fatalities/2
+```
+**Response**
+```
+    {
+        "id": 2,
+        "Month": "February",
+        "Fatalities": 19,
+        "Year": 2020,
+        "fatalities": 186.0
+    },
+```
+
+##### 4. Delete a Record
+
+**Request:**
+```
+DELETE /api/fatalities/1
 ```
 **Response**
 ```
@@ -1342,14 +1372,17 @@ $(document).ready(function () {
 - The styles.css file ensures the interface is visually appealing and easy to navigate
 
 ### Steps to Run the Frontend
+
 1. Ensure the backend API (05_app.py) is running (Flask app).
+
 - Open a terminal, navigate to the directory containing the backend file, and execute:
 ```python
 python 05_app.py
 ```
 - Confirm the API is accessible at
+
 ```
-http://127.0.0.1:5000/api/grouped-fatalities
+curl http://localhost:5000/api/fatalities
 ```
 
 2. Verify Frontend Files
@@ -1359,12 +1392,14 @@ http://127.0.0.1:5000/api/grouped-fatalities
   - app.js in the static/js directory.
 
 3. Open the Frontend in a Browser
- - Open the index.html file in a web browser (e.g., Chrome, Firefox).
- - Use a local web server if necessary (e.g., Python's HTTP server):
- ```python
-python -m http.server
-```
-Navigate to http://127.0.0.1:8000/static/index.html in the browser.
+To see live data from the backend API use the `index.html` file in the `static` folder using the following instructions (if not already installed).
+
+- 1. Install the [Live Server extension](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) from the VS Code Extensions Marketplace.
+- 2. In VS Code, right-click on `index.html` inside the `static` folder and select **Open with Live Server**.
+- 3. Your default browser will open and display the web interface, which fetches and displays live data from the backend API.
+- 4. Any changes you make to `index.html`, `app.js`, or `styles.css` will be reflected automatically in the browser.
+
+**Note:** The frontend expects the backend API to be running at `http://127.0.0.1:5000`. Make sure to start the Flask server before opening the live preview.
 
 4. Verify Data Fetching 
  - Check the browser console (Developer Tools > Console) for any errors.

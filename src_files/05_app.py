@@ -40,7 +40,7 @@ class DataStore:
     def add_record(self, record):
         new_id = self.df["id"].max() + 1 if not self.df.empty else 1
         record["id"] = new_id
-        self.df = self.df.append(record, ignore_index=True)
+        self.df = pd.concat([self.df, pd.DataFrame([record])], ignore_index=True)
         self.save()
         return record
 
