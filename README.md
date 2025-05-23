@@ -4,7 +4,7 @@ A data-driven approach to understanding road fatalities in Ireland.
 
 ## Overview
 
-The Road Safety Analysis Project examines road fatalities in Ireland over the past five years, identifying trends and patterns in fatality rates. The project integrates data from the Central Statistics Office (CSO) API and provides a custom API for CRUD operations on locally stored data. It also includes data visualization and analysis tools to offer insights into road safety trends. The project is designed to be user-friendly, secure, and extensible.
+The Road Safety Analysis Project examines road fatalities in Ireland over the past five years, identifying trends and patterns in fatality rates. The project integrates data from the Central Statistics Office (CSO) API and provides a custom API for CRUD operations on locally stored data. It also includes data visualization and analysis tools to offer insights into road safety trends. Road Fatality data is outlined alongside published european yearly averages to determine if death rates in Ireland are better or worse.  The project is designed to be user-friendly, secure, and extensible.
 
 ### Features:
 - **Data Integration**: Retrieves road safety data from the CSO API.
@@ -27,6 +27,7 @@ The Road Safety Analysis Project examines road fatalities in Ireland over the pa
 - [License](#license)
 - [Technical Set Up](#technical-set-up)
 - [Project Structure](#project-structure)
+- [Script Dependency Summary](#script-dependency-summary)
 - [Implementation Steps](#implementation-steps)
 - [Pre-Requisites](#pre-requisites)
 - [Getting Started](#getting-started)
@@ -145,7 +146,16 @@ Please read the CODE_OF_CONDUCT.md file for details on our code of conduct.
 
 ## Data Content Relevant To Task
 
-- [CSO Website - STATS API](https://ws.cso.ie/public/api.restful/PxStat.Data.Cube_API.ReadDataset/ROA29/JSON-stat/1.0/en)
+- [CSO Website - STATS API](https://ws.cso.ie/public/api.restful/PxStat.Data.Cube_API.ReadDataset/ROA29/JSON-stat/1.0/en)  
+  The CSO API provides data in the JSON-stat format.
+- [CSO API Documentation](https://cso.ie/en/services/pxstat/)
+
+**Data Sources:**
+- **Road Fatalities Data:** Retrieved from the CSO API using `01_fatalities.py`, which fetches monthly road fatalities in JSON-stat format and converts them to CSV for analysis.
+- **Population Data:** Retrieved from the CSO API using `03_population.py`, ensuring consistency with the fatalities dataset for accurate per capita and normalized calculations.
+
+JSON-stat is a lightweight JSON format for statistical data, designed for easy integration with statistical tools and APIs. It supports multidimensional datasets more efficiently than standard JSON.  
+Resource [JSON-stat](https://json-stat.org/).
 
 ## Project Structure
 
@@ -185,6 +195,18 @@ WSAA-Project/
 ├── requirements.txt                                        # Python dependencies
 └── LICENSE                                                 # License file
 ```
+
+### Script Dependency Summary
+
+| Script Name              | Input Files Required                | Output Files Generated                | Description                                      |
+|--------------------------|-------------------------------------|---------------------------------------|--------------------------------------------------|
+| 01_fatalities.py         | None (fetches from CSO API)         | data/road_fatalities.csv              | Fetches and saves raw road fatalities data       |
+| 02_trendanalysis.py      | data/road_fatalities.csv            | data/five_yr_fatalities.csv           | Filters and analyzes last 5 years of fatalities  |
+| 03_population.py         | None (fetches from CSO API)         | data/population_breakdown.csv         | Fetches and saves population data                |
+| 04_data_analysis.py      | data/five_yr_fatalities.csv         | data/fatality_trends.csv, data/fatalities_trend_graph.png | Analyzes and visualizes monthly trends           |
+| 06_analyze_fatalities.py | data/five_yr_fatalities.csv, data/population_breakdown.csv | data/fatality_analysis.csv, data/Fatalities_per_1000.png, data/fatality_analysis_chart.png | Calculates per capita metrics and visualizations |
+| 05_app.py                | data/five_yr_fatalities.csv         | (modifies same file via CRUD)         | Flask API for CRUD operations                    |
+
 
 # Part A:  Access the API's and Fetch the Data
 
@@ -456,14 +478,22 @@ Converting population data into a structured CSV format ensures compatibility wi
 - [Pandas Documentation](https://pandas.pydata.org/)
 - [JSON-stat Format](https://json-stat.org/)
 
-## PART B : Analysis 
+## PART B: Analysis 
 
-### Part One : Road Fatalities Analysis
+### Part One: Road Fatalities Analysis
 
 ### Purpose:
 The purpose of this analysis is to examine road fatalities over the last five years, identify trends, and visualize the data. The analysis includes detecting increases or decreases in fatalities, splitting the data into quarters for better insights, and saving the results for further use. The results are presented in a line graph with quarterly splits and saved as a CSV file for trend analysis.
 
 ![Fatalities_trend_graph.png](./data/fatalities_trend_graph.png)
+
+- A line graph showing monthly fatalities for each year.
+- Vertical dashed lines split the graph into quarters (Q1, Q2, Q3, Q4).
+- Labels above each data point display the exact fatality totals.
+
+#### Why Use Quarterly Splits?
+
+Quarterly splits are used in the analysis and visualizations of road safety data, as the data often exhibits seasonal trends. Fatalities can vary significantly during different times of the year due to factors such as summer holidays, increased travel during certain months, and hazardous winter conditions. By dividing the data into quarters (Q1–Q4), the analysis provides clearer insights into these seasonal patterns, helping to identify periods of increased risk. This, in turn, informs targeted road safety interventions, which are crucial for improving road safety.
 
 ### Code Used in file '04_data_analysis.py':
 
@@ -606,7 +636,7 @@ Year,Month,Fatalities,Change,Trend
 - **Quarterly Insights**: Splitting the data into quarters provides a clearer understanding of how fatalities vary throughout the year.
 - **Data Storage**: Saving the trend data and graph ensures the results are reusable for further analysis or reporting.
 
-### References:
+### Sources:
 - [Pandas Documentation](https://pandas.pydata.org/docs/)
 - [Matplotlib Documentation](https://matplotlib.org/stable/contents.html)
 - [Seaborn Documentation](https://seaborn.pydata.org/)
@@ -618,12 +648,13 @@ Year,Month,Fatalities,Change,Trend
 - **Highest Single-Year Increase:** December 2021 saw the highest single-month increase in fatalities (+16).
 - **Consistent Seasonal Declines:** Across all years, October-December consistently experienced decreases in fatalities.
 - **Notable Decline in Early 2023:** January to March 2023 showed a consistent decrease in fatalities, ending March at only 11 fatalities.
-- **Rise in August Each Year:** August generally experienced increases in fatalities across most years, notably in 2021 (+4), 2023 (+9), and 2020 (+6).
+- **Recurring Rise in August:** August generally experienced increases in fatalities across most years, notably in 2021 (+4), 2023 (+9), and 2020 (+6).
 - **Volatility in June:** June saw fluctuating trends year-on-year, ranging from increases in 2021 (+2) to sharp decreases in 2023 (-10).
 - **Overall Decrease in 2022:** Year 2022 exhibited more months of decreasing fatalities compared to prior years, indicating a calmer trend overall.
 - **Spike in May 2023:** A sharp increase was recorded in May 2023, with fatalities reaching 20 (+10).
-- **Decreasing Trends in Q4:** Quarter 4 (October-December) consistently exhibited declining trends in fatalities, highlighting seasonal patterns.
+- **Consistent Decline in Q4:** Quarter 4 (October-December) consistently exhibited declining trends in fatalities, highlighting seasonal patterns.
 - **Recurring Stability in September:** Several Septembers showed minimal change or minor decreases, suggesting consistency.
+- **Influences** “External factors such as weather, traffic laws, and public holidays may influence these trends.”
 
 ### Quarterly Summary:
 
@@ -655,32 +686,25 @@ Year,Month,Fatalities,Change,Trend
 - 2023: Significant spike to 22 in October, followed by a stabilization.
 - 2024: Fluctuating trend, peaking at 17 in November
 
-### Part Two : Analyse yearly fatality totals per capita and per 100,000 population
+### Part Two: Analyse yearly fatality totals per capita and per 100,000 population.  Compare with european averages
 
 ### Tasks performed by the code:
 
 The code performs the following tasks:
 
-**Load Data:** Reads road fatalities and population data from CSV files into pandas DataFrames.
-
-**Calculate Yearly Fatalities:** Groups the fatalities data by year and calculates the total fatalities for each year.
-
-**Merge Data:** Combines the yearly fatalities data with the population data based on the year.
-Merge Data: Combines the yearly fatalities data with the population data based on the year.
-
-**Calculate Metrics:** Computes two key metrics:
+- **Load Data:** Reads road fatalities and population data from CSV files into pandas DataFrames.
+- **Calculate Yearly Fatalities:** Groups the fatalities data by year and calculates the total fatalities for each year.
+- **Merge Data:** Combines the yearly fatalities data with the population data based on the year.
+- **Calculate Metrics:** Computes two key metrics:
   - Fatalities per Capita: Calculates fatalities as a proportion of the total population.
   - Fatalities per 100,000 Population: Normalizes fatalities to a standard scale for easier comparison across years.
-
-**Output Results:** Displays the merged data, including the calculated metrics, in the console and saves it to a new CSV file (fatality_analysis.csv).
-
-**Visualize Data:** Creates visualizations:
+- **Save Results:** Exports the merged data, including calculated metrics, to a new CSV file (fatality_analysis.csv).
+- **Visualize Data:** Creates visualizations:
   - A line chart titled 'Fatalities_per_1000.png' displaying fatalities per 100,000 population over the years.
   ![Fatalities_per_1000.png](./data/Fatalities_per_1000.png)
   - A dual-axis chart titled 'fatality_analysis_chart.png' combining the bar chart (total fatalities) and line chart (fatalities per 100,000) for a comprehensive view.
   ![fatality_analysis_chart.png](./data/fatality_analysis_chart.png)
   - The dual-axis chart allows for simultaneous visualization of total fatalities and fatalities per 100,000 population, providing a clearer understanding of trends.
- 
 - **Save Chart:** Exports the dual-axis chart as an image file (fatality_analysis_chart.png) to the data folder.
 
 ### Code Used in file '06_analyze_fatalities.py' to conduct analysis:
@@ -776,6 +800,10 @@ plt.show()
 
 ### Insights on Fatalities and Population Data
 
+Results taken from the analysis of the data in the file 'fatality_analysis.csv' and visualizations in 'fatalities_per_1000.png' and 'fatality_analysis_chart.png' were then analysed against publication of European road safety data from the European Commission. 
+
+The following insights were drawn from the analysis in Ireland firstly, and then compared to the European average:
+
 ![terminal_output_fatalities_per_capita.png](./data/terminal_output_fatalities_per_capita.png)
 
 1. **Yearly Fatalities**: The total number of fatalities as displayed in the 'terminal_output_fatalities_per_capita.png' image varies each year, with the highest being 180 in 2023 and the lowest being 132 in 2021.
@@ -798,7 +826,30 @@ plt.show()
 
 10. **Data Normalization**: The inclusion of "Fatalities per Capita" and "Fatalities per 100,000" provides a normalized perspective, making it easier to compare the impact of fatalities across years with varying population sizes.
 
-## PART C : CRUD API
+## Road Fatalities in Ireland vs. European Average (Per 100,000 Population)
+
+This section compares Ireland’s road fatalities per 100,000 population over the past four years against the European average.
+
+### **Ireland vs. European Road Fatalities (Per 100,000 Population)**
+| Year  | Ireland | European Average |
+|-------|--------|-----------------|
+| 2020  | 2.90   | 4.20            |
+| 2021  | 2.60   | 4.00            |
+| 2022  | 3.10   | 4.10            |
+| 2023  | 3.41   | 4.00            |
+
+### **Comparison in Key Findings**
+- **Seasonal Trends**: Fatalities in Ireland tend to **decrease in the last quarter** of each year while peaking in summer months like August. This aligns with broader European trends, where summer months often see increased road activity and higher accident rates.  
+- **Yearly Insights**: Ireland recorded its highest fatalities per 100,000 population in **2023 (3.41)**, while **2021 had the lowest (2.60)**. This is consistent with European trends, where **2023 saw a slight decrease in overall fatalities**, but some countries, including Ireland, experienced localized increases.  
+- **Population Impact**: Despite Ireland’s **steady population growth**, fatalities per capita have remained relatively stable, suggesting **external factors** such as road safety measures, enforcement, and infrastructure improvements play a role. The European average has remained around **4.00 fatalities per 100,000**, indicating that Ireland consistently performs **better than the EU average** in road safety.  
+- **Data Normalization**: Normalized metrics like fatalities per 100,000 population provide clearer comparisons across different years and regions. Ireland’s **lower-than-average fatality rate** suggests **effective road safety policies**, though the increase in 2023 indicates potential areas for improvement.  
+
+### **Sources**
+- [European Commission Road Safety Data](https://ec.europa.eu/transport/road_safety/specialist/statistics_en) – Comprehensive road safety statistics and reports.
+- [European Road Safety Report 2024](https://road-safety-charter.ec.europa.eu/content/annual-statistical-report-road-safety-eu-2024-0) – EU-wide road safety statistics.  
+- [ETSC Road Safety Data](https://etsc.eu/euroadsafetydata/) – European Transport Safety Council analysis.  
+
+## PART C: CRUD API
 
 A functional CRUD API for managing road fatalities data using Flask and Flask-RESTful is designed to efficiently handle Create, Read, Update, and Delete operations on road fatalities records. This API ensures seamless data management and enables users to interact with road fatalities data through a user-friendly and scalable interface. It supports data validation, modular design, and integration with external tools like Postman for testing and documentation, making it suitable for analysis, visualization, and tracking trends over time.
 
@@ -847,7 +898,7 @@ The FatalitiesResource class defines the CRUD operations for managing the data.
 #### c. UPDATE (PUT)
 **Functionality:**
 - Updates an existing record by id with the provided JSON payload.
-- earches for the record with the specified id and updates its fields.
+- Searches for the record with the specified id and updates its fields.
 **Error Handling:**
 - Returns a 404 status code with a "Record not found" message if the record does not exist.
 **Response:**
@@ -868,8 +919,18 @@ The FatalitiesResource class defines the CRUD operations for managing the data.
 - /api/fatalities: Handles GET and POST requests.
 - /api/fatalities/<int:record_id>: Handles PUT and DELETE requests for a specific record by id.
 
+#### GroupedFatalitiesResource
+
+The `/api/grouped-fatalities` endpoint aggregates road fatalities data by year and month. This aggregation is especially useful for generating summary reports and visualizing trends over time, such as monthly or yearly patterns in fatalities. By providing grouped data, this endpoint enables the frontend to efficiently render charts and tables that highlight key trends and seasonal variations in road safety.
+
 **Route Registration:**
 api.add_resource(FatalitiesResource, '/api/fatalities', '/api/fatalities/<int:record_id>') registers the resource with the specified routes.
+
+### 6. Performance Considerations
+
+For high-traffic scenarios or when deploying the API publicly, consider implementing caching to improve performance and reduce server load. Caching can be achieved using tools like [Flask-Caching](https://flask-caching.readthedocs.io/en/latest/) on the backend, or by leveraging browser storage solutions such as `localStorage` on the frontend. This helps minimize repeated data processing and speeds up response times for frequently accessed endpoints.
+
+source: [Flask-Caching Documentation](https://flask-caching.readthedocs.io/en/latest/)
 
 ### 5. Running the Application
 **Debug Mode:**
@@ -1070,7 +1131,7 @@ Content-Type: application/json
 }
 ```
 
-##### 3. Delete a Record
+##### 4. Delete a Record
 **Request:**
 ```
 DELETE /api/fatalities/3
@@ -1082,7 +1143,7 @@ DELETE /api/fatalities/3
 }
 ```
 
-### References
+### Sources
 **Flask Documentation**
 [Flask Official Documentation](https://flask.palletsprojects.com/en/stable/)
 Provides detailed information on how to build web applications using Flask.
@@ -1099,7 +1160,7 @@ Useful for testing CRUD API endpoints.
 [Requests Library Documentation](https://requests.readthedocs.io/en/latest/)
 Covers how to make HTTP requests and handle responses, which is useful for testing APIs programmatically.
 
-## Part D : Frontend Development
+## Part D: Frontend Development
 
 The frontend of the project was designed to provide a user-friendly web interface for visualizing road safety data. It allows users to view monthly road fatalities over the last five years in both tabular and graphical formats. The interface dynamically fetches data from the backend API and updates the table and chart without requiring a page reload.
 
@@ -1332,7 +1393,7 @@ Navigate to http://127.0.0.1:8000/static/index.html in the browser.
 
 ### Screenshots
 Image 'monthly_fatalities_over_the_last_5_years.png' displays an interactive chart with data displayed by hovering over each monthly point accessible at http://127.0.0.1:5500/WSAA-Project/static/index.html
-![Monthly Fatalities Image](./data/monthly_fatalites_over_the_last_5_years.png)
+![Monthly Fatalities Image](./data/monthly_fatalities_over_the_last_5_years.png)
 
 Image 'Fatalities_Data.png' displays a chart with headings 'ID, Year, Month, Fatalities' which is accessed at http://127.0.0.1:5500/WSAA-Project/static/index.html
 ![Fatalities Data](./data/fatalities_data.png)
@@ -1358,22 +1419,17 @@ OAuth was not considered necessary in this project for the following reasons
 **Development and Testing Context:**
 The project is primarily for coursework, development, or testing purposes, implementing OAuth would add unnecessary complexity without providing significant benefits.
 
-## References
+## Sources
 
-- [OAuth 2.0 Authorization Framework (RFC 6749)](https://datatracker.ietf.org/doc/html/rfc6749)  
-  The official specification for OAuth 2.0, detailing the protocol and its components.
-- [OAuth 2.0 Simplified](https://aaronparecki.com/oauth-2-simplified/)  
-  A beginner-friendly guide to understanding OAuth 2.0.
-- [OAuth.net](https://oauth.net/)  
-  A comprehensive resource for learning about OAuth, including tutorials and libraries.
-- [Google Identity Platform OAuth 2.0 Documentation](https://developers.google.com/identity/protocols/oauth2)  
-  Google's implementation of OAuth 2.0 for accessing Google APIs.
-- [Microsoft Identity Platform OAuth 2.0 Documentation](https://learn.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow)  
-  Microsoft's guide to implementing OAuth 2.0 for Azure and Microsoft services.
+- [RFC 6749 OAuth 2.0 Framework](https://datatracker.ietf.org/doc/html/rfc6749) – Official guidelines detailing OAuth 2.0 authorization flows and security protocols.
+- [OAuth 2.0 Simplified](https://aaronparecki.com/oauth-2-simplified/)– A beginner-friendly guide explaining OAuth concepts and implementation steps.
+- [OAuth.net](https://oauth.net/) – A central hub offering OAuth resources, tutorials, and best practices.
+- [Google Identity Platform OAuth 2.0](https://developers.google.com/identity/protocols/oauth2) – Google's official documentation on integrating OAuth for secure access to APIs.
+- [Microsoft Identity Platform OAuth 2.0](https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-auth-code-flow) – Microsoft's in-depth explanation of OAuth for Azure and Microsoft services.
 
 ## Conclusion
 
-The Road Safety Analysis Project successfully achieved its objectives of analyzing and visualizing road fatalities in Ireland over the past five years. By integrating data from the Central Statistics Office (CSO) API and implementing a custom Flask-based API, the project provided a robust platform for CRUD operations and data management. The frontend interface, developed using HTML, CSS, jQuery, and Chart.js, offered an intuitive and interactive way for users to explore trends and patterns in road safety data.
+The Road Safety Analysis Project successfully achieved its objectives of analyzing and visualizing road fatalities in Ireland over the past five years. By integrating data from the Central Statistics Office (CSO) API and implementing a custom Flask-based API, the project provided a robust platform for CRUD operations and data management. The frontend interface, developed using HTML, CSS, jQuery, and Chart.js, offered an intuitive and interactive way for users to explore trends and patterns in road safety data. Ireland’s road safety performance is **better than the European average**, but the **increase in 2023** suggests a need for further investigation into contributing factors such as traffic policies, driver behavior, and infrastructure improvements.
 
 #### Key Achievements:
 1. **Data Integration and Processing**:
@@ -1405,36 +1461,47 @@ The Road Safety Analysis Project successfully achieved its objectives of analyzi
 - **Population Impact**: Despite population growth, fatalities per capita remained relatively stable, indicating other influencing factors.
 - **Data Normalization**: Normalized metrics like fatalities per 100,000 population provided clearer insights into road safety trends.
 
+
 #### Future Scope:
 - **Authentication**: Implement OAuth for secure access to the API when deployed in a public environment.
 - **Enhanced Visualizations**: Add more interactive features to the frontend, such as filtering and exporting data.
 - **Predictive Analysis**: Incorporate machine learning models to predict future trends in road fatalities.
 
-This project demonstrates the effective use of modern web technologies and data analysis tools to address a real-world problem. It provides a strong foundation for further development and serves as a valuable resource for understanding road safety trends in Ireland.
+This project demonstrates the effective use of modern web technologies and data analysis tools to address a real-world problem. It provides a strong foundation for identified further development and investigation and serves as a valuable resource for understanding road safety trends in Ireland.
 
 ## Acknowledgements
 Github Copilot. "This work was partially supported by GitHub Copilot, an AI-powered code completion tool developed by GitHub, which assisted in generating parts of the code."
 
 ## Project References
 
-- [Chart.js Documentation](https://www.chartjs.org/docs/latest/)
-- [CURL Documentation](https://curl.se/)
-- [Flask Official Documentation](https://flask.palletsprojects.com/en/stable/)
-- [Flask-RESTful Documentation](https://flask-restful.readthedocs.io/en/latest/)
-- [GitHub Copilot](https://github.com/features/copilot)
-- [Google Identity Platform OAuth 2.0 Documentation](https://developers.google.com/identity/protocols/oauth2)
-- [JSON-stat Format](https://json-stat.org/)
-- [Markdown Guide](https://www.markdownguide.org/)
-- [Matplotlib Documentation](https://matplotlib.org/stable/contents.html)
-- [Microsoft Identity Platform OAuth 2.0 Documentation](https://learn.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow)
-- [OAuth 2.0 Authorization Framework (RFC 6749)](https://datatracker.ietf.org/doc/html/rfc6749)
-- [OAuth 2.0 Simplified](https://aaronparecki.com/oauth-2-simplified/)
-- [OAuth.net](https://oauth.net/)
-- [OS Module in Python](https://docs.python.org/3/library/os.html)
-- [Pandas Documentation](https://pandas.pydata.org/docs/)
-- [Postman Documentation](https://www.postman.com/)
-- [Python CSV Module Documentation](https://docs.python.org/3/library/csv.html)
-- [Requests Library Documentation](https://requests.readthedocs.io/en/latest/)
-- [Seaborn Documentation](https://seaborn.pydata.org/)
+- [Chart.js Documentation](https://www.chartjs.org/docs/latest/) – Provides guidance on using Chart.js to create interactive and dynamic data visualizations, crucial for rendering road safety trends.
+- [Central Statistics Office (CSO) Ireland](https://www.cso.ie/en/index.html) – Official source for Irish statistical data, including road fatalities and population.
+- [CURL Documentation](https://curl.se/) – Essential for making HTTP requests to APIs, such as retrieving road fatalities data from the CSO API.
+- [European Commission Road Safety Data](https://ec.europa.eu/transport/road_safety/specialist/statistics_en) – Comprehensive road safety statistics and reports.
+- [European Road Safety Report 2024](https://road-safety-charter.ec.europa.eu/content/annual-statistical-report-road-safety-eu-2024-0) – EU-wide road safety statistics.  
+- [ETSC Road Safety Data](https://etsc.eu/euroadsafetydata/) – European Transport Safety Council analysis.
+- [European Road Safety Data](https://ec.europa.eu/transport/road_safety/specialist/statistics_en) – Provides statistical data on road safety across Europe for comparative analysis.
+- [Flask Official Documentation](https://flask.palletsprojects.com/en/stable/) – Covers Flask, the Python web framework used to build the project’s backend API for managing and analyzing road safety data.
+- [Flask-RESTful Documentation](https://flask-restful.readthedocs.io/en/latest/) – Details RESTful API development using Flask, ensuring efficient CRUD operations on fatalities data.
+- [Flask-Caching Documentation](https://flask-caching.readthedocs.io/en/latest/) – Explains caching strategies in Flask applications, useful for improving API response times when handling repeated queries
+- [GitHub Copilot](https://github.com/features/copilot) – AI-powered code completion tool used to enhance development efficiency while writing backend and data analysis scripts.
+- [Google Identity Platform OAuth 2.0 Documentation](https://developers.google.com/identity/protocols/oauth2) Practical guides for real-world OAuth integration in cloud platforms.
+- Ireland Road Safety Authority (RSA) [Road Safety Data](https://www.rsa.ie/en/road-safety/data/) – Provides official statistics and reports on road safety in Ireland, essential for understanding trends and patterns in fatalities.
+- [JSON-stat Format](https://json-stat.org/) – Defines the lightweight JSON-stat format, crucial for handling statistical data retrieved from the CSO API.
+- [jQuery Documentation](https://api.jquery.com/) – Used for DOM manipulation and AJAX requests in the frontend.
+- [Markdown Guide](https://www.markdownguide.org/) – Helps format README files effectively, ensuring clarity and readability for project documentation.
+- [Matplotlib Documentation](https://matplotlib.org/stable/contents.html) – Guides visualization of road safety trends using charts and graphs within Python.
+- [Microsoft Identity Platform OAuth 2.0 Documentation](https://learn.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow) – Provides insights into OAuth authentication implementation for Microsoft services and APIs.
+- [OAuth 2.0 Authorization Framework (RFC 6749)](https://datatracker.ietf.org/doc/html/rfc6749) – Defines the industry-standard OAuth 2.0 security protocol used for secure access control.
+- [OAuth 2.0 Simplified](https://aaronparecki.com/oauth-2-simplified/) – A simplified explanation of OAuth concepts, useful for understanding authentication flows in API security.
+- [OAuth.net](https://oauth.net/) – A collection of OAuth-related best practices and tutorials for secure authentication and delegated access.
+- [OS Module in Python](https://docs.python.org/3/library/os.html) – Documentation on Python’s OS module, used for file path manipulation and managing directories.
+- [Pandas Documentation](https://pandas.pydata.org/docs/) – Covers the Pandas library, essential for processing and analyzing road fatalities data efficiently.
+- [Pandas IO Tools (Excel)](https://pandas.pydata.org/docs/user_guide/io.html#excel-files) – For exporting data to Excel format.
+- [Postman Documentation](https://www.postman.com/) – Provides tools for testing and validating API endpoints, ensuring proper communication between frontend and backend.
+- [Python Official Documentation](https://docs.python.org/3/) – General Python language reference.
+- [Python CSV Module Documentation](https://docs.python.org/3/library/csv.html) – Explains CSV file handling in Python, used to store and manage processed fatalities data.
+- [Requests Library Documentation](https://requests.readthedocs.io/en/latest/) – Guides making HTTP requests in Python, fundamental for fetching road safety data from APIs.
+- [Seaborn Documentation](https://seaborn.pydata.org/) – Helps in advanced data visualization techniques for representing road fatalities analysis clearly.
 
 # END
