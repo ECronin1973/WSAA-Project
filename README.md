@@ -155,7 +155,7 @@ Please read the CODE_OF_CONDUCT.md file for details on our code of conduct.
 - **Population Data:** Retrieved from the CSO API using `03_population.py`, ensuring consistency with the fatalities dataset for accurate per capita and normalized calculations.
 
 JSON-stat is a lightweight JSON format for statistical data, designed for easy integration with statistical tools and APIs. It supports multidimensional datasets more efficiently than standard JSON.  
-Resource [JSON-stat](https://json-stat.org/).
+**References for This Section** [JSON-stat](https://json-stat.org/).
 
 ## Project Structure
 
@@ -223,7 +223,7 @@ curl -X GET "https://ws.cso.ie/public/api.restful/PxStat.Data.Cube_API.ReadDatas
 ```
 This command fetched the data and displayed the results directly in the terminal.
 
-### Reference:
+### References for This Section:
 [CURL Documentation](https://curl.se/)
 
 ## Step 2: Retrieve Data Using Postman
@@ -246,7 +246,7 @@ The GET request fetched structured data from the API endpoint. The response prov
 ### Why It Was Necessary:
 This step was critical for verifying the API's functionality and ensuring the data was accessible in a structured format suitable for parsing and visualization.
 
-### Reference:
+### References for This Section:
 [Postman Documentation](https://www.postman.com/)
 
 ## Step 3: Parse and Convert Data
@@ -309,7 +309,7 @@ print(f"Data successfully saved to {output_file}")
 ### Why It Was Necessary:
 Converting the data into a CSV format allows for easy analysis, visualization, and compatibility with tools such as spreadsheets or Python libraries like pandas
 
-### Reference:
+### References for This Section:
 [Requests Library Documentation](https://requests.readthedocs.io/en/latest/).  
 Provides details on how to make HTTP requests, handle responses, and parse JSON data in Python.
 
@@ -377,7 +377,7 @@ except Exception as e:
 ### Why It Was Necessary:
 Filtering the data to focus on the years 2024 to 2020 narrows the scope to the most recent and relevant period for analysis. Saving the filtered results into a new file ensures a clear, reusable dataset that can be used for further analysis or visualization. This cleaned format simplifies the exploration of trends and patterns.
 
-### Reference:
+### References for This Section:
 [Pandas Documentation](https://pandas.pydata.org/docs/).
 For reading, manipulating, and exporting data in DataFrames.
 
@@ -473,7 +473,7 @@ except Exception as e:
 ### Why is it necessary:
 Converting population data into a structured CSV format ensures compatibility with a wide range of analytical tools and platforms, such as Python, Excel, or data visualization software.
 
-### Reference
+### References for This Section
 - [Requests Library Documentation](https://requests.readthedocs.io/en/latest/)
 - [Pandas Documentation](https://pandas.pydata.org/)
 - [JSON-stat Format](https://json-stat.org/)
@@ -636,7 +636,7 @@ Year,Month,Fatalities,Change,Trend
 - **Quarterly Insights**: Splitting the data into quarters provides a clearer understanding of how fatalities vary throughout the year.
 - **Data Storage**: Saving the trend data and graph ensures the results are reusable for further analysis or reporting.
 
-### Sources:
+### References for This Section:
 - [Pandas Documentation](https://pandas.pydata.org/docs/)
 - [Matplotlib Documentation](https://matplotlib.org/stable/contents.html)
 - [Seaborn Documentation](https://seaborn.pydata.org/)
@@ -844,7 +844,7 @@ This section compares Ireland’s road fatalities per 100,000 population over th
 - **Population Impact**: Despite Ireland’s **steady population growth**, fatalities per capita have remained relatively stable, suggesting **external factors** such as road safety measures, enforcement, and infrastructure improvements play a role. The European average has remained around **4.00 fatalities per 100,000**, indicating that Ireland consistently performs **better than the EU average** in road safety.  
 - **Data Normalization**: Normalized metrics like fatalities per 100,000 population provide clearer comparisons across different years and regions. Ireland’s **lower-than-average fatality rate** suggests **effective road safety policies**, though the increase in 2023 indicates potential areas for improvement.  
 
-### **Sources**
+### **References for This Section**
 - [European Commission Road Safety Data](https://ec.europa.eu/transport/road_safety/specialist/statistics_en) – Comprehensive road safety statistics and reports.
 - [European Road Safety Report 2024](https://road-safety-charter.ec.europa.eu/content/annual-statistical-report-road-safety-eu-2024-0) – EU-wide road safety statistics.  
 - [ETSC Road Safety Data](https://etsc.eu/euroadsafetydata/) – European Transport Safety Council analysis.  
@@ -930,7 +930,7 @@ api.add_resource(FatalitiesResource, '/api/fatalities', '/api/fatalities/<int:re
 
 For high-traffic scenarios or when deploying the API publicly, consider implementing caching to improve performance and reduce server load. Caching can be achieved using tools like [Flask-Caching](https://flask-caching.readthedocs.io/en/latest/) on the backend, or by leveraging browser storage solutions such as `localStorage` on the frontend. This helps minimize repeated data processing and speeds up response times for frequently accessed endpoints.
 
-source: [Flask-Caching Documentation](https://flask-caching.readthedocs.io/en/latest/)
+**References for This Section:** [Flask-Caching Documentation](https://flask-caching.readthedocs.io/en/latest/)
 
 ### 5. Running the Application
 **Debug Mode:**
@@ -1143,7 +1143,7 @@ DELETE /api/fatalities/3
 }
 ```
 
-### Sources
+### References for This Section
 **Flask Documentation**
 [Flask Official Documentation](https://flask.palletsprojects.com/en/stable/)
 Provides detailed information on how to build web applications using Flask.
@@ -1419,7 +1419,7 @@ OAuth was not considered necessary in this project for the following reasons
 **Development and Testing Context:**
 The project is primarily for coursework, development, or testing purposes, implementing OAuth would add unnecessary complexity without providing significant benefits.
 
-## Sources
+## References for This Section
 
 - [RFC 6749 OAuth 2.0 Framework](https://datatracker.ietf.org/doc/html/rfc6749) – Official guidelines detailing OAuth 2.0 authorization flows and security protocols.
 - [OAuth 2.0 Simplified](https://aaronparecki.com/oauth-2-simplified/)– A beginner-friendly guide explaining OAuth concepts and implementation steps.
