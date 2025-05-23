@@ -610,6 +610,8 @@ plt.show()
 ### Output:
 
 #### 1. **Trend Data (`fatality_trends.csv`)**:
+
+![![fatality_trends.csv](./data/fatality_trends.png)](./data/fatality_trends.csv)
 The trend data includes the following columns:
 - `Year`: The year of the data.
 - `Month`: The month of the data.
@@ -627,6 +629,8 @@ Year,Month,Fatalities,Change,Trend
 ```
 
 #### 2. **Graph (`fatalities_trend_graph.png`)**:
+
+![fatalities_trend_graph.png](./data/fatalities_trend_graph.png)
 - A line graph showing monthly fatalities for each year.
 - Vertical dashed lines split the graph into quarters (Q1, Q2, Q3, Q4).
 - Labels above each data point display the exact fatality totals.
@@ -1066,7 +1070,7 @@ The following image captures output when API Usage is performed.
 
 ![Image of Terminal Output](./data/terminal_message_crud_api.png)
 
-#### API Usage
+### API Usage
 
 ##### 1. Create a New Record
 **Request:**
@@ -1393,7 +1397,7 @@ Navigate to http://127.0.0.1:8000/static/index.html in the browser.
 
 ### Screenshots
 Image 'monthly_fatalities_over_the_last_5_years.png' displays an interactive chart with data displayed by hovering over each monthly point accessible at http://127.0.0.1:5500/WSAA-Project/static/index.html
-![Monthly Fatalities Image](./data/monthly_fatalities_over_the_last_5_years.png)
+![Monthly Fatalities Image](./data/monthly_fatalites_over_the_last_5_years.png)
 
 Image 'Fatalities_Data.png' displays a chart with headings 'ID, Year, Month, Fatalities' which is accessed at http://127.0.0.1:5500/WSAA-Project/static/index.html
 ![Fatalities Data](./data/fatalities_data.png)
@@ -1419,7 +1423,7 @@ OAuth was not considered necessary in this project for the following reasons
 **Development and Testing Context:**
 The project is primarily for coursework, development, or testing purposes, implementing OAuth would add unnecessary complexity without providing significant benefits.
 
-## References for This Section
+### References for This Section
 
 - [RFC 6749 OAuth 2.0 Framework](https://datatracker.ietf.org/doc/html/rfc6749) – Official guidelines detailing OAuth 2.0 authorization flows and security protocols.
 - [OAuth 2.0 Simplified](https://aaronparecki.com/oauth-2-simplified/)– A beginner-friendly guide explaining OAuth concepts and implementation steps.
@@ -1431,7 +1435,7 @@ The project is primarily for coursework, development, or testing purposes, imple
 
 The Road Safety Analysis Project successfully achieved its objectives of analyzing and visualizing road fatalities in Ireland over the past five years. By integrating data from the Central Statistics Office (CSO) API and implementing a custom Flask-based API, the project provided a robust platform for CRUD operations and data management. The frontend interface, developed using HTML, CSS, jQuery, and Chart.js, offered an intuitive and interactive way for users to explore trends and patterns in road safety data. Ireland’s road safety performance is **better than the European average**, but the **increase in 2023** suggests a need for further investigation into contributing factors such as traffic policies, driver behavior, and infrastructure improvements.
 
-#### Key Achievements:
+### Key Achievements:
 1. **Data Integration and Processing**:
    - Successfully fetched and processed road fatalities data from the CSO API.
    - Converted raw data into structured formats (CSV) for analysis and visualization.
@@ -1455,21 +1459,22 @@ The Road Safety Analysis Project successfully achieved its objectives of analyzi
 6. **Secure and Extensible Design**:
    - Designed the project to be secure and extensible, with future scope for incorporating OAuth for authentication.
 
-#### Key Findings:
+### Key Findings:
 - **Seasonal Trends**: Fatalities consistently decreased in the last quarter of each year, while spikes were observed in summer months like August.
 - **Yearly Insights**: The year 2023 recorded the highest fatalities, while 2021 had the lowest fatalities per 100,000 population.
+- ** European Comparison**: Ireland's road fatalities per 100,000 population were consistently lower than the European average, indicating effective road safety measures.
 - **Population Impact**: Despite population growth, fatalities per capita remained relatively stable, indicating other influencing factors.
 - **Data Normalization**: Normalized metrics like fatalities per 100,000 population provided clearer insights into road safety trends.
 
 
-#### Future Scope:
+### Future Scope:
 - **Authentication**: Implement OAuth for secure access to the API when deployed in a public environment.
 - **Enhanced Visualizations**: Add more interactive features to the frontend, such as filtering and exporting data.
 - **Predictive Analysis**: Incorporate machine learning models to predict future trends in road fatalities.
 
 This project demonstrates the effective use of modern web technologies and data analysis tools to address a real-world problem. It provides a strong foundation for identified further development and investigation and serves as a valuable resource for understanding road safety trends in Ireland.
 
-## Acknowledgements
+### Acknowledgements
 Github Copilot. "This work was partially supported by GitHub Copilot, an AI-powered code completion tool developed by GitHub, which assisted in generating parts of the code."
 
 ## Project References
