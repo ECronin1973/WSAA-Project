@@ -611,7 +611,7 @@ plt.show()
 
 #### 1. **Trend Data (`fatality_trends.csv`)**:
 
-![![fatality_trends.csv](./data/fatality_trends.png)](./data/fatality_trends.csv)
+![![fatality_trends.csv](./data/fatality_trends.png)]
 The trend data includes the following columns:
 - `Year`: The year of the data.
 - `Month`: The month of the data.
