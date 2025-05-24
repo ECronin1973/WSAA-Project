@@ -1,4 +1,4 @@
-# 06_analyze_fatalities.py
+# 06_analyse_fatalities.py
 # This script analyzes road fatalities data over the last five years.
 # It loads the data from CSV files, calculates fatalities per capita, and visualizes the results.
 # Author: Edward Cronin (g00425645)

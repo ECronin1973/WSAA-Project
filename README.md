@@ -1,6 +1,6 @@
 # Road Safety Analysis Project
 
-This README provides a comprehensive guide to the Road Safety Analysis Project, which analyzes and visualizes road fatalities in Ireland using data from the Central Statistics Office (CSO). 
+This README provides a comprehensive guide to the Road Safety Analysis Project, which analyses and visualises road fatalities in Ireland using data from the Central Statistics Office (CSO). 
 
 It explains the project’s purpose, how the data is collected and processed, how to use the backend API and frontend dashboard, and how to interpret the results. 
 
@@ -61,7 +61,7 @@ If you want to understand, run, or extend this project, start here.
 
 ## Overview
 
-The Road Safety Analysis Project examines road fatalities in Ireland over the past five years, identifying trends and patterns in fatality data. The project integrates data from the Central Statistics Office (CSO) API and provides a custom API for CRUD operations on locally stored data. It also includes data visualization and analysis tools to offer insights into road safety trends. 
+The Road Safety Analysis Project examines road fatalities in Ireland over the past five years, identifying trends and patterns in fatality data. The project integrates data from the Central Statistics Office (CSO) API and provides a custom API for CRUD operations on locally stored data. It also includes data visualisation and analysis tools to offer insights into road safety trends. 
 
 This project compares Ireland's road fatality data to published European yearly averages, providing insights into whether Ireland's death rates are higher or lower. The project is designed to be user-friendly, secure, and extensible.
 
@@ -71,7 +71,7 @@ This project compares Ireland's road fatality data to published European yearly 
 
 - **Data Integration**: Retrieves road safety data from the CSO API.
 - **Custom API**: Enables CRUD operations on locally stored fatality data using Flask.
-- **Data Analysis**: Identifies trends in road fatalities and visualizes them using charts.
+- **Data Analysis**: Identifies trends in road fatalities and visualises them using charts.
 - **Frontend Interface**: Provides an interactive line chart displaying road fatality trends over time, segmented by month and year.
 - **Secure Access**: OAuth authentication may be implemented in the future if the API is deployed in a public environment to ensure secure access and data protection.
 
@@ -96,7 +96,7 @@ This project is licensed under the [Apache License 2.0](./LICENSE). See the LICE
 WSAA-Project/
 │
 ├── data/
-│   ├── fatalities_data.png                      # Visualization of overall road fatalities data
+│   ├── fatalities_data.png                      # Visualisation of overall road fatalities data
 │   ├── Fatalities_per_100000.png                # Line chart: fatalities per 100,000 population over the years
 │   ├── fatalities_trend_graph.png               # Line graph: monthly fatalities and quarterly splits
 │   ├── fatality_analysis_chart.png              # Dual-axis chart: total fatalities and fatalities per 100,000
@@ -111,11 +111,11 @@ WSAA-Project/
 │
 ├── src_files/
 │   ├── 01_fatalities.py                         # Fetches and saves raw road fatalities data from CSO API
-│   ├── 02_trendanalysis.py                      # Filters and analyzes last 5 years of fatalities
+│   ├── 02_trendanalysis.py                      # Filters and analyses last 5 years of fatalities
 │   ├── 03_population.py                         # Fetches and saves population data from CSO API
-│   ├── 04_data_analysis.py                      # Analyzes and visualizes monthly trends in fatalities
+│   ├── 04_data_analysis.py                      # analyses and visualises monthly trends in fatalities
 │   ├── 05_app.py                                # Provides an API for managing and updating road fatality records via Create, Read, Update, and Delete operations
-│   └── 06_analyze_fatalities.py                 # Calculates fatalities per capita and per 100,000, generates visualizations
+│   └── 06_analyse_fatalities.py                 # Calculates fatalities per capita and per 100,000, generates visualisations
 │
 ├── static/
 │   ├── index.html                               # Main HTML file for the frontend dashboard
@@ -134,11 +134,11 @@ WSAA-Project/
 | Script Name              | Input Files Required                                   | Output Files Generated                                                                 | Description                                                                                  |
 |--------------------------|--------------------------------------------------------|----------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|
 | 01_fatalities.py         | None (fetches from CSO API)                            | data/road_fatalities.csv                                                               | Fetches and saves raw road fatalities data from the CSO API                                  |
-| 02_trendanalysis.py      | data/road_fatalities.csv                               | data/five_yr_fatalities.csv                                                            | Filters and analyzes the last 5 years of fatalities                                          |
+| 02_trendanalysis.py      | data/road_fatalities.csv                               | data/five_yr_fatalities.csv                                                            | Filters and analyses the last 5 years of fatalities                                          |
 | 03_population.py         | None (fetches from CSO API)                            | data/population_breakdown.csv                                                          | Fetches and saves population data from the CSO API                                           |
-| 04_data_analysis.py      | data/five_yr_fatalities.csv                            | data/fatality_trends.csv, data/fatalities_trend_graph.png                              | Analyzes and visualizes monthly trends in fatalities                                         |
+| 04_data_analysis.py      | data/five_yr_fatalities.csv                            | data/fatality_trends.csv, data/fatalities_trend_graph.png                              | analyses and visualises monthly trends in fatalities                                         |
 | 05_app.py                | data/five_yr_fatalities.csv                            | Serves API responses (no new files generated)                                           | Flask API for managing and updating road fatality records (CRUD operations)                  |
-| 06_analyze_fatalities.py | data/five_yr_fatalities.csv, data/population_breakdown.csv | data/fatality_analysis.csv, data/Fatalities_per_100000.png, data/fatality_analysis_chart.png | Calculates per capita and per 100,000 metrics, generates summary visualizations              |
+| 06_analyse_fatalities.py | data/five_yr_fatalities.csv, data/population_breakdown.csv | data/fatality_analysis.csv, data/Fatalities_per_100000.png, data/fatality_analysis_chart.png | Calculates per capita and per 100,000 metrics, generates summary visualisations              |
 ```
 ---
 
@@ -150,7 +150,7 @@ WSAA-Project/
 2. **Frontend**:
    - Interactive web interface using HTML, CSS, jQuery, and AJAX.
 3. **Data Analysis**:
-   - Data manipulation and visualization using `pandas`, `matplotlib`, and `seaborn`.
+   - Data manipulation and visualisation using `pandas`, `matplotlib`, and `seaborn`.
 4. **Testing**:
    - API testing with Postman and CURL.
 ---
@@ -173,8 +173,8 @@ WSAA-Project/
   - **Data-related:**
     - `pandas>=1.3` – Data manipulation and analysis
     - `numpy>=1.21` – Numerical operations
-    - `matplotlib>=3.4` – Data visualization
-    - `seaborn>=0.11` – Statistical data visualization
+    - `matplotlib>=3.4` – Data visualisation
+    - `seaborn>=0.11` – Statistical data visualisation
   - **Frontend-related:**
     - jQuery (CDN or local, >=3.6) – DOM manipulation and AJAX
     - Chart.js (CDN or local, >=3.5) – Chart rendering
@@ -201,12 +201,14 @@ The Flask backend in this project **does not fetch live data directly from the C
    - **No live fetching:** Flask does **not** fetch data from the CSO API on each request.
    - **No caching layer:** Flask simply reads from and writes to the local CSV files. If you want updated data, you must re-run the data retrieval scripts.
 
-**Summary Table:**
+---
+### Summary Table
 
 | Step                | Source/Destination         | Live Fetch? | Caching? |
 |---------------------|---------------------------|-------------|----------|
 | Data scripts        | CSO API → CSV files       | Yes         | No       |
 | Flask API endpoints | CSV files → API responses | No          | No       |
+
 
 **How Data Flows:**
 1. You run a script (e.g., `python src_files/01_fatalities.py`) → Data is fetched from CSO API and saved as CSV.
@@ -236,14 +238,16 @@ Ensure you have Python 3.8+ installed. Then run:
 ```bash
 pip install -r requirements.txt
 ```
+---
 
 ## Manual Testing
 
 Manual testing ensures that your API endpoints and data processing scripts work as expected before integrating them into automated workflows or the frontend.
 
-### API Testing with Postman
 
-#### 1. Retrieve Data from CSO API
+## API Testing with Postman
+
+### 1. Retrieve Data from CSO API
 Using CURL:
 
 ```bash
@@ -252,7 +256,7 @@ curl -X GET "https://ws.cso.ie/public/api.restful/PxStat.Data.Cube_API.ReadDatas
 
 This command fetches the latest road fatalities data in JSON-stat format from the CSO API.
 
-**Using Postman:**
+#### Using Postman:
 
 1. Open Postman and create a new request.
 2. Set the HTTP method to GET.
@@ -267,7 +271,7 @@ The backend API provides endpoints for creating, reading, updating, and deleting
 
 1. Create a New Record (POST)
 
-##### 1. Create a New Record
+#### 1. Create a New Record
 
 **Request:**
 ```
@@ -311,7 +315,7 @@ The id field was omitted because it is automatically generated by the API.
 }
 ```
 
-##### 2. Read All records
+#### 2. Read All records
 
 **Request:**
 ```
@@ -356,7 +360,7 @@ This command was used to fetch all records from the API and verify that the data
     }
 
 ```
-##### 3. Update a Record
+#### 3. Update a Record
 
 **Request:**
 ```
@@ -398,7 +402,7 @@ This command was used to update an existing record by specifying its id in the U
 }
 ```
 
-##### Read a Specific Record by ID (GET)
+#### Read a Specific Record by ID (GET)
 
 **Request:**
 ```
@@ -430,7 +434,7 @@ This command was used to fetch record number 2 by its id ( 2) to verify that it 
         "fatalities": 186.0
     },
 
-##### 4. Delete a Record
+#### 4. Delete a Record
 
 **Request:**
 ```
@@ -471,20 +475,19 @@ Useful for testing CRUD API endpoints.
 **Python Requests Library**
 [Requests Library Documentation](https://requests.readthedocs.io/en/latest/)
 Covers how to make HTTP requests and handle responses, which is useful for testing APIs programmatically.
+---
 
-#### Endpoint Reference Table
+### Endpoint Reference Table
 
 | Endpoint                   | Purpose                                                                                                    | Used by        | Pagination/Query Parameters                |
 |----------------------------|------------------------------------------------------------------------------------------------------------|----------------|--------------------------------------------|
 | `/api/fatalities`          | Primary endpoint for managing fatalities records. Supports full CRUD operations: retrieval, insertion, modification, and deletion. Returns all records at once by default. | Postman, API   | If pagination is implemented, use `?page=1&per_page=10`. |
-| `/api/grouped-fatalities`  | Provides grouped/aggregated fatalities data for visualization and analysis in the frontend.                | Frontend (JS)  | Returns all grouped records at once. No pagination by default. |
-
-**Usage Notes:**  
-- Use `/api/fatalities` for raw data and CRUD operations.
-- Use `/api/grouped-fatalities` for aggregated/grouped data (as used in frontend charts and tables).
-- To test the same grouped data as the frontend, use `/api/grouped-fatalities` in Postman.
+| `/api/grouped-fatalities`  | Provides grouped/aggregated fatalities data for visualisation and analysis in the frontend.                | Frontend (JS)  | Returns all grouped records at once. No pagination by default. |
 
 > **Note:**  
+> Use `/api/fatalities` for raw data and CRUD operations.
+> Use `/api/grouped-fatalities` for aggregated/grouped data (as used in frontend charts and tables).
+> To test the same grouped data as the frontend, use `/api/grouped-fatalities` in Postman.
 > If `/api/fatalities` supports pagination, you can request specific pages using query parameters, e.g.:  
 > `GET /api/fatalities?page=2&per_page=20`  
 > If not, all records are returned in a single response.
@@ -535,7 +538,7 @@ python src_files/01_fatalities.py
 
 ### References for This Section:
 - [Pandas: IO Tools (Text, CSV, HDF5, …)](https://pandas.pydata.org/docs/user_guide/io.html#csv-text-files) – Official documentation on reading and writing CSV files with pandas.
-- [Matplotlib: Working with CSV Data](https://matplotlib.org/stable/users/explain/data/csv.html) – How matplotlib can read and visualize CSV data.
+- [Matplotlib: Working with CSV Data](https://matplotlib.org/stable/users/explain/data/csv.html) – How matplotlib can read and visualise CSV data.
 - [Seaborn: Data Structures](https://seaborn.pydata.org/tutorial/data_structure.html) – Seaborn works seamlessly with pandas DataFrames, which are easily created from CSV files.
 - [JSON-stat Documentation](https://json-stat.org/) – Details on the JSON-stat format and its use in statistical data exchange.
 
@@ -545,7 +548,7 @@ python src_files/01_fatalities.py
 Filters last five years, outputs [five_yr_fatalities.csv](./data/five_yr_fatalities.csv) for further analysis, and saves the results for trend analysis. This step is crucial for narrowing down the dataset to the most relevant years, allowing for focused analysis of recent trends in road fatalities.
 
 ### Run script '02_trendanalysis.py':
-The following Python code loads, filters, and analyzes the data saved in the CSV file and saves the filtered results as a new CSV file for the specified years:
+The following Python code loads, filters, and analyses the data saved in the CSV file and saves the filtered results as a new CSV file for the specified years:
 
 Use the following command to run the script:
 ```bash
@@ -559,10 +562,10 @@ python src_files/02_trendanalysis.py
 - **Save Filtered Data:** Saves the filtered data into a new CSV file titled five_yr_fatalities.csv. This new file is stored in the same directory as the original file, making it easy to locate and use for further analysis or sharing.
 
 ### References for This Section:
+- [Pandas Documentation](https://pandas.pydata.org/docs/)
 [Pandas Documentation](https://pandas.pydata.org/docs/).
 For reading, manipulating, and exporting data in DataFrames.
-
-[Python OS Module](https://docs.python.org/3/library/os.html).
+- [Python OS Module](https://docs.python.org/3/library/os.html).
 For constructing paths dynamically and ensuring compatibility across operating systems.
 ---
 
@@ -592,7 +595,7 @@ python src_files/03_population.py
 ### 4. Monthly Trend Analysis
 
 ### Purpose:
-The purpose of this analysis is to examine road fatalities over the last five years, identify trends, and visualize the data. The analysis includes detecting increases or decreases in fatalities, splitting the data into quarters for better insights, and saving the results for further use. The results are presented in a line graph with quarterly splits and saved as a CSV file for trend analysis.
+The purpose of this analysis is to examine road fatalities over the last five years, identify trends, and visualise the data. The analysis includes detecting increases or decreases in fatalities, splitting the data into quarters for better insights, and saving the results for further use. The results are presented in a line graph with quarterly splits and saved as a CSV file for trend analysis.
 
 ![Fatalities_trend_graph.png](./data/fatalities_trend_graph.png)
 
@@ -600,9 +603,9 @@ The purpose of this analysis is to examine road fatalities over the last five ye
 - Vertical dashed lines split the graph into quarters (Q1, Q2, Q3, Q4).
 - Labels above each data point display the exact fatality totals.
 
-#### Why Use Quarterly Splits?
+### Why Use Quarterly Splits?
 
-Quarterly splits are used in the analysis and visualizations of road safety data, as the data often exhibits seasonal trends. Fatalities can vary significantly during different times of the year due to factors such as summer holidays, increased travel during certain months, and hazardous winter conditions. By dividing the data into quarters (Q1–Q4), the analysis provides clearer insights into these seasonal patterns, helping to identify periods of increased risk. This, in turn, informs targeted road safety interventions, which are crucial for improving road safety.
+Quarterly splits are used in the analysis and visualisations of road safety data, as the data often exhibits seasonal trends. Fatalities can vary significantly during different times of the year due to factors such as summer holidays, increased travel during certain months, and hazardous winter conditions. By dividing the data into quarters (Q1–Q4), the analysis provides clearer insights into these seasonal patterns, helping to identify periods of increased risk. This, in turn, informs targeted road safety interventions, which are crucial for improving road safety.
 
 ### Run script '04_data_analysis.py':
 
@@ -618,7 +621,7 @@ python src_files/04_data_analysis.py
 
 2. **Group and Sort Data**:
    - Groups the data by `Year` and `Month` to calculate total fatalities for each month.
-   - Sorts the months in calendar order for proper visualization.
+   - Sorts the months in calendar order for proper visualisation.
 
 3. **Detect Trends**:
    - Calculates the change in fatalities between consecutive months.
@@ -627,7 +630,7 @@ python src_files/04_data_analysis.py
 4. **Save Trend Data**:
    - Saves the grouped and processed data, including the trend information, to a CSV file named fatality_trends.csv.
 
-5. **Visualize Data**:
+5. **Visualise Data**:
    - Creates a line graph showing monthly fatalities for each year.
    - Adds vertical dashed lines to split the graph into quarters (Q1, Q2, Q3, Q4).
    - Annotates the quarters and adds labels above each data point to display the exact fatality totals.
@@ -637,11 +640,11 @@ python src_files/04_data_analysis.py
 
 ### Output:
 
-#### 1. **Trend Data (`fatality_trends.csv`)**:
+### 1. **Trend Data (`fatality_trends.csv`)**:
 
 ![fatality_trends.png](./data/fatality_trends.png)
 
-** This is a partial view of the CSV file. The actual file contains more rows and columns.**
+**This is a partial view of the CSV file. The actual file contains more rows and columns.**
 
 The trend data includes the following columns:
 - `Year`: The year of the data.
@@ -650,10 +653,10 @@ The trend data includes the following columns:
 - `Change`: The difference in fatalities compared to the previous month.
 - `Trend`: Indicates whether the fatalities increased, decreased, or remained the same.
 
-#### 2. **Graph (`fatalities_trend_graph.png`)**:
+### 2. **Graph (`fatalities_trend_graph.png`)**:
 
 ![fatalities_trend_graph.png](./data/fatalities_trend_graph.png)
-- The line graph visualizes monthly fatalities for each year, with vertical dashed lines marking the start of each quarter (Q1: Jan–Mar, Q2: Apr–Jun, Q3: Jul–Sep, Q4: Oct–Dec).
+- The line graph visualises monthly fatalities for each year, with vertical dashed lines marking the start of each quarter (Q1: Jan–Mar, Q2: Apr–Jun, Q3: Jul–Sep, Q4: Oct–Dec).
 - Labels above each data point display the exact fatality data totals.
 
 ### References for This Section:
@@ -707,9 +710,11 @@ The trend data includes the following columns:
 
 ### Why Filtering and Structuring Was Necessary
 
-Filtering ensures focus on the most recent trends while structured outputs in CSV format make further analysis and visualization seamless. By narrowing the dataset to relevant years and exporting to CSV, the project supports efficient, reproducible, and tool-compatible analysis and visualization.
+Filtering ensures focus on the most recent trends while structured outputs in CSV format make further analysis and visualisation seamless. By narrowing the dataset to relevant years and exporting to CSV, the project supports efficient, reproducible, and tool-compatible analysis and visualisation.
 
-### Analyse yearly fatality data totals per capita and per 100,000 population.  Compare with european averages
+### Ireland vs European Averages
+
+This section will analyse yearly fatality data totals per capita and per 100,000 population.  Compare with european averages
 
 ### Tasks performed by the code:
 
@@ -723,23 +728,23 @@ The code performs the following tasks:
   - Fatalities per 100,000 Population: Normalizes fatalities to a standard scale for easier comparison across years.
 - **Save Results:** Exports the merged data, including calculated metrics, to a new CSV file (fatality_analysis.csv).
 
-- **Visualize Data:** Creates visualizations:
+- **Visualise Data:** Creates visualisations:
   - A line chart titled 'Fatalities_per_100000.png' displaying fatalities per 100,000 population over the years. This chart highlights key patterns such as a general decline in fatalities per 100,000 population from 2020 to 2021, followed by an increase peaking in 2023, and a slight decrease in 2024.
   ![Fatalities_per_100000.png](./data/Fatalities_per_100000.png)
-  - A dual-axis chart combines the bar chart (total fatalities) and line chart (fatalities per 100,000) for a comprehensive view. This visualization allows for simultaneous comparison of the absolute number of fatalities and the normalized rate per 100,000 population, making it easier to spot years where population growth may mask underlying trends in road safety.
+  - A dual-axis chart combines the bar chart (total fatalities) and line chart (fatalities per 100,000) for a comprehensive view. This visualisation allows for simultaneous comparison of the absolute number of fatalities and the normalized rate per 100,000 population, making it easier to spot years where population growth may mask underlying trends in road safety.
   ![fatality_analysis_chart.png](./data/fatality_analysis_chart.png)
-  - **Note:** European averages are not included in these visualizations; they are referenced separately in the analysis and comparison sections using data from external sources.
+  - **Note:** European averages are not included in these visualisations; they are referenced separately in the analysis and comparison sections using data from external sources.
 
-The visualizations provide a clear comparative analysis, aiding understanding of fatalities per capita.
+**The visualisations provide a clear comparative analysis, aiding understanding of fatalities per capita.**
 
 - **Save Chart:** Exports the dual-axis chart as an image file (fatality_analysis_chart.png) to the data folder.
 
-### Run script '06_analyze_fatalities.py' to conduct analysis:
+## 06_analyse_fatalities.py 
 
-The following script loads the data, performs calculations, and generates visualizations:
+Run script '06_analyse_fatalities.py' to conduct analysis.  This program when run loads data, performs calculations, and generates visualisations:
 
 ```bash
-python src_files/06_analyze_fatalities.py
+python src_files/06_analyse_fatalities.py
 ```
 
 ## Code of Conduct
@@ -752,7 +757,7 @@ Please read the CODE_OF_CONDUCT.md file for details on our code of conduct.
   The CSO API provides data in the JSON-stat format.
 - [CSO API Documentation](https://cso.ie/en/services/pxstat/)
 
-**Data Sources:**
+### Data Sources:
 - **Road Fatalities Data:** Retrieved from the CSO API using `01_fatalities.py`, which fetches monthly road fatalities in JSON-stat format and converts them to CSV for analysis.
 - **Population Data:** Retrieved from the CSO API using `03_population.py`, ensuring consistency with the fatalities dataset for accurate per capita and normalized calculations.
 
@@ -760,9 +765,9 @@ JSON-stat is a lightweight JSON format for statistical data, designed for easy i
 
 **References for This Section** [JSON-stat](https://json-stat.org/).
 
-### Insights on Fatalities and Population Data
+## Insights on Fatalities and Population Data
 
-Results taken from the analysis of the data in the file 'fatality_analysis.csv' and visualizations in 'fatalities_per_1000.png' and 'fatality_analysis_chart.png' were then analysed against publication of European road safety data from the European Commission. 
+Results taken from the analysis of the data in the file 'fatality_analysis.csv' and visualisations in 'fatalities_per_1000.png' and 'fatality_analysis_chart.png' were then analysed against publication of European road safety data from the European Commission. 
 
 The following insights were drawn from the analysis in Ireland firstly, and then compared to the European average:
 
@@ -886,7 +891,7 @@ Due to the private nature of the repository, local API usage, and limited scope 
 - If the API is not being hosted on a public server and is only being used locally (e.g., http://127.0.0.1:5000), there is no need for OAuth since the API is not exposed to external users.  If deployed in a public environment, OAuth can be integrated to enhance API security.
 
 **Limited Scope:**
-- The project is focused on analyzing and visualizing road safety data, with CRUD operations on a local dataset. There is no sensitive or user-specific data that requires advanced authentication mechanisms like OAuth.
+- The project is focused on analysing and visualizing road safety data, with CRUD operations on a local dataset. There is no sensitive or user-specific data that requires advanced authentication mechanisms like OAuth.
 
 **Development and Testing Context:**
 The project is primarily for coursework, development, or testing purposes, implementing OAuth would add unnecessary complexity without providing significant benefits.
@@ -901,12 +906,12 @@ The project is primarily for coursework, development, or testing purposes, imple
 
 ## Conclusion
 
-The Road Safety Analysis Project successfully achieved its objectives of analyzing and visualizing road fatalities in Ireland over the past five years. By integrating data from the Central Statistics Office (CSO) API and implementing a custom Flask-based API, the project provided a robust platform for CRUD operations and data management. The frontend interface, developed using HTML, CSS, jQuery, and Chart.js, offered an intuitive and interactive way for users to explore trends and patterns in road safety data. Ireland’s road safety performance is **better than the European average**, but the **increase in 2023** suggests a need for further investigation into contributing factors such as traffic policies, driver behavior, and infrastructure improvements.
+The Road Safety Analysis Project successfully achieved its objectives of analysing and visualizing road fatalities in Ireland over the past five years. By integrating data from the Central Statistics Office (CSO) API and implementing a custom Flask-based API, the project provided a robust platform for CRUD operations and data management. The frontend interface, developed using HTML, CSS, jQuery, and Chart.js, offered an intuitive and interactive way for users to explore trends and patterns in road safety data. Ireland’s road safety performance is **better than the European average**, but the **increase in 2023** suggests a need for further investigation into contributing factors such as traffic policies, driver behaviour, and infrastructure improvements.
 
-### Key Achievements:
+## Key Achievements:
 1. **Data Integration and Processing**:
    - Successfully fetched and processed road fatalities data from the CSO API.
-   - Converted raw data into structured formats (CSV) for analysis and visualization.
+   - Converted raw data into structured formats (CSV) for analysis and visualisation.
 
 2. **Comprehensive Data Analysis**:
    - Identified monthly trends and seasonal patterns in road fatalities.
@@ -920,23 +925,23 @@ The Road Safety Analysis Project successfully achieved its objectives of analyzi
    - Developed a user-friendly web interface for visualizing road safety data.
    - Dynamically displayed data in tabular and graphical formats using AJAX for real-time updates.
 
-5. **Visualization of Trends**:
+5. **Visualisation of Trends**:
    - Created detailed charts and graphs to highlight trends in road fatalities.
-   - Provided dual-axis visualizations for a comprehensive understanding of fatalities relative to population growth.
+   - Provided dual-axis visualisations for a comprehensive understanding of fatalities relative to population growth.
 
 6. **Secure and Extensible Design**:
    - Designed the project to be secure and extensible, with future scope for incorporating OAuth for authentication.
 
-### Key Findings:
+## Key Findings:
 - **Seasonal Trends**: Fatalities consistently decreased in the last quarter of each year, while spikes were observed in summer months like August.
 - **Yearly Insights**: The year 2023 recorded the highest fatalities, while 2021 had the lowest fatalities per 100,000 population.
 - ** European Comparison**: Ireland's road fatalities per 100,000 population were consistently lower than the European average, indicating effective road safety measures.
 - **Population Impact**: Despite population growth, fatalities per capita remained relatively stable, indicating other influencing factors.
 - **Data Normalization**: Normalized metrics like fatalities per 100,000 population provided clearer insights into road safety trends.
 
-### Future Scope:
+## Future Scope:
 - **Authentication**: Implement OAuth for secure access to the API when deployed in a public environment.
-- **Enhanced Visualizations**: Add more interactive features to the frontend, such as filtering and exporting data.
+- **Enhanced Visualisations**: Add more interactive features to the frontend, such as filtering and exporting data.
 - **Predictive Analysis**: Incorporate machine learning models to predict future trends in road fatalities.
 
 This project demonstrates the effective use of modern web technologies and data analysis tools to address a real-world problem. It provides a strong foundation for identified further development and investigation and serves as a valuable resource for understanding road safety trends in Ireland.
@@ -946,7 +951,7 @@ Github Copilot. "This work was partially supported by GitHub Copilot, an AI-powe
 
 ## Project References
 
-- [Chart.js Documentation](https://www.chartjs.org/docs/latest/) – Guidance on using Chart.js for interactive and dynamic data visualizations.
+- [Chart.js Documentation](https://www.chartjs.org/docs/latest/) – Guidance on using Chart.js for interactive and dynamic data visualisations.
 - [Central Statistics Office (CSO) Ireland](https://www.cso.ie/en/index.html) – Official source for Irish statistical data, including road fatalities and population.
 - [CURL Documentation](https://curl.se/) – Making HTTP requests to APIs, such as retrieving road fatalities data from the CSO API.
 - [European Commission Road Safety Data](https://ec.europa.eu/transport/road_safety/specialist/statistics_en) – Comprehensive road safety statistics and reports across Europe.
@@ -961,7 +966,7 @@ Github Copilot. "This work was partially supported by GitHub Copilot, an AI-powe
 - [JSON-stat Format](https://json-stat.org/) – Lightweight format for statistical data, used for CSO API data.
 - [jQuery Documentation](https://api.jquery.com/) – DOM manipulation and AJAX requests in the frontend.
 - [Markdown Guide](https://www.markdownguide.org/) – Formatting README files for clarity and readability.
-- [Matplotlib Documentation](https://matplotlib.org/stable/contents.html) – Visualization of trends using charts and graphs in Python.
+- [Matplotlib Documentation](https://matplotlib.org/stable/contents.html) – Visualisation of trends using charts and graphs in Python.
 - [Matplotlib: Working with CSV Data](https://matplotlib.org/stable/users/explain/data/csv.html) – Reading and visualizing CSV data with matplotlib.
 - [Microsoft Identity Platform OAuth 2.0 Documentation](https://learn.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow) – OAuth authentication for Microsoft services and APIs.
 - [OAuth 2.0 Authorization Framework (RFC 6749)](https://datatracker.ietf.org/doc/html/rfc6749) – Industry-standard OAuth 2.0 security protocol.
@@ -975,7 +980,7 @@ Github Copilot. "This work was partially supported by GitHub Copilot, an AI-powe
 - [Python CSV Module Documentation](https://docs.python.org/3/library/csv.html) – CSV file handling in Python.
 - [Python Official Documentation](https://docs.python.org/3/) – General Python language reference.
 - [Requests Library Documentation](https://requests.readthedocs.io/en/latest/) – Making HTTP requests in Python.
-- [Seaborn Documentation](https://seaborn.pydata.org/) – Advanced data visualization techniques.
+- [Seaborn Documentation](https://seaborn.pydata.org/) – Advanced data visualisation techniques.
 - [Seaborn: Data Structures](https://seaborn.pydata.org/tutorial/data_structure.html) – Using Seaborn with Pandas DataFrames.
 - [Visual Studio Code](https://code.visualstudio.com/) – Integrated development environment used for coding and debugging.
 - [Visual Studio Code Live Server Extension](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) – Live reloading of web pages during development.
