@@ -37,10 +37,10 @@ $(document).ready(function () {
     }
 
     // Display error messages to the user
-    function displayError(message) {
-        const errorDiv = $("#errorMessage");
-        errorDiv.text(message).show(); // Show error message
-    }
+   function displayError(message) {
+    const errorDiv = $("#error-message"); // Ensure correct ID reference
+    errorDiv.text(message).show(); // Show error message
+}
 
     // Render the chart using Chart.js
     function renderChart(data) {

@@ -1,23 +1,17 @@
 # Road Safety Analysis Project
 
-A data-driven approach to understanding road fatalities in Ireland.
+This README provides a comprehensive guide to the Road Safety Analysis Project, which analyzes and visualizes road fatalities in Ireland using data from the Central Statistics Office (CSO). 
 
-## Overview
+It explains the project’s purpose, how the data is collected and processed, how to use the backend API and frontend dashboard, and how to interpret the results. 
 
-The Road Safety Analysis Project examines road fatalities in Ireland over the past five years, identifying trends and patterns in fatality rates. The project integrates data from the Central Statistics Office (CSO) API and provides a custom API for CRUD operations on locally stored data. It also includes data visualization and analysis tools to offer insights into road safety trends. Road Fatality data is outlined alongside published european yearly averages to determine if death rates in Ireland are better or worse.  The project is designed to be user-friendly, secure, and extensible.
+You’ll also find setup instructions, testing steps, and references for further reading.
 
-### Features:
-- **Data Integration**: Retrieves road safety data from the CSO API.
-- **Custom API**: Enables CRUD operations on locally stored fatality data using Flask.
-- **Data Analysis**: Identifies trends in road fatalities and visualizes them using charts.
-- **Frontend Interface**: A web-based dashboard for data exploration.
-- **Secure Access**: Future implementation of OAuth authentication for secure data handling.
+**In summary:**  
+- This file explains what each part of the project does.
+- It guides you through setup, usage, and analysis.
+- It helps you understand the meaning and significance of the data and results.
 
-## Author
-
-- **Name**: Edward Cronin
-- **Student ID**: g00425645
-- **Email**: g00425645@atu.ie
+If you want to understand, run, or extend this project, start here.
 
 ## Table of Contents
 
@@ -25,27 +19,128 @@ The Road Safety Analysis Project examines road fatalities in Ireland over the pa
 - [Features](#features)
 - [Author](#author)
 - [License](#license)
-- [Technical Set Up](#technical-set-up)
 - [Project Structure](#project-structure)
-- [Script Dependency Summary](#script-dependency-summary)
-- [Implementation Steps](#implementation-steps)
+  - [Script Dependency Summary](#script-dependency-summary)
+- [Technical Set Up](#technical-set-up)
 - [Pre-Requisites](#pre-requisites)
+- [How Flask Interacts with the CSO API and Data Flow](#how-flask-interacts-with-the-cso-api-and-data-flow)
 - [Getting Started](#getting-started)
-- [How to Download this Repository](#how-to-download-this-repository)
+- [Manual Testing](#manual-testing)
+  - [API Testing with Postman](#api-testing-with-postman)
+  - [Test CRUD API Endpoints](#test-crud-api-endpoints)
+- [Endpoint Reference Table](#endpoint-reference-table)
+- [Automated Data Processing and Analysis](#automated-data-processing-and-analysis)
+  - [Data Retrieval](#data-retrieval)
+    - [Fetch Road Fatalities Data](#1-fetch-road-fatalities-data)
+    - [Trend Analysis](#2-trend-analysis)
+    - [Fetch Population Data](#3-fetch-population-data)
+  - [Data Analysis](#data-analysis)
+    - [Monthly Trend Analysis](#4-monthly-trend-analysis)
+    - [Summary of Analysis](#summary-of-analysis)
+    - [Quarterly Summary](#quarterly-summary)
+    - [Why Filtering and Structuring Was Necessary](#why-filtering-and-structuring-was-necessary)
+    - [Analyse yearly fatality data totals per capita and per 100,000 population.  Compare with european averages](#analyse-yearly-fatality-data-totals-per-capita-and-per-100000-population--compare-with-european-averages)
+    - [Tasks performed by the code](#tasks-performed-by-the-code)
 - [Code of Conduct](#code-of-conduct)
-- [Dependencies](#dependencies)
 - [Data Content Relevant To Task](#data-content-relevant-to-task)
-- [Part A: Access the API's and Fetch the Data](#part-a-access-the-api's-and-fetch-the-data)
-- [Part B: Analysis](#part-b-analysis)
-- [Part C: CRUD API](#part-c-crud-api)
-- [Part D: Front End Development](#front-end-development)
-- [Part E: OAuth (Open Authorization)](#Oauth-open-authorization)
-- [Project References](#Project-References)
+- [Insights on Fatalities and Population Data](#insights-on-fatalities-and-population-data)
+- [Road Fatalities in Ireland vs. European Average (Per 100,000 Population)](#road-fatalities-in-ireland-vs-european-average-per-100000-population)
+  - [Comparison in Key Findings](#comparison-in-key-findings)
+- [Terminal Output](#terminal-output)
+- [Frontend Development & Running the Frontend](#frontend-development--running-the-frontend)
+  - [Features](#features-1)
+  - [File Structure](#file-structure)
+  - [How to Run the Frontend](#how-to-run-the-frontend)
+  - [Troubleshooting](#troubleshooting)
+- [OAuth (Open Authorization)](#part-e-oauth-open-authorization)
 - [Conclusion](#conclusion)
+- [Acknowledgements](#acknowledgements)
+- [Project References](#project-references)
+
+---
+
+## Overview
+
+The Road Safety Analysis Project examines road fatalities in Ireland over the past five years, identifying trends and patterns in fatality data. The project integrates data from the Central Statistics Office (CSO) API and provides a custom API for CRUD operations on locally stored data. It also includes data visualization and analysis tools to offer insights into road safety trends. 
+
+This project compares Ireland's road fatality data to published European yearly averages, providing insights into whether Ireland's death rates are higher or lower. The project is designed to be user-friendly, secure, and extensible.
+
+---
+
+## Features
+
+- **Data Integration**: Retrieves road safety data from the CSO API.
+- **Custom API**: Enables CRUD operations on locally stored fatality data using Flask.
+- **Data Analysis**: Identifies trends in road fatalities and visualizes them using charts.
+- **Frontend Interface**: Provides an interactive line chart displaying road fatality trends over time, segmented by month and year.
+- **Secure Access**: OAuth authentication may be implemented in the future if the API is deployed in a public environment to ensure secure access and data protection.
+
+---
+
+## Author
+
+- **Name**: Edward Cronin
+- **Student ID**: g00425645
+- **Email**: g00425645@atu.ie
+
+---
 
 ## License
 
-This project is licensed under the Apache License 2.0. See the LICENSE file for details.
+This project is licensed under the [Apache License 2.0](./LICENSE). See the LICENSE file for details.
+
+---
+
+## Project Structure
+```
+WSAA-Project/
+│
+├── data/
+│   ├── fatalities_data.png                      # Visualization of overall road fatalities data
+│   ├── Fatalities_per_100000.png                # Line chart: fatalities per 100,000 population over the years
+│   ├── fatalities_trend_graph.png               # Line graph: monthly fatalities and quarterly splits
+│   ├── fatality_analysis_chart.png              # Dual-axis chart: total fatalities and fatalities per 100,000
+│   ├── fatality_analysis.csv                    # Yearly fatalities, population, and normalized metrics
+│   ├── fatality_trends.csv                      # Monthly trend analysis results (increase/decrease)
+│   ├── five_yr_fatalities.csv                   # Filtered fatalities data for the last five years
+│   ├── monthly_fatalities_over_the_last_5_years.png # Monthly fatalities graph for the last five years
+│   ├── population_breakdown.csv                 # Yearly population data from CSO API
+│   ├── road_fatalities.csv                      # Raw processed road fatalities data from CSO API
+│   ├── terminal_message_crud_api.png            # Screenshot: terminal output for CRUD API operations
+│   └── terminal_output_fatalities_per_capita.png# Screenshot: terminal output for per capita analysis
+│
+├── src_files/
+│   ├── 01_fatalities.py                         # Fetches and saves raw road fatalities data from CSO API
+│   ├── 02_trendanalysis.py                      # Filters and analyzes last 5 years of fatalities
+│   ├── 03_population.py                         # Fetches and saves population data from CSO API
+│   ├── 04_data_analysis.py                      # Analyzes and visualizes monthly trends in fatalities
+│   ├── 05_app.py                                # Provides an API for managing and updating road fatality records via Create, Read, Update, and Delete operations
+│   └── 06_analyze_fatalities.py                 # Calculates fatalities per capita and per 100,000, generates visualizations
+│
+├── static/
+│   ├── index.html                               # Main HTML file for the frontend dashboard
+│   ├── app.js                                   # JavaScript for fetching data and rendering charts/tables
+│   └── styles.css                               # Stylesheet for the frontend interface
+│
+├── [README.md](http://_vscodecontentref_/0)                                    # Project documentation
+├── requirements.txt                             # Python dependencies for the project
+└── LICENSE                                      # License file
+```
+---
+
+### Script Dependency Summary
+
+```markdown
+| Script Name              | Input Files Required                                   | Output Files Generated                                                                 | Description                                                                                  |
+|--------------------------|--------------------------------------------------------|----------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|
+| 01_fatalities.py         | None (fetches from CSO API)                            | data/road_fatalities.csv                                                               | Fetches and saves raw road fatalities data from the CSO API                                  |
+| 02_trendanalysis.py      | data/road_fatalities.csv                               | data/five_yr_fatalities.csv                                                            | Filters and analyzes the last 5 years of fatalities                                          |
+| 03_population.py         | None (fetches from CSO API)                            | data/population_breakdown.csv                                                          | Fetches and saves population data from the CSO API                                           |
+| 04_data_analysis.py      | data/five_yr_fatalities.csv                            | data/fatality_trends.csv, data/fatalities_trend_graph.png                              | Analyzes and visualizes monthly trends in fatalities                                         |
+| 05_app.py                | data/five_yr_fatalities.csv                            | Serves API responses (no new files generated)                                           | Flask API for managing and updating road fatality records (CRUD operations)                  |
+| 06_analyze_fatalities.py | data/five_yr_fatalities.csv, data/population_breakdown.csv | data/fatality_analysis.csv, data/Fatalities_per_100000.png, data/fatality_analysis_chart.png | Calculates per capita and per 100,000 metrics, generates summary visualizations              |
+```
+---
 
 ## Technical Set Up
 
@@ -58,31 +153,68 @@ This project is licensed under the Apache License 2.0. See the LICENSE file for 
    - Data manipulation and visualization using `pandas`, `matplotlib`, and `seaborn`.
 4. **Testing**:
    - API testing with Postman and CURL.
-5. **Authentication**:
-   - OAuth for secure access (future scope).
-
-## Implementation Steps
-
-1. **Data Retrieval**:
-   - Fetch road safety data from the CSO API using HTTP GET requests.
-   - Parse and convert the data into CSV format for analysis.
-2. **Data Analysis**:
-   - Analyze trends in road fatalities using Python libraries.
-   - Visualize data with charts and graphs.
-   - Analyse yearly fatality totals per capita and per 100,000 population.
-3. **Custom API Development**:
-   - Implement a Flask-based API to enable CRUD operations on the locally stored data.
-4. **Frontend Development**:
-   - Create a web interface for data visualization and management.
-   - Use AJAX for seamless data retrieval and updates.
-5. **Authentication**:
-   - Explore OAuth for secure access to the API (future scope).
+---
 
 ## Pre-Requisites
 
-- **Languages**: Python, JavaScript, HTML, CSS.
-- **Tools**: Postman, CURL, Git, Flask.
-- **Libraries**: `pandas`, `numpy`, `matplotlib`, `seaborn`, jQuery, AJAX.
+- **Languages:** Python (>=3.8), JavaScript, HTML, CSS
+
+- **Tools:**  
+  - **Git:** Used for version control and collaboration  
+  - **Postman:** Used for testing API endpoints  
+  - **CURL:** Used for making HTTP requests to fetch data from APIs  
+  - **Flask:** Framework for building the backend API
+
+- **Libraries:**
+  - **Backend-related:**
+    - `Flask>=2.0` – Web framework for the RESTful API
+    - `flask-restful>=0.3` – Extension for building REST APIs with Flask
+    - `flask-cors>=3.0` – For enabling CORS in Flask apps
+  - **Data-related:**
+    - `pandas>=1.3` – Data manipulation and analysis
+    - `numpy>=1.21` – Numerical operations
+    - `matplotlib>=3.4` – Data visualization
+    - `seaborn>=0.11` – Statistical data visualization
+  - **Frontend-related:**
+    - jQuery (CDN or local, >=3.6) – DOM manipulation and AJAX
+    - Chart.js (CDN or local, >=3.5) – Chart rendering
+
+---
+
+## How Flask Interacts with the CSO API and Data Flow
+
+The Flask backend in this project **does not fetch live data directly from the CSO API on each API request**. Instead, the data flow is as follows:
+
+1. **Data Retrieval Scripts:**  
+   - Python scripts such as `01_fatalities.py` and `03_population.py` are used to fetch live data from the CSO API.
+   - These scripts are run manually (or as part of the setup process) and save the data locally as CSV files (e.g., `road_fatalities.csv`, `population_breakdown.csv`).
+
+2. **Local Data Storage:**  
+   - The fetched data is stored in the `data/` directory as CSV files.
+   - The data served by the Flask API is as current as the last time the data retrieval scripts were run.
+
+3. **Flask API (`05_app.py`):**  
+   - The Flask app reads from these local CSV files to serve data via its endpoints.
+   - When you interact with the API (e.g., via `/api/fatalities`), Flask reads and manipulates the local CSV files, not the live CSO API.
+
+4. **No Live Fetching or Caching in Flask:**  
+   - **No live fetching:** Flask does **not** fetch data from the CSO API on each request.
+   - **No caching layer:** Flask simply reads from and writes to the local CSV files. If you want updated data, you must re-run the data retrieval scripts.
+
+**Summary Table:**
+
+| Step                | Source/Destination         | Live Fetch? | Caching? |
+|---------------------|---------------------------|-------------|----------|
+| Data scripts        | CSO API → CSV files       | Yes         | No       |
+| Flask API endpoints | CSV files → API responses | No          | No       |
+
+**How Data Flows:**
+1. You run a script (e.g., `python src_files/01_fatalities.py`) → Data is fetched from CSO API and saved as CSV.
+2. Flask reads the CSV files and serves data via its API endpoints.
+3. If you want the latest data, you must re-run the data retrieval scripts.
+
+> *In summary: Flask serves data from local files, not directly from the CSO API. There is no caching mechanism in Flask; data freshness depends on how recently you ran the data-fetching scripts.*
+---
 
 ## Getting Started
 
@@ -105,289 +237,326 @@ Ensure you have Python 3.8+ installed. Then run:
 pip install -r requirements.txt
 ```
 
-### 3. Generate Data Files
+## Manual Testing
 
-Run the following scripts in order (from the `src_files/` directory) to fetch and process data.  
-**Note:** Each script depends on the output of the previous one.
+Manual testing ensures that your API endpoints and data processing scripts work as expected before integrating them into automated workflows or the frontend.
 
-```bash
-python 01_fatalities.py         # Fetch and save road fatalities data
-python 02_trendanalysis.py      # Analyze trends, output: five_yr_fatalities.csv
-python 03_population.py         # Fetch and save population data
-python 04_data_analysis.py      # Generate trend graphs and CSVs
-python 06_analyze_fatalities.py # Analyze fatalities per capita and per 100,000
-```
+### API Testing with Postman
 
-### 4. Run the Backend API
-
-From the `src_files/` directory:
-
-```bash
-python 05_app.py
-```
-
-The API will be available at [http://127.0.0.1:5000/api/fatalities](http://127.0.0.1:5000/api/fatalities).
-
----
-
-### 5. Run the Frontend
-
-To access the application, ensure the backend is running. You can retrieve data using:
-
-```bash
-curl http://localhost:5000/api/fatalities
-```
-
-### 6. Live Preview (Optional)
-
-You can view the frontend and see live data from the backend API using the `index.html` file in the `static` folder.
-
-**To use Live Server in VS Code:**
-
-1. Install the [Live Server extension](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) from the VS Code Extensions Marketplace.
-2. In VS Code, right-click on `index.html` inside the `static` folder and select **Open with Live Server**.
-3. Your default browser will open and display the web interface, which fetches and displays live data from the backend API.
-4. Any changes you make to `index.html`, `app.js`, or `styles.css` will be reflected automatically in the browser.
-
-> **Note:** The frontend expects the backend API to be running at `http://127.0.0.1:5000`. Make sure to start the Flask server before opening the live preview.
-
-
-## Code of Conduct
-
-Please read the CODE_OF_CONDUCT.md file for details on our code of conduct.
-
-## Data Content Relevant To Task
-
-- [CSO Website - STATS API](https://ws.cso.ie/public/api.restful/PxStat.Data.Cube_API.ReadDataset/ROA29/JSON-stat/1.0/en)  
-  The CSO API provides data in the JSON-stat format.
-- [CSO API Documentation](https://cso.ie/en/services/pxstat/)
-
-**Data Sources:**
-- **Road Fatalities Data:** Retrieved from the CSO API using `01_fatalities.py`, which fetches monthly road fatalities in JSON-stat format and converts them to CSV for analysis.
-- **Population Data:** Retrieved from the CSO API using `03_population.py`, ensuring consistency with the fatalities dataset for accurate per capita and normalized calculations.
-
-JSON-stat is a lightweight JSON format for statistical data, designed for easy integration with statistical tools and APIs. It supports multidimensional datasets more efficiently than standard JSON.  
-**References for This Section** [JSON-stat](https://json-stat.org/).
-
-## Project Structure
-
-The project is organized as follows:
-
-```plaintext
-WSAA-Project/
-│
-├── data/
-│   ├── fatalities_data.png                                 # Visualization of road fatalities data
-│   ├── Fatalities_per_1000.png                             # Fatalities per 100,000 population graph
-│   ├── fatalities_trend_graph.png                          # Visualization of trends
-│   ├── fatality_analysis_chart.png                         # Dual-axis chart for fatalities analysis
-│   ├── fatality_analysis.csv                               # Yearly fatalities analysis results
-│   ├── fatality_trends.csv                                 # Trend analysis results
-│   ├── five_yr_fatalities.csv                              # Filtered road fatalities data
-│   ├── monthly_fatalities_over_the_last_5_years.png        # Monthly fatalities graph
-│   ├── population_breakdown.csv                            # Population data from CSO API
-│   ├── road_fatalities.csv                                 # Processed road fatalities data
-│   ├── terminal_message_crud_api.png                       # Terminal output for CRUD API   
-│   └── terminal_output_fatalities_per_capita.png          # Terminal output for fatalities per capita
-│
-├── src_files/
-│   ├── 01_fatalities.py                                    # Script to fetch data from CSO API
-│   ├── 02_trendanalysis.py                                 # Script for trend analysis
-│   ├── 03_population.py                                    # Script to fetch population data from CSO API
-│   ├── 04_data_analysis.py                                 # Script for data analysis and visualization
-│   ├── 05_app.py                                           # Flask API for CRUD operations
-│   └── 06_analyze_fatalities.py                           # Script for analyzing fatalities per capita
-│
-├── static/
-│   ├── index.html                                          # Frontend HTML file
-│   ├── app.js                                              # Frontend JavaScript file
-│   └── styles.css                                          # Frontend CSS file
-│
-├── README.md                                               # Project documentation
-├── requirements.txt                                        # Python dependencies
-└── LICENSE                                                 # License file
-```
-
-### Script Dependency Summary
-
-| Script Name              | Input Files Required                | Output Files Generated                | Description                                      |
-|--------------------------|-------------------------------------|---------------------------------------|--------------------------------------------------|
-| 01_fatalities.py         | None (fetches from CSO API)         | data/road_fatalities.csv              | Fetches and saves raw road fatalities data       |
-| 02_trendanalysis.py      | data/road_fatalities.csv            | data/five_yr_fatalities.csv           | Filters and analyzes last 5 years of fatalities  |
-| 03_population.py         | None (fetches from CSO API)         | data/population_breakdown.csv         | Fetches and saves population data                |
-| 04_data_analysis.py      | data/five_yr_fatalities.csv         | data/fatality_trends.csv, data/fatalities_trend_graph.png | Analyzes and visualizes monthly trends           |
-| 06_analyze_fatalities.py | data/five_yr_fatalities.csv, data/population_breakdown.csv | data/fatality_analysis.csv, data/Fatalities_per_1000.png, data/fatality_analysis_chart.png | Calculates per capita metrics and visualizations |
-| 05_app.py                | data/five_yr_fatalities.csv         | (modifies same file via CRUD)         | Flask API for CRUD operations                    |
-
-
-# Part A:  Access the API's and Fetch the Data
-
-## Step 1: Retrieve Road Safety Data via CURL
-
-### Purpose:
-Retrieve structured road fatalities data in JSON-stat format from the API endpoint for analysis and visualization.
-
-### Command Used:
-To make the GET request via Command Prompt, the following CURL command was executed:
+#### 1. Retrieve Data from CSO API
+Using CURL:
 
 ```bash
 curl -X GET "https://ws.cso.ie/public/api.restful/PxStat.Data.Cube_API.ReadDataset/ROA29/JSON-stat/1.0/en" -H "Content-Type: application/json"
 ```
-This command fetched the data and displayed the results directly in the terminal.
 
-### References for This Section:
-[CURL Documentation](https://curl.se/)
+This command fetches the latest road fatalities data in JSON-stat format from the CSO API.
 
-## Step 2: Retrieve Data Using Postman
+**Using Postman:**
 
-### Purpose:
-Use Postman to interact with the API and retrieve road fatalities data in JSON-stat format for analysis and visualization.
+1. Open Postman and create a new request.
+2. Set the HTTP method to GET.
+3. Enter the URL:
+- https://ws.cso.ie/public/api.restful/PxStat.Data.Cube_API.ReadDataset/ROA29/JSON-stat/1.0/en
+4. Set the header:
+- Content-Type: application/json
+5. Click Send and review the JSON-stat response
 
-### Command Used:
-The following steps were executed in Postman:
+### 2. Test CRUD API Endpoints
+The backend API provides endpoints for creating, reading, updating, and deleting road fatalities records. Use Postman to test each operation:
 
-- Opened Postman and created a new request.
-- Selected the HTTP method as GET.
-- Pasted the URL: https://ws.cso.ie/public/api.restful/PxStat.Data.Cube_API.ReadDataset/ROA29/JSON-stat/1.0/en.
-- Set the Content-Type header to application/json.
-- Sent the request and reviewed the JSON-stat response displayed in Postman.
+1. Create a New Record (POST)
 
-### What the Command Did:
-The GET request fetched structured data from the API endpoint. The response provided detailed road fatalities information, formatted as JSON-stat, which can be further processed for analysis.
+##### 1. Create a New Record
 
-### Why It Was Necessary:
-This step was critical for verifying the API's functionality and ensuring the data was accessible in a structured format suitable for parsing and visualization.
+**Request:**
+```
+POST http://127.0.0.1:5000/api/fatalities
+Content-Type: application/json
 
-### References for This Section:
-[Postman Documentation](https://www.postman.com/)
+{
+    "month": "January",
+    "fatalities": 186,
+    "Year": 2020
+}
+```
+**Purpose:**
 
-## Step 3: Parse and Convert Data
+This command was used to manually test the creation of a new record in the API.
+The id field was omitted because it is automatically generated by the API.
 
-### Purpose:
-Process the retrieved JSON-stat data and convert it into a structured CSV format for monthly road fatalities analysis.
+**Expected Response:**
+```
+{
+    "message": "Record created successfully",
+    "record": {
+        "id": 1,
+        "Year": 2020,
+        "Month": "January",
+        "Fatalities": 186
+    }
+}
+```
 
-### Code Used in file '01_fatalities.py':
-The following Python code from '01_fatalities.py' file was implemented to parse the JSON-stat response, structure the data, and save it as a CSV file:
-```python
-import requests
-import csv
-import os
+**Response:**
+```
+{
+    "message": "Record created successfully",
+    "record": {
+        "id": 1,
+        "Year": 2020,
+        "Month": "January",
+        "Fatalities": 186
+    }
+}
+```
 
-# Define the API endpoint for fetching road fatalities data
-url = "https://ws.cso.ie/public/api.restful/PxStat.Data.Cube_API.ReadDataset/ROA29/JSON-stat/1.0/en"
+##### 2. Read All records
 
-# Fetch data using a GET request
-response = requests.get(url, headers={"Content-Type": "application/json"})
+**Request:**
+```
+GET http://127.0.0.1:5000/api/fatalities
+```
 
-# Check if the API request was successful
-if response.status_code == 200:
-    data = response.json()  # Parse the JSON response
-    print("Data retrieved successfully!")
-else:
-    print(f"Failed to fetch data. HTTP Status code: {response.status_code}")
-    exit()  # Terminate the program if data fetch fails
+**Purpose:**
 
-# Extract fatalities data and corresponding months from the JSON-stat response
-road_fatalities = data["dataset"]["value"]
-month_labels = data["dataset"]["dimension"]["TLIST(M1)"]["category"]["label"]
+This command was used to fetch all records from the API and verify that the data was being retrieved correctly.
 
-# Combine the parsed data into a structured format (list of dictionaries)
-formatted_data = [
-    {"Month": month_labels[str(key)], "Fatalities": int(road_fatalities[idx])}
-    for idx, key in enumerate(month_labels.keys())
+**Expected Response:**
+```
+[
+    {
+        "id": 1,
+        "Year": 2020,
+        "Month": "January",
+        "Fatalities": 186
+    },
+    {
+        "id": 2,
+        "Year": 2020,
+        "Month": "February",
+        "Fatalities": 150
+    }
 ]
+```
 
-# Define the directory and file path for saving the data
-output_dir = os.path.join(os.path.dirname(__file__), "../data")
-output_file = os.path.join(output_dir, "road_fatalities.csv")
-os.makedirs(output_dir, exist_ok=True)  # Create the directory if it doesn't exist
-
-# Save the structured data to a CSV file
-with open(output_file, mode="w", newline="") as file:
-    writer = csv.writer(file)
-    writer.writerow(["Month", "Fatalities"])  # Write CSV header row
-    for entry in formatted_data:
-        writer.writerow([entry["Month"], entry["Fatalities"]])
-
-print(f"Data successfully saved to {output_file}")
+**Response**
+```
+{
+        "id": 29,
+        "Month": "May",
+        "Fatalities": 12,
+        "Year": 2022
+    },
+    {
+        "id": 30,
+        "Month": "June",
+        "Fatalities": 13,
+        "Year": 2022
+    }
 
 ```
+##### 3. Update a Record
+
+**Request:**
+```
+PUT http://127.0.0.1:5000/api/fatalities/2
+Content-Type: application/json
+
+{
+    "Fatalities": 186
+}
+```
+
+**Purpose:**
+
+This command was used to update an existing record by specifying its id in the URL and providing the updated data in the request body.
+
+**Expected Response:**
+```
+{
+    "message": "Record updated successfully",
+    "record": {
+        "id": 2,
+        "Year": 2020,
+        "Month": "January",
+        "Fatalities": 186
+    }
+}
+```
+**Response**
+```
+{
+    "message": "Record updated successfully",
+    "record": {
+        "id": 2,
+        "Month": "February",
+        "Fatalities": 19,
+        "Year": 2020,
+        "fatalities": 186.0
+    }
+}
+```
+
+##### Read a Specific Record by ID (GET)
+
+**Request:**
+```
+GET http://127.0.0.1:5000/api/fatalities/2
+```
+
+**Purpose:**
+
+This command was used to fetch record number 2 by its id ( 2) to verify that it was updated correctly.
+
+**Expected Response:**
+```
+{
+    "id": 2,
+    "Month": "February",
+    "Fatalities": 19,
+    "Year": 2020,
+    "fatalities": 186.0
+}
+
+
+**Response**
+```
+    {
+        "id": 2,
+        "Month": "February",
+        "Fatalities": 19,
+        "Year": 2020,
+        "fatalities": 186.0
+    },
+
+##### 4. Delete a Record
+
+**Request:**
+```
+DELETE http://127.0.0.1:5000/api/fatalities/1
+```
+
+**Purpose:**
+
+This command was used to delete a record by specifying its id in the URL.
+
+**Response**
+```
+{
+    "message": "Record deleted successfully"
+}
+```
+
+### Summary of Manual Testing
+
+- Tools Used: Postman was used to manually test the CRUD operations.
+- Purpose: To ensure that the API endpoints for Create, Read, Update, and Delete operations functioned as expected.
+- Outcome: All CRUD operations were successfully tested, and the API responded with the expected results.
+
+### References for This Section
+
+**Flask Documentation**
+[Flask Official Documentation](https://flask.palletsprojects.com/en/stable/)
+Provides detailed information on how to build web applications using Flask.
+
+**Flask-RESTful Documentation**
+[Flask-RESTful Documentation](https://flask-restful.readthedocs.io/en/latest/)
+Explains how to create RESTful APIs using Flask-RESTful, including the Resource class and route management.
+
+**Postman Documentation**
+[Postman Documentation](https://www.postman.com/)
+Useful for testing CRUD API endpoints.
+
+**Python Requests Library**
+[Requests Library Documentation](https://requests.readthedocs.io/en/latest/)
+Covers how to make HTTP requests and handle responses, which is useful for testing APIs programmatically.
+
+#### Endpoint Reference Table
+
+| Endpoint                   | Purpose                                                                                                    | Used by        | Pagination/Query Parameters                |
+|----------------------------|------------------------------------------------------------------------------------------------------------|----------------|--------------------------------------------|
+| `/api/fatalities`          | Primary endpoint for managing fatalities records. Supports full CRUD operations: retrieval, insertion, modification, and deletion. Returns all records at once by default. | Postman, API   | If pagination is implemented, use `?page=1&per_page=10`. |
+| `/api/grouped-fatalities`  | Provides grouped/aggregated fatalities data for visualization and analysis in the frontend.                | Frontend (JS)  | Returns all grouped records at once. No pagination by default. |
+
+**Usage Notes:**  
+- Use `/api/fatalities` for raw data and CRUD operations.
+- Use `/api/grouped-fatalities` for aggregated/grouped data (as used in frontend charts and tables).
+- To test the same grouped data as the frontend, use `/api/grouped-fatalities` in Postman.
+
+> **Note:**  
+> If `/api/fatalities` supports pagination, you can request specific pages using query parameters, e.g.:  
+> `GET /api/fatalities?page=2&per_page=20`  
+> If not, all records are returned in a single response.
+
+### References for API Endpoints
+
+- [Flask Official Documentation](https://flask.palletsprojects.com/en/stable/)  
+  Comprehensive guide to building RESTful APIs with Flask.
+
+- [Flask-RESTful Documentation](https://flask-restful.readthedocs.io/en/latest/)  
+  Details on creating resource-based APIs and managing endpoints.
+
+- [Postman Documentation](https://www.postman.com/)  
+  Tool for testing and documenting API endpoints, including CRUD operations.
+
+- [jQuery AJAX Documentation](https://api.jquery.com/jquery.ajax/)  
+  Reference for making AJAX requests from the frontend to API endpoints.
+
+- [MDN: Using Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)  
+  Modern alternative for making HTTP requests from JavaScript.
+
+- [REST API Design Best Practices](https://restfulapi.net/)  
+  General guidelines for designing and documenting RESTful APIs.
+
+## Automated Data Processing and Analysis
+
+## Data Retrieval
+The data retrieval process involves fetching road fatalities and population data from the Central Statistics Office (CSO) API, processing it, and saving it in a structured format for further analysis. This is done through a series of Python scripts that automate the data fetching, parsing, and saving processes.
+
+## 1. Fetch Road Fatalities Data
+
+### Purpose:
+Retrieves data from CSO API and saves as [road_fatalities.csv](./data/road_fatalities.csv).
+
+### Run script '01_fatalities.py':
+The following Python code from '01_fatalities.py' file was implemented to parse the JSON-stat response, structure the data, and save it as a CSV file:
+
+Use the following command to run the script:
+```bash
+python src_files/01_fatalities.py
+```
+
 ### What the Code Did:
 
 - Parsed the JSON-stat data from the API to extract monthly road fatalities and their corresponding labels.
 - Organized the data into a structured format with months and fatality counts.
 - Saved the processed data into a CSV file (road_fatalities.csv) within a specified directory (../data).
 
-### Why It Was Necessary:
-Converting the data into a CSV format allows for easy analysis, visualization, and compatibility with tools such as spreadsheets or Python libraries like pandas
-
 ### References for This Section:
-[Requests Library Documentation](https://requests.readthedocs.io/en/latest/).  
-Provides details on how to make HTTP requests, handle responses, and parse JSON data in Python.
+- [Pandas: IO Tools (Text, CSV, HDF5, …)](https://pandas.pydata.org/docs/user_guide/io.html#csv-text-files) – Official documentation on reading and writing CSV files with pandas.
+- [Matplotlib: Working with CSV Data](https://matplotlib.org/stable/users/explain/data/csv.html) – How matplotlib can read and visualize CSV data.
+- [Seaborn: Data Structures](https://seaborn.pydata.org/tutorial/data_structure.html) – Seaborn works seamlessly with pandas DataFrames, which are easily created from CSV files.
+- [JSON-stat Documentation](https://json-stat.org/) – Details on the JSON-stat format and its use in statistical data exchange.
 
-[Python CSV Module Documentation](https://docs.python.org/3/library/csv.html).
-Explains how to read from and write to CSV files in Python, ensuring structured data storage.
-
-[JSON-stat Format](https://json-stat.org/).
-JSON-stat is a lightweight format designed for statistical data.
-
-[OS Module in Python](https://docs.python.org/3/library/os.html).
-Useful for handling file paths and creating directories dynamically in Python.
-
-## Step 4: Monthly Trend Analysis
+## 2. Trend Analysis
 
 ### Purpose:
-Analyze the monthly road fatalities data by grouping it to identify patterns or trends. This step provides insights into variations over time and can serve as a basis for further statistical analysis or visualization.
+Filters last five years, outputs [five_yr_fatalities.csv](./data/five_yr_fatalities.csv) for further analysis, and saves the results for trend analysis. This step is crucial for narrowing down the dataset to the most relevant years, allowing for focused analysis of recent trends in road fatalities.
 
-### Code Used in file '02_trendanalysis.py':
+### Run script '02_trendanalysis.py':
 The following Python code loads, filters, and analyzes the data saved in the CSV file and saves the filtered results as a new CSV file for the specified years:
 
-```python
-import pandas as pd
-import os
-
-# Define the relative path to the input CSV file containing road fatalities data
-csv_file = os.path.join(os.path.dirname(__file__), "../data/road_fatalities.csv")
-
-try:
-    # Load data from the CSV file into a DataFrame
-    data_frame = pd.read_csv(csv_file)
-except FileNotFoundError:
-    print(f"Error: The file {csv_file} does not exist.")
-    exit()
-except Exception as e:
-    print(f"An unexpected error occurred while reading the file: {e}")
-    exit()
-
-# Split the "Month" column into separate "Year" and "Month" columns
-# This assumes the "Month" column is in the format "Year Month" (e.g., "2024 January")
-data_frame[["Year", "Month"]] = data_frame["Month"].str.extract(r"(\d{4})\s+(.*)")
-
-# Filter the DataFrame to include rows for the last five years dynamically
-current_year = 2024
-filtered_data = data_frame[data_frame["Year"].astype(int).between(current_year - 4, current_year)]
-
-# Define the output directory and file path for saving the filtered data
-output_dir = os.path.join(os.path.dirname(__file__), "../data")
-output_file = os.path.join(output_dir, "five_yr_fatalities.csv")
-os.makedirs(output_dir, exist_ok=True)  # Create the directory if it doesn't exist
-
-try:
-    # Save the filtered data to a new CSV file
-    filtered_data.to_csv(output_file, index=False)
-    print(f"Filtered data successfully saved to {output_file}")
-except Exception as e:
-    print(f"An error occurred while writing the file: {e}")
-    exit()
+Use the following command to run the script:
+```bash
+python src_files/02_trendanalysis.py
 ```
+
 ### What the Code did:
 - **Load CSV File:** Reads the road_fatalities.csv file into a pandas DataFrame for analysis.
-- **Extract Year and Month:**  Splits the "Month" column into two parts: "Year" and "Month". The year and month are extracted using the str.split() method.
+- **Extract Year and Month:** Extracts year and month from combined date formats, if necessary. If the raw CSV data already contains separate "Year" and "Month" columns, this step is skipped. Extraction is only performed when the date information is stored as a single string (e.g., "January 2020").
 - **Filter Relevant Data:** Filters the DataFrame to include only rows corresponding to the years 2024 to 2020 by checking if the "Year" column values are in the specified range.
 - **Save Filtered Data:** Saves the filtered data into a new CSV file titled five_yr_fatalities.csv. This new file is stored in the same directory as the original file, making it easy to locate and use for further analysis or sharing.
-
-### Why It Was Necessary:
-Filtering the data to focus on the years 2024 to 2020 narrows the scope to the most recent and relevant period for analysis. Saving the filtered results into a new file ensures a clear, reusable dataset that can be used for further analysis or visualization. This cleaned format simplifies the exploration of trends and patterns.
 
 ### References for This Section:
 [Pandas Documentation](https://pandas.pydata.org/docs/).
@@ -395,86 +564,17 @@ For reading, manipulating, and exporting data in DataFrames.
 
 [Python OS Module](https://docs.python.org/3/library/os.html).
 For constructing paths dynamically and ensuring compatibility across operating systems.
+---
 
-## Step 5 Retrieve population data from the CSO API 
-Retrieve population data from the CSO API in JSON-stat format, parse the data, and export it to an Excel sheet for visualization and analysis
+## 3. Fetch Population Data
+Retrieves population data, saves as [population_breakdown.csv](./data/population_breakdown.csv). This step is essential for understanding the context of road fatalities in relation to the population size, allowing for per capita analysis and comparisons over time.
 
-### Code Used in file '03_population.py':
+### Run script '03_population.py':
 The following Python code was implemented to parse the JSON-stat response, structure the data, and save it as a CSV file:
 
-```python
-import requests
-import pandas as pd
-import os
-
-# Define the API endpoint URL for fetching population data
-url = "https://ws.cso.ie/public/api.jsonrpc"
-
-# Construct POST request payload
-current_year = 2024  # Replace this with dynamic calculation if needed
-year_range = [str(year) for year in range(current_year, current_year - 5, -1)]  # Last 5 years dynamically
-
-payload = {
-    "jsonrpc": "2.0",
-    "method": "PxStat.Data.Cube_API.ReadDataset",
-    "params": {
-        "class": "query",
-        "id": ["TLIST(A1)", "C02076V02508", "C02199V02655"],
-        "dimension": {
-            "TLIST(A1)": {"category": {"index": year_range}},
-            "C02076V02508": {"category": {"index": ["-"]}},
-            "C02199V02655": {"category": {"index": ["-"]}},
-        },
-        "extension": {
-            "pivot": None,
-            "codes": False,
-            "language": {"code": "en"},
-            "format": {"type": "JSON-stat", "version": "2.0"},
-            "matrix": "PEA01"
-        },
-        "version": "2.0"
-    }
-}
-
-try:
-    # Send POST request to the API
-    response = requests.post(url, json=payload)
-    response.raise_for_status()  # Check for HTTP request errors
-    data = response.json()  # Parse JSON-stat response
-    print("Population data retrieved successfully!")
-except requests.exceptions.RequestException as e:
-    print(f"Error while fetching data: {e}")
-    exit()
-except KeyError:
-    print("Unexpected data structure in JSON response.")
-    exit()
-
-# Extract population values and corresponding year labels
-try:
-    population_values = data["result"]["value"]  # Population values
-    year_labels = data["result"]["dimension"]["TLIST(A1)"]["category"]["label"]  # Year labels
-except KeyError:
-    print("Failed to extract necessary data from the JSON response.")
-    exit()
-
-# Combine the extracted data into a DataFrame
-population_data = pd.DataFrame({
-    "Year": list(year_labels.values()),
-    "Population (Thousand)": population_values
-})
-
-# Define the output directory and file path for saving the data
-output_dir = os.path.join(os.path.dirname(__file__), "../data")
-output_file = os.path.join(output_dir, "population_breakdown.csv")
-os.makedirs(output_dir, exist_ok=True)  # Create directory if it doesn't exist
-
-try:
-    # Save the DataFrame to a CSV file
-    population_data.to_csv(output_file, index=False)
-    print(f"Population data successfully saved to {output_file}")
-except Exception as e:
-    print(f"An error occurred while writing the file: {e}")
-    exit()
+Use the following command to run the script:
+```bash
+python src_files/03_population.py
 ```
 
 ### What the Code did:
@@ -482,17 +582,14 @@ except Exception as e:
 - **Structures Data:** Parses the JSON-stat response, organizes the population data alongside year labels, and stores them in a pandas DataFrame.
 - **Exports Data:** Writes the DataFrame into an Excel file (population_breakdown.csv) within the ../data directory for convenient storage and usage.
 
-### Why is it necessary:
-Converting population data into a structured CSV format ensures compatibility with a wide range of analytical tools and platforms, such as Python, Excel, or data visualization software.
-
 ### References for This Section
 - [Requests Library Documentation](https://requests.readthedocs.io/en/latest/)
 - [Pandas Documentation](https://pandas.pydata.org/)
 - [JSON-stat Format](https://json-stat.org/)
 
-## PART B: Analysis 
+## Data Analysis
 
-### Part One: Road Fatalities Analysis
+### 4. Monthly Trend Analysis
 
 ### Purpose:
 The purpose of this analysis is to examine road fatalities over the last five years, identify trends, and visualize the data. The analysis includes detecting increases or decreases in fatalities, splitting the data into quarters for better insights, and saving the results for further use. The results are presented in a line graph with quarterly splits and saved as a CSV file for trend analysis.
@@ -507,92 +604,11 @@ The purpose of this analysis is to examine road fatalities over the last five ye
 
 Quarterly splits are used in the analysis and visualizations of road safety data, as the data often exhibits seasonal trends. Fatalities can vary significantly during different times of the year due to factors such as summer holidays, increased travel during certain months, and hazardous winter conditions. By dividing the data into quarters (Q1–Q4), the analysis provides clearer insights into these seasonal patterns, helping to identify periods of increased risk. This, in turn, informs targeted road safety interventions, which are crucial for improving road safety.
 
-### Code Used in file '04_data_analysis.py':
+### Run script '04_data_analysis.py':
 
-```python
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-import os
-
-# Define the path to the input CSV file containing road fatality data
-csv_file = os.path.join(os.path.dirname(__file__), "../data/five_yr_fatalities.csv")
-
-try:
-    # Load data from CSV file into a DataFrame
-    fatality_data = pd.read_csv(csv_file)
-    print("Data successfully loaded!")
-except FileNotFoundError:
-    print(f"Error: File {csv_file} not found.")
-    exit()
-except Exception as e:
-    print(f"An unexpected error occurred: {e}")
-    exit()
-
-# Group and aggregate data by Year and Month to calculate total fatalities
-grouped_fatality_data = fatality_data.groupby(["Year", "Month"], as_index=False).sum()
-
-# Sort the data by Year and Month for proper visualization
-month_order = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-]
-grouped_fatality_data["Month"] = pd.Categorical(
-    grouped_fatality_data["Month"], categories=month_order, ordered=True
-)
-grouped_fatality_data = grouped_fatality_data.sort_values(by=["Year", "Month"])
-
-# Detect trends (increases or decreases) in fatalities
-grouped_fatality_data["Change"] = grouped_fatality_data["Fatalities"].diff().fillna(0)
-grouped_fatality_data["Trend"] = grouped_fatality_data["Change"].apply(
-    lambda x: "Increase" if x > 0 else "Decrease" if x < 0 else "No Change"
-)
-
-# Save the trend data to a CSV file
-trend_data_file = os.path.join(os.path.dirname(__file__), "../data/fatality_trends.csv")
-try:
-    grouped_fatality_data.to_csv(trend_data_file, index=False)
-    print(f"Trend data successfully saved to {trend_data_file}")
-except Exception as e:
-    print(f"Error while saving trend data: {e}")
-    exit()
-
-# Create line plot for fatalities grouped by Year and Month
-plt.figure(figsize=(12, 6))
-sns.lineplot(data=grouped_fatality_data, x="Month", y="Fatalities", hue="Year", marker="o")
-
-# Add vertical lines to split quarters
-quarter_splits = ["March", "June", "September"]
-for quarter in quarter_splits:
-    plt.axvline(x=quarter, color="red", linestyle="--", alpha=0.7)
-
-# Annotate quarters on the graph
-quarters = {"Q1": 1.5, "Q2": 4.5, "Q3": 7.5, "Q4": 10.5}
-for quarter, position in quarters.items():
-    plt.text(position, grouped_fatality_data["Fatalities"].max() + 2, quarter, ha="center", fontsize=10, color="black")
-
-# Annotate each data point with fatality count
-for _, row in grouped_fatality_data.iterrows():
-    plt.text(row["Month"], row["Fatalities"] + 0.5, str(row["Fatalities"]), ha="center", fontsize=8)
-
-# Chart details and formatting
-plt.title("Monthly Road Fatalities Over the Last 5 Years with Quarterly Splits")
-plt.xlabel("Month")
-plt.ylabel("Fatalities")
-plt.legend(title="Year")
-plt.xticks(rotation=45)
-plt.tight_layout()
-
-# Save the graph to the output directory
-graph_file = os.path.join(os.path.dirname(__file__), "../data/fatalities_trend_graph.png")
-try:
-    plt.savefig(graph_file)
-    print(f"Graph successfully saved to {graph_file}")
-except Exception as e:
-    print(f"Error while saving graph: {e}")
-    exit()
-
-plt.show()
+Use the following command to run the script:
+```bash
+python src_files/04_data_analysis.py
 ```
 
 ### What the Code Did:
@@ -606,7 +622,7 @@ plt.show()
 
 3. **Detect Trends**:
    - Calculates the change in fatalities between consecutive months.
-   - Categorizes the trend as "Increase," "Decrease," or "No Change."
+   - For each month, fatalities are compared to the previous month. If the number increases, it is categorized as 'Increase'; if it decreases, as 'Decrease'; if unchanged, as 'No Change'.
 
 4. **Save Trend Data**:
    - Saves the grouped and processed data, including the trend information, to a CSV file named fatality_trends.csv.
@@ -623,7 +639,7 @@ plt.show()
 
 #### 1. **Trend Data (`fatality_trends.csv`)**:
 
-![![fatality_trends.csv](./data/fatality_trends.png)]
+![fatality_trends.png](./data/fatality_trends.png)
 
 ** This is a partial view of the CSV file. The actual file contains more rows and columns.**
 
@@ -637,14 +653,8 @@ The trend data includes the following columns:
 #### 2. **Graph (`fatalities_trend_graph.png`)**:
 
 ![fatalities_trend_graph.png](./data/fatalities_trend_graph.png)
-- A line graph showing monthly fatalities for each year.
-- Vertical dashed lines split the graph into quarters (Q1, Q2, Q3, Q4).
-- Labels above each data point display the exact fatality totals.
-
-### Why It Was Necessary:
-- **Trend Analysis**: Helps identify patterns in road fatalities over time, such as seasonal trends or sudden spikes.
-- **Quarterly Insights**: Splitting the data into quarters provides a clearer understanding of how fatalities vary throughout the year.
-- **Data Storage**: Saving the trend data and graph ensures the results are reusable for further analysis or reporting.
+- The line graph visualizes monthly fatalities for each year, with vertical dashed lines marking the start of each quarter (Q1: Jan–Mar, Q2: Apr–Jun, Q3: Jul–Sep, Q4: Oct–Dec).
+- Labels above each data point display the exact fatality data totals.
 
 ### References for This Section:
 - [Pandas Documentation](https://pandas.pydata.org/docs/)
@@ -654,17 +664,16 @@ The trend data includes the following columns:
 
 ### Summary of Analysis
 
-- **Steady Decrease in Early 2021:** The first quarter (January-March) of 2021 showed a significant drop in fatalities, starting at 3 in January, then climbing slightly by March. This reflects a potential stabilization.
-- **Highest Single-Year Increase:** December 2021 saw the highest single-month increase in fatalities (+16).
-- **Consistent Seasonal Declines:** Across all years, October-December consistently experienced decreases in fatalities.
+- **2021 saw a notable drop in fatalities in Q1, stabilizing by March.**
+- **Highest Single-Year Increase:** December 2021 saw the highest single-month increase in fatalities (+16) per 100,000 population.
+- **Q4 Declines:** October–December generally experienced decreases in fatalities across all years.
 - **Notable Decline in Early 2023:** January to March 2023 showed a consistent decrease in fatalities, ending March at only 11 fatalities.
-- **Recurring Rise in August:** August generally experienced increases in fatalities across most years, notably in 2021 (+4), 2023 (+9), and 2020 (+6).
-- **Volatility in June:** June saw fluctuating trends year-on-year, ranging from increases in 2021 (+2) to sharp decreases in 2023 (-10).
+- **Recurring Rise in August:** August generally experienced increases in fatalities across most years, notably in 2021 (+4), 2023 (+9), and 2020 (+6) per 100,000 population.
+- **Volatility in June:** June saw fluctuating trends year-on-year, ranging from increases in 2021 (+2) to sharp decreases in 2023 (-10) per 100,000 population.
 - **Overall Decrease in 2022:** Year 2022 exhibited more months of decreasing fatalities compared to prior years, indicating a calmer trend overall.
-- **Spike in May 2023:** A sharp increase was recorded in May 2023, with fatalities reaching 20 (+10).
-- **Consistent Decline in Q4:** Quarter 4 (October-December) consistently exhibited declining trends in fatalities, highlighting seasonal patterns.
+- **Spike in May 2023:** A sharp increase was recorded in May 2023, with fatalities reaching 20 (+10) per 100,000 population.
 - **Recurring Stability in September:** Several Septembers showed minimal change or minor decreases, suggesting consistency.
-- **Influences** “External factors such as weather, traffic laws, and public holidays may influence these trends.”
+- **Influences:** Seasonal factors such as weather conditions, Irish legislative changes in road safety, increased travel during holidays, and enforcement efforts likely contribute to observed variations in Irish road fatalities.
 
 ### Quarterly Summary:
 
@@ -673,7 +682,7 @@ The trend data includes the following columns:
 - 2021: Dropped to as low as 3, then slowly rebounded to 9.
 - 2022: Stable increase from 13 to 16.
 - 2023: Decline from 16 to 11.
-- 2024: Minor fluctuations, ending at 18 fatalities in March.
+- 2024: Fatalities varied slightly, ending at 18 in March, showing a stabilized trend.
 
 **April to June:**
 - 2020: Fatalities reduced sharply, hitting a low of 6 in May, then rose in June.
@@ -692,11 +701,15 @@ The trend data includes the following columns:
 **October to December:**
 - 2020: Declined consistently, ending at 8 fatalities.
 - 2021: Volatile, peaking at 19 in December.
-- 2022: Saw mixed trends, ending with a decline.
+- 2022: Recorded fluctuations but showed an overall declining trend toward December.
 - 2023: Significant spike to 22 in October, followed by a stabilization.
 - 2024: Fluctuating trend, peaking at 17 in November
 
-### Part Two: Analyse yearly fatality totals per capita and per 100,000 population.  Compare with european averages
+### Why Filtering and Structuring Was Necessary
+
+Filtering ensures focus on the most recent trends while structured outputs in CSV format make further analysis and visualization seamless. By narrowing the dataset to relevant years and exporting to CSV, the project supports efficient, reproducible, and tool-compatible analysis and visualization.
+
+### Analyse yearly fatality data totals per capita and per 100,000 population.  Compare with european averages
 
 ### Tasks performed by the code:
 
@@ -704,109 +717,48 @@ The code performs the following tasks:
 
 - **Load Data:** Reads road fatalities and population data from CSV files into pandas DataFrames.
 - **Calculate Yearly Fatalities:** Groups the fatalities data by year and calculates the total fatalities for each year.
-- **Merge Data:** Combines the yearly fatalities data with the population data based on the year.
+- **Merge Data:** - Combines the yearly fatalities data with the population data based on the year.
 - **Calculate Metrics:** Computes two key metrics:
   - Fatalities per Capita: Calculates fatalities as a proportion of the total population.
   - Fatalities per 100,000 Population: Normalizes fatalities to a standard scale for easier comparison across years.
 - **Save Results:** Exports the merged data, including calculated metrics, to a new CSV file (fatality_analysis.csv).
+
 - **Visualize Data:** Creates visualizations:
-  - A line chart titled 'Fatalities_per_1000.png' displaying fatalities per 100,000 population over the years.
-  ![Fatalities_per_1000.png](./data/Fatalities_per_1000.png)
-  - A dual-axis chart titled 'fatality_analysis_chart.png' combining the bar chart (total fatalities) and line chart (fatalities per 100,000) for a comprehensive view.
+  - A line chart titled 'Fatalities_per_100000.png' displaying fatalities per 100,000 population over the years. This chart highlights key patterns such as a general decline in fatalities per 100,000 population from 2020 to 2021, followed by an increase peaking in 2023, and a slight decrease in 2024.
+  ![Fatalities_per_100000.png](./data/Fatalities_per_100000.png)
+  - A dual-axis chart combines the bar chart (total fatalities) and line chart (fatalities per 100,000) for a comprehensive view. This visualization allows for simultaneous comparison of the absolute number of fatalities and the normalized rate per 100,000 population, making it easier to spot years where population growth may mask underlying trends in road safety.
   ![fatality_analysis_chart.png](./data/fatality_analysis_chart.png)
-  - The dual-axis chart allows for simultaneous visualization of total fatalities and fatalities per 100,000 population, providing a clearer understanding of trends.
+  - **Note:** European averages are not included in these visualizations; they are referenced separately in the analysis and comparison sections using data from external sources.
+
+The visualizations provide a clear comparative analysis, aiding understanding of fatalities per capita.
+
 - **Save Chart:** Exports the dual-axis chart as an image file (fatality_analysis_chart.png) to the data folder.
 
-### Code Used in file '06_analyze_fatalities.py' to conduct analysis:
+### Run script '06_analyze_fatalities.py' to conduct analysis:
 
-```python
-import pandas as pd
-import matplotlib.pyplot as plt
-import os
+The following script loads the data, performs calculations, and generates visualizations:
 
-# Define file paths for input data
-fatalities_file = r"c:\Users\eCron\OneDrive\Documents\ATU_CourseWork\Web Services and Applications\Assessments\Project\WSAA-Project\data\five_yr_fatalities.csv"
-population_file = r"c:\Users\eCron\OneDrive\Documents\ATU_CourseWork\Web Services and Applications\Assessments\Project\WSAA-Project\data\population_breakdown.csv"
-
-try:
-    # Load fatality data and population data from CSV files
-    fatalities_df = pd.read_csv(fatalities_file)
-    population_df = pd.read_csv(population_file)
-    print("Data successfully loaded!")
-except FileNotFoundError as e:
-    print(f"Error: File not found. {e}")
-    exit()
-except pd.errors.EmptyDataError as e:
-    print(f"Error: File is empty or invalid. {e}")
-    exit()
-except Exception as e:
-    print(f"An unexpected error occurred: {e}")
-    exit()
-
-# Calculate yearly fatality totals
-yearly_fatalities = fatalities_df.groupby("Year")["Fatalities"].sum().reset_index()
-
-try:
-    # Merge yearly fatalities with population data
-    merged_df = pd.merge(yearly_fatalities, population_df, on="Year")
-except KeyError as e:
-    print(f"Error: Failed to merge dataframes. {e}")
-    exit()
-
-# Calculate fatalities per capita and per 100,000 population
-merged_df["Fatalities per Capita"] = merged_df["Fatalities"] / (merged_df["Population (Thousand)"] * 1000)
-merged_df["Fatalities per 100,000"] = (merged_df["Fatalities"] / (merged_df["Population (Thousand)"] * 1000)) * 100000
-
-# Save results to a new CSV file
-output_csv_path = r"c:\Users\eCron\OneDrive\Documents\ATU_CourseWork\Web Services and Applications\Assessments\Project\WSAA-Project\data\fatality_analysis.csv"
-try:
-    merged_df.to_csv(output_csv_path, index=False)
-    print(f"Analysis results saved to {output_csv_path}")
-except Exception as e:
-    print(f"Error while saving analysis results: {e}")
-    exit()
-
-# Function for bar chart visualization
-def plot_bar_chart(data, x, y, title, xlabel, ylabel, save_path, color="skyblue"):
-    plt.figure(figsize=(10, 6))
-    plt.bar(data[x], data[y], color=color)
-    plt.xlabel(xlabel)
-    plt.ylabel(ylabel)
-    plt.title(title)
-    plt.tight_layout()
-    try:
-        plt.savefig(save_path)
-        print(f"Chart saved to {save_path}")
-    except Exception as e:
-        print(f"Error while saving chart: {e}")
-    plt.show()
-
-# Plot total fatalities bar chart
-plot_bar_chart(
-    merged_df,
-    x="Year",
-    y="Fatalities",
-    title="Yearly Fatalities",
-    xlabel="Year",
-    ylabel="Total Fatalities",
-    save_path=r"c:\Users\eCron\OneDrive\Documents\ATU_CourseWork\Web Services and Applications\Assessments\Project\WSAA-Project\data\yearly_fatalities_chart.png"
-)
-
-# Plot fatalities per 100,000 line chart
-plt.figure(figsize=(10, 6))
-plt.plot(merged_df["Year"], merged_df["Fatalities per 100,000"], marker="o", color="orange")
-plt.xlabel("Year")
-plt.ylabel("Fatalities per 100,000")
-plt.title("Fatalities per 100,000 Population")
-plt.tight_layout()
-try:
-    plt.savefig(r"c:\Users\eCron\OneDrive\Documents\ATU_CourseWork\Web Services and Applications\Assessments\Project\WSAA-Project\data\fatalities_per_100k_chart.png")
-    print("Fatalities per 100,000 chart saved successfully.")
-except Exception as e:
-    print(f"Error while saving fatalities per 100,000 chart: {e}")
-plt.show()
-
+```bash
+python src_files/06_analyze_fatalities.py
 ```
+
+## Code of Conduct
+
+Please read the CODE_OF_CONDUCT.md file for details on our code of conduct.
+
+## Data Content Relevant To Task
+
+- [CSO Website - STATS API](https://ws.cso.ie/public/api.restful/PxStat.Data.Cube_API.ReadDataset/ROA29/JSON-stat/1.0/en)  
+  The CSO API provides data in the JSON-stat format.
+- [CSO API Documentation](https://cso.ie/en/services/pxstat/)
+
+**Data Sources:**
+- **Road Fatalities Data:** Retrieved from the CSO API using `01_fatalities.py`, which fetches monthly road fatalities in JSON-stat format and converts them to CSV for analysis.
+- **Population Data:** Retrieved from the CSO API using `03_population.py`, ensuring consistency with the fatalities dataset for accurate per capita and normalized calculations.
+
+JSON-stat is a lightweight JSON format for statistical data, designed for easy integration with statistical tools and APIs. It supports multidimensional datasets more efficiently than standard JSON.
+
+**References for This Section** [JSON-stat](https://json-stat.org/).
 
 ### Insights on Fatalities and Population Data
 
@@ -828,17 +780,17 @@ The following insights were drawn from the analysis in Ireland firstly, and then
 
 6. **Population Impact**: Despite the growing population, the fatalities per capita and per 100,000 population show that the rate of fatalities is not directly proportional to population growth.
 
-7. **Lowest Fatality Rate**: The year 2021 has the lowest fatalities per 100,000 population (2.60), indicating a relatively safer year compared to others.
+7. **Lowest Fatality Data Rate**: The year 2021 has the lowest fatalities per 100,000 population (2.60), indicating a relatively safer year compared to others.
 
-8. **Highest Fatality Rate**: The year 2023 has the highest fatalities per 100,000 population (3.41), suggesting a significant increase in fatalities relative to the population.
+8. **Highest Fatality Data Rate**: The year 2023 has the highest fatalities per 100,000 population (3.41), suggesting a significant increase in fatalities relative to the population.
 
-9. **Fatalities vs. Population**: While the population grows steadily, the number of fatalities does not follow a consistent trend, indicating other factors influencing fatalities.
+9. **Fatalities vs. Population**: While Ireland’s population increases yearly, fatalities fluctuate instead of rising proportionally, indicating that factors beyond population growth—such as traffic laws, enforcement, and infrastructure—may influence fatality rates.
 
-10. **Data Normalization**: The inclusion of "Fatalities per Capita" and "Fatalities per 100,000" provides a normalized perspective, making it easier to compare the impact of fatalities across years with varying population sizes.
+10. **Normalized Comparison**: Fatalities per 100,000 population provide a normalized comparison across different years and countries, simplifying trend analysis.  It could be stated that 'Ireland’s lower-than-average fatality rate suggests effective road safety policies, though the increase in 2023 indicates potential areas for improvement'.
 
 ## Road Fatalities in Ireland vs. European Average (Per 100,000 Population)
 
-This section compares Ireland’s road fatalities per 100,000 population over the past four years against the European average.
+This analysis compares Ireland’s road fatalities per 100,000 population to the European Commission’s published road safety statistics, evaluating both EU averages and localized trends.
 
 ### **Ireland vs. European Road Fatalities (Per 100,000 Population)**
 | Year  | Ireland | European Average |
@@ -852,605 +804,86 @@ This section compares Ireland’s road fatalities per 100,000 population over th
 - **Seasonal Trends**: Fatalities in Ireland tend to **decrease in the last quarter** of each year while peaking in summer months like August. This aligns with broader European trends, where summer months often see increased road activity and higher accident rates.  
 - **Yearly Insights**: Ireland recorded its highest fatalities per 100,000 population in **2023 (3.41)**, while **2021 had the lowest (2.60)**. This is consistent with European trends, where **2023 saw a slight decrease in overall fatalities**, but some countries, including Ireland, experienced localized increases.  
 - **Population Impact**: Despite Ireland’s **steady population growth**, fatalities per capita have remained relatively stable, suggesting **external factors** such as road safety measures, enforcement, and infrastructure improvements play a role. The European average has remained around **4.00 fatalities per 100,000**, indicating that Ireland consistently performs **better than the EU average** in road safety.  
-- **Data Normalization**: Normalized metrics like fatalities per 100,000 population provide clearer comparisons across different years and regions. Ireland’s **lower-than-average fatality rate** suggests **effective road safety policies**, though the increase in 2023 indicates potential areas for improvement.  
+- **Data Normalization**: Normalized metrics like fatalities per 100,000 population provide clearer comparisons across different years and regions. Ireland’s **lower-than-average fatality data rate** suggests **effective road safety policies**, though the increase in 2023 indicates potential areas for improvement.  
 
 ### **References for This Section**
 - [European Commission Road Safety Data](https://ec.europa.eu/transport/road_safety/specialist/statistics_en) – Comprehensive road safety statistics and reports.
 - [European Road Safety Report 2024](https://road-safety-charter.ec.europa.eu/content/annual-statistical-report-road-safety-eu-2024-0) – EU-wide road safety statistics.  
 - [ETSC Road Safety Data](https://etsc.eu/euroadsafetydata/) – European Transport Safety Council analysis.  
 
-## PART C: CRUD API
-
-A functional CRUD API for managing road fatalities data using Flask and Flask-RESTful is designed to efficiently handle Create, Read, Update, and Delete operations on road fatalities records. This API ensures seamless data management and enables users to interact with road fatalities data through a user-friendly and scalable interface. It supports data validation, modular design, and integration with external tools like Postman for testing and documentation, making it suitable for analysis, visualization, and tracking trends over time.
-
-Below are the steps and functionalities implemented in the code:
-
-### 1. Setup and Initialization
-**Flask and Flask-RESTful:**
-- The Flask framework is used to create the web application.
-- Flask-RESTful simplifies the creation of RESTful APIs by providing a Resource class for defining endpoints.
-**App Initialization:**
-- app = Flask(__name__) initializes the Flask application.
-- api = Api(app) initializes the RESTful API.
-
-### 2. In-Memory Data Store
-**Purpose:**
-- The data_store list is used as a temporary in-memory database to store road fatalities data.
-**Each record contains:**
-- id: A unique identifier for the record.
-- year: The year of the record.
-- month: The month of the record.
-- fatalities: The number of fatalities for that month.
-**Auto-Increment ID:**
-The next_id variable ensures that each new record gets a unique id.
-
-### 3. CRUD Operations
-The FatalitiesResource class defines the CRUD operations for managing the data.
-
-#### a. READ (GET)
-**Functionality:**
-- Fetches all records or a specific record by id.
-- If an id is provided as a query parameter, it searches for the record with that id.
-- If no id is provided, it returns all records.
-**Error Handling:**
-- Returns a 404 status code with a "Record not found" message if the record does not exist.
-
-#### b. CREATE (POST)
-**Functionality:**
-- Accepts a JSON payload to create a new record.
-- Adds the record to the data_store with a unique id.
-**Validation:**
-- Ensures that the required fields (year, month, fatalities) are present in the request.
-- Validates that fatalities is a non-negative integer.
-**Response:**
-- Returns a 201 status code with a success message and the created record.
-
-#### c. UPDATE (PUT)
-**Functionality:**
-- Updates an existing record by id with the provided JSON payload.
-- Searches for the record with the specified id and updates its fields.
-**Error Handling:**
-- Returns a 404 status code with a "Record not found" message if the record does not exist.
-**Response:**
-- Returns a 200 status code with a success message and the updated record.
-
-#### d. DELETE (DELETE)
-**Functionality:**
-- Deletes a record by id.
-- Removes the record from the data_store.
-**Error Handling:**
-- Returns a 404 status code with a "Record not found" message if the record does not exist.
-**Response:**
-- Returns a 200 status code with a success message.
-
-### 4. API Routes
-
-**Endpoints:**
-- /api/fatalities: Handles GET and POST requests.
-- /api/fatalities/<int:record_id>: Handles PUT and DELETE requests for a specific record by id.
-
-#### GroupedFatalitiesResource
-
-The `/api/grouped-fatalities` endpoint aggregates road fatalities data by year and month. This aggregation is especially useful for generating summary reports and visualizing trends over time, such as monthly or yearly patterns in fatalities. By providing grouped data, this endpoint enables the frontend to efficiently render charts and tables that highlight key trends and seasonal variations in road safety.
-
-**Route Registration:**
-api.add_resource(FatalitiesResource, '/api/fatalities', '/api/fatalities/<int:record_id>') registers the resource with the specified routes.
-
-### 6. Performance Considerations
-
-For high-traffic scenarios or when deploying the API publicly, consider implementing caching to improve performance and reduce server load. Caching can be achieved using tools like [Flask-Caching](https://flask-caching.readthedocs.io/en/latest/) on the backend, or by leveraging browser storage solutions such as `localStorage` on the frontend. This helps minimize repeated data processing and speeds up response times for frequently accessed endpoints.
-
-**References for This Section:** [Flask-Caching Documentation](https://flask-caching.readthedocs.io/en/latest/)
-
-### 5. Running the Application
-**Debug Mode:**
-- The application runs in debug mode (app.run(debug=True)), which provides detailed error messages and auto-reloads the server during development.
-**Access:**
-- The API is accessible at http://127.0.0.1:5000/api/fatalities.
-
-### Code used in file '06_api.py' to implement the CRUD API
-
-```python
-from flask import Flask, request, jsonify
-from flask_restful import Resource, Api
-from flask_cors import CORS
-import pandas as pd
-
-app = Flask(__name__)
-CORS(app)
-api = Api(app)
-
-# Path to the CSV file
-csv_file_path = "../data/five_yr_fatalities.csv"
-
-# Helper class to manage data storage
-class DataStore:
-    def __init__(self, csv_file):
-        self.csv_file = csv_file
-        try:
-            self.df = pd.read_csv(self.csv_file)
-            if "id" not in self.df.columns:
-                self.df.insert(0, "id", range(1, len(self.df) + 1))
-                self.save()
-        except FileNotFoundError:
-            print(f"Error: {self.csv_file} not found. Initializing an empty data store.")
-            self.df = pd.DataFrame(columns=["id", "Year", "Month", "Fatalities"])
-
-    def save(self):
-        self.df.to_csv(self.csv_file, index=False)
-
-    def get_all(self):
-        return self.df.to_dict(orient="records")
-
-    def get_by_id(self, record_id):
-        return self.df.loc[self.df["id"] == record_id].to_dict(orient="records")
-
-    def add_record(self, record):
-        new_id = self.df["id"].max() + 1 if not self.df.empty else 1
-        record["id"] = new_id
-        self.df = self.df.append(record, ignore_index=True)
-        self.save()
-        return record
-
-    def update_record(self, record_id, updates):
-        index = self.df.index[self.df["id"] == record_id].tolist()
-        if not index:
-            return None
-        self.df.loc[index[0], updates.keys()] = updates.values()
-        self.save()
-        return self.df.loc[index[0]].to_dict()
-
-    def delete_record(self, record_id):
-        index = self.df.index[self.df["id"] == record_id].tolist()
-        if not index:
-            return None
-        self.df = self.df.drop(index[0])
-        self.save()
-        return True
-
-# Initialize the data store
-data_store = DataStore(csv_file_path)
-
-class FatalitiesResource(Resource):
-    def get(self):
-        record_id = request.args.get("id")
-        if record_id:
-            record = data_store.get_by_id(int(record_id))
-            if record:
-                return record[0], 200
-            return {"message": "Record not found"}, 404
-        return data_store.get_all(), 200
-
-    def post(self):
-        new_record = request.json
-        required_fields = {"Year", "Month", "Fatalities"}
-        if not required_fields.issubset(new_record):
-            return {"message": "Missing required fields"}, 400
-        if not isinstance(new_record["Fatalities"], int) or new_record["Fatalities"] < 0:
-            return {"message": "Invalid fatalities value"}, 400
-        created_record = data_store.add_record(new_record)
-        return {"message": "Record created successfully", "record": created_record}, 201
-
-    def put(self, record_id):
-        updates = request.json
-        updated_record = data_store.update_record(record_id, updates)
-        if not updated_record:
-            return {"message": "Record not found"}, 404
-        return {"message": "Record updated successfully", "record": updated_record}, 200
-
-    def delete(self, record_id):
-        if data_store.delete_record(record_id):
-            return {"message": "Record deleted successfully"}, 200
-        return {"message": "Record not found"}, 404
-
-class GroupedFatalitiesResource(Resource):
-    def get(self):
-        df = data_store.df
-        grouped_df = df.groupby(["Year", "Month"], as_index=False).sum()
-        month_order = [
-            "January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"
-        ]
-        grouped_df["Month"] = pd.Categorical(grouped_df["Month"], categories=month_order, ordered=True)
-        grouped_df = grouped_df.sort_values(by=["Year", "Month"])
-        return grouped_df.to_dict(orient="records"), 200
-
-api.add_resource(FatalitiesResource, "/api/fatalities", "/api/fatalities/<int:record_id>")
-api.add_resource(GroupedFatalitiesResource, "/api/grouped-fatalities")
-
-if __name__ == "__main__":
-    app.run(debug=True)
-
-```
-
 ### Terminal Output
 
-When the application was running, the terminal displayed the following messages.  
-```
-* Restarting with watchdog (windowsapi)
-* Debugger is active!
-* Debugger PIN: 397-799-927 
-```
+When the application was running, the terminal displayed standard Flask server logs, including restart messages and debugger activation.
 
-The following image captures output when API Usage is performed.
+The following image captures output when API usage is performed.
 
 ![Image of Terminal Output](./data/terminal_message_crud_api.png)
 
-### API Usage
-
-##### 1. Create a New Record
-
-**Request:**
-```
-POST http://127.0.0.1:5000/api/fatalities
-Content-Type: application/json
-
-{
-    "id": 1,
-    "month": "January",
-    "fatalities": 186,
-    "Year": 2020
-}
-```
-**Response:**
-```
-{
-    "message": "200 OK, Request Successful, the server has responded as required",}
-}
-```
-
-##### 2. Read All records
-
-**Request:**
-```
-GET /api/fatalities
-```
-**Response**
-```
-{
-        "id": 29,
-        "Month": "May",
-        "Fatalities": 12,
-        "Year": 2022
-    },
-    {
-        "id": 30,
-        "Month": "June",
-        "Fatalities": 13,
-        "Year": 2022
-    }
-
-```
-##### 3. Update a Record
-
-**Request:**
-```
-PUT /api/fatalities/2
-Content-Type: application/json
-
-{
-    "fatalities": 186
-
-}
-```
-**Response**
-```
-{
-    "message": "Record updated successfully",
-    "record": {
-        "id": 2,
-        "Month": "February",
-        "Fatalities": 19,
-        "Year": 2020,
-        "fatalities": 186.0
-    }
-}
-```
-
-##### Verify if record was updated
-
-**Request:**
-```
-GET /api/fatalities/2
-```
-**Response**
-```
-    {
-        "id": 2,
-        "Month": "February",
-        "Fatalities": 19,
-        "Year": 2020,
-        "fatalities": 186.0
-    },
-```
-
-##### 4. Delete a Record
-
-**Request:**
-```
-DELETE /api/fatalities/1
-```
-**Response**
-```
-{
-    "message": "Record deleted successfully"
-}
-```
-
-### References for This Section
-**Flask Documentation**
-[Flask Official Documentation](https://flask.palletsprojects.com/en/stable/)
-Provides detailed information on how to build web applications using Flask.
-
-**Flask-RESTful Documentation**
-[Flask-RESTful Documentation](https://flask-restful.readthedocs.io/en/latest/)
-Explains how to create RESTful APIs using Flask-RESTful, including the Resource class and route management.
-
-**Postman Documentation**
-[Postman Documentation](https://www.postman.com/)
-Useful for testing CRUD API endpoints.
-
-**Python Requests Library**
-[Requests Library Documentation](https://requests.readthedocs.io/en/latest/)
-Covers how to make HTTP requests and handle responses, which is useful for testing APIs programmatically.
-
 ## Part D: Frontend Development
 
-The frontend of the project was designed to provide a user-friendly web interface for visualizing road safety data. It allows users to view monthly road fatalities over the last five years in both tabular and graphical formats. The interface dynamically fetches data from the backend API and updates the table and chart without requiring a page reload.
+## Frontend Development & Running the Frontend
 
-### Purpose
-**Create a User-Friendly Web Interface:**
-- Provide an intuitive and visually appealing interface for users to interact with the data.
-- Display road fatalities data in a clear and organized table.
-- Visualize trends in road fatalities using a line chart.
-**Use jQuery and AJAX for Asynchronous Data Retrieval:**
-- Fetch data dynamically from the backend API (/api/grouped-fatalities) without reloading the page.
-- Ensure seamless integration between the frontend and backend.
+The frontend provides a user-friendly web interface for visualizing road safety data. It allows users to view monthly road fatalities over the last five years in both tabular and graphical formats. The interface dynamically fetches data from the backend API and updates the table and chart without requiring a page reload.
 
-### Implementation
-**HTML Structure:**
-The index.html file provides the structure for the web interface, including:
--  A table (#fatalitiesTable) to display monthly fatalities data.
--  A chart (#fatalitiesChart) to visualize trends in fatalities.
+### Features
 
-**Code used in file 'index.html' to implement the frontend:**
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Road Safety Analysis</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="js/app.js"></script>
-</head>
-<body>
-    <header class="header">
-        <h1>Road Safety Analysis</h1>
-    </header>
-    <main>
-        <section id="chart-section" class="chart-section">
-            <h2>Monthly Fatalities Over the Last 5 Years</h2>
-            <canvas id="fatalitiesChart" aria-label="Line chart showing monthly fatalities"></canvas>
-        </section>
-        <section id="data-section" class="data-section">
-            <h2>Fatalities Data</h2>
-            <table id="fatalitiesTable" aria-label="Fatalities Data Table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Year</th>
-                        <th>Month</th>
-                        <th>Fatalities</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Data will be dynamically fetched from the API and inserted here -->
-                </tbody>
-            </table>
-            <div id="error-message" class="error-message" hidden></div>
-        </section>
-    </main>
-</body>
-</html>
-```
+- **Interactive Dashboard:** Displays road fatalities data in a table and a line chart.
+- **Dynamic Data Fetching:** Uses jQuery and AJAX to fetch data from the backend API (`/api/grouped-fatalities`). Facilitates smooth data retrieval from the backend, updating the frontend dynamically without requiring a page reload.
+- **Real-Time Updates:** Table and chart update automatically without page reload.
+- **Responsive Design:** Built with HTML, CSS, and Chart.js for a modern look.
 
-#### Dynamic Data Handling:
-- The app.js file uses jQuery and AJAX to fetch data from the backend API and dynamically populate the table and chart.
+### File Structure
 
-**Code used in file 'app.js' to implement the frontend:**
+- `static/index.html` – Main HTML file for the frontend.
+- `static/js/app.js` – JavaScript for fetching data and rendering the chart/table.
+- `static/css/styles.css` – Stylesheet for the frontend.
 
-```javascript
-$(document).ready(function () {
-    const apiUrl = "http://127.0.0.1:5000/api/grouped-fatalities"; // API endpoint for grouped data
-    let fatalitiesChart; // Declare chart instance globally to manage updates
+### How to Run the Frontend
 
-    // Fetch data from the API
-    function fetchData() {
-        $.ajax({
-            url: apiUrl,
-            method: "GET",
-            success: function (data) {
-                console.log("Data fetched successfully:", data); // Debugging
-                populateTable(data);
-                renderChart(data);
-            },
-            error: function () {
-                console.error("Error fetching data");
-                displayError("Failed to load data from the server.");
-            }
-        });
-    }
+1. **Start the Backend API**
+   - Ensure the backend Flask API (`05_app.py`) is running:
+     ```bash
+     python src_files/05_app.py
+     ```
+   - The API should be accessible at [http://127.0.0.1:5000/api/fatalities](http://127.0.0.1:5000/api/fatalities).
 
-    // Populate the table with data
-    function populateTable(data) {
-        const tableBody = $("#fatalitiesTable tbody");
-        tableBody.empty(); // Clear existing rows
-        data.forEach((record, index) => {
-            const row = `
-                <tr>
-                    <td>${index + 1}</td>
-                    <td>${record.Year}</td>
-                    <td>${record.Month}</td>
-                    <td>${record.Fatalities}</td>
-                </tr>
-            `;
-            tableBody.append(row);
-        });
-    }
+2. **Open the Frontend with Live Server**
+   - Install the [Live Server extension](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) in VS Code if you haven't already.
+   - In VS Code, right-click on `index.html` inside the static folder and select **Open with Live Server**.
+   - Your default browser will open and display the web interface, which fetches and displays live data from the backend API.
+   - Changes to `index.html`, `app.js`, or `styles.css` are reflected live in the browser when using Live Server, without needing manual refresh.
 
-    // Display error messages to the user
-    function displayError(message) {
-        const errorDiv = $("#errorMessage");
-        errorDiv.text(message).show(); // Show error message
-    }
+    > **Note:** The frontend expects the backend API to be running at `http://127.0.0.1:5000`. Ensure the Flask server (`05_app.py`) is running at http://127.0.0.1:5000 before accessing the frontend, as the web interface fetches live API data.
 
-    // Render the chart using Chart.js
-    function renderChart(data) {
-        const ctx = document.getElementById("fatalitiesChart").getContext("2d");
+3. **Verify Data Fetching**
+   - Check the browser console (Developer Tools > Console) for any errors.
+   - Ensure the table and chart are populated with data fetched from the backend API.
 
-        // Prepare data for the chart
-        const labels = data.map(record => `${record.Month} ${record.Year}`);
-        const fatalities = data.map(record => record.Fatalities);
+   **Tip:** The format of the data returned by the API (e.g., `/api/fatalities`) is demonstrated in the earlier Manual Testing section, where example JSON responses are shown.
 
-        // Clear the existing chart if it exists
-        if (fatalitiesChart) {
-            fatalitiesChart.destroy();
-        }
+    **Note:** If the chart does not display data correctly, check if the API response is empty or contains unexpected values. Open the browser console (Developer Tools → Console) to debug potential JavaScript errors.
 
-        // Create a new chart instance
-        fatalitiesChart = new Chart(ctx, {
-            type: "line",
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: "Monthly Fatalities",
-                    data: fatalities,
-                    borderColor: "rgba(75, 192, 192, 1)",
-                    backgroundColor: "rgba(75, 192, 192, 0.2)",
-                    borderWidth: 2,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: "top"
-                    }
-                },
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: "Month"
-                        }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: "Fatalities"
-                        },
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    }
+4. **Screenshots**
+   - Example:
+    ![Monthly Fatalities Image](./data/monthly_fatalites_over_the_last_5_years.png)
+    ![Fatalities Data](./data/fatalities_data.png)
 
-    // Fetch data on page load
-    fetchData();
-});
-```
+**Troubleshooting:**  
+- If data fails to load: Verify that the backend is running and check the browser console (F12 → Console) for errors.
 
-**Chart Visualization:**
-- The Chart.js library is used to render a line chart that shows monthly fatalities over the last five years.
-**Styling:**
-- The styles.css file ensures the interface is visually appealing and easy to navigate
-
-### Steps to Run the Frontend
-
-1. Ensure the backend API (05_app.py) is running (Flask app).
-
-- Open a terminal, navigate to the directory containing the backend file, and execute:
-```python
-python 05_app.py
-```
-- Confirm the API is accessible at
-
-```
-curl http://localhost:5000/api/fatalities
-```
-
-2. Verify Frontend Files
-- Ensure the following files are in the static folder:
-  - index.html in the static directory.
-  - styles.css in the static/css directory.
-  - app.js in the static/js directory.
-
-3. Open the Frontend in a Browser
-To see live data from the backend API use the `index.html` file in the `static` folder using the following instructions (if not already installed).
-
-- 1. Install the [Live Server extension](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) from the VS Code Extensions Marketplace.
-- 2. In VS Code, right-click on `index.html` inside the `static` folder and select **Open with Live Server**.
-- 3. Your default browser will open and display the web interface, which fetches and displays live data from the backend API.
-- 4. Any changes you make to `index.html`, `app.js`, or `styles.css` will be reflected automatically in the browser.
-
-**Note:** The frontend expects the backend API to be running at `http://127.0.0.1:5000`. Make sure to start the Flask server before opening the live preview.
-
-4. Verify Data Fetching 
- - Check the browser console (Developer Tools > Console) for any errors.
- - Ensure the table and chart are populated with data fetched from the backend API.
-
-5. Inspect the Table
-- Verify that the table (#fatalitiesTable) displays the correct data:
- - Columns: ID, Year, Month, Fatalities.
- - Rows dynamically populated with API data.
-
- 6. Inspect the Chart
- - Confirm that the chart renders correctly:
- - A line chart showing monthly fatalities over the last five years.
- - Labels and data points match the API data.
-
-7. Interact with the Interface
-- Users can interact with the chart and table to view trends in road fatalities.
-- Data is fetched asynchronously, allowing for real-time updates without page reloads.
-
-### Outcome
-**1. User-Friendly Web Interface:**
-- The interface successfully displays road fatalities data in a table and a line chart.
-- Users can easily view trends and patterns in the data.
-**2. Seamless Asynchronous Data Retrieval:**
-- Data is fetched dynamically from the backend API using jQuery and AJAX.
-- The table and chart update automatically without requiring a page reload.
-**3.Visualization of Trends:**
-- The line chart provides a clear visualization of monthly fatalities trends over the last five years.
-- The table complements the chart by providing detailed numerical data.
-
-### Screenshots
-Image 'monthly_fatalities_over_the_last_5_years.png' displays an interactive chart with data displayed by hovering over each monthly point accessible at http://127.0.0.1:5500/WSAA-Project/static/index.html
-![Monthly Fatalities Image](./data/monthly_fatalites_over_the_last_5_years.png)
-
-Image 'Fatalities_Data.png' displays a chart with headings 'ID, Year, Month, Fatalities' which is accessed at http://127.0.0.1:5500/WSAA-Project/static/index.html
-![Fatalities Data](./data/fatalities_data.png)
-
-This interface is intuitive, visually appealing, and effectively displays the data in both tabular and graphical formats.  Data is dynamically fetched from the backend API and displayed in real-time without requiring a page reload.  This method of accessing data is preferred as it negates the necessity to re run programs when CRUD actions are undertaken.
-
+---
 ## Part E: OAuth (Open Authorization)
 
 OAuth (Open Authorization) is an open standard protocol that allows secure, delegated access to resources on behalf of a user. It is commonly used to grant third-party applications limited access to a user's resources (e.g., data or services) without exposing the user's credentials (like passwords).
 
-OAuth was not considered necessary in this project for the following reasons
+Due to the private nature of the repository, local API usage, and limited scope of the project, OAuth implementation was deemed unnecessary.
 
 **Private Repository:**
 - A private GitHub repository is already secure and accessible only to authorized users with the appropriate permissions.
 - GitHub handles authentication and access control for private repositories, so additional layers like OAuth are redundant in this context.
 
 **No Public API Exposure:**
-- If the API is not being hosted on a public server and is only being used locally (e.g., http://127.0.0.1:5000), there is no need for OAuth since the API is not exposed to external users.
+- If the API is not being hosted on a public server and is only being used locally (e.g., http://127.0.0.1:5000), there is no need for OAuth since the API is not exposed to external users.  If deployed in a public environment, OAuth can be integrated to enhance API security.
 
 **Limited Scope:**
 - The project is focused on analyzing and visualizing road safety data, with CRUD operations on a local dataset. There is no sensitive or user-specific data that requires advanced authentication mechanisms like OAuth.
@@ -1501,7 +934,6 @@ The Road Safety Analysis Project successfully achieved its objectives of analyzi
 - **Population Impact**: Despite population growth, fatalities per capita remained relatively stable, indicating other influencing factors.
 - **Data Normalization**: Normalized metrics like fatalities per 100,000 population provided clearer insights into road safety trends.
 
-
 ### Future Scope:
 - **Authentication**: Implement OAuth for secure access to the API when deployed in a public environment.
 - **Enhanced Visualizations**: Add more interactive features to the frontend, such as filtering and exporting data.
@@ -1514,34 +946,38 @@ Github Copilot. "This work was partially supported by GitHub Copilot, an AI-powe
 
 ## Project References
 
-- [Chart.js Documentation](https://www.chartjs.org/docs/latest/) – Provides guidance on using Chart.js to create interactive and dynamic data visualizations, crucial for rendering road safety trends.
+- [Chart.js Documentation](https://www.chartjs.org/docs/latest/) – Guidance on using Chart.js for interactive and dynamic data visualizations.
 - [Central Statistics Office (CSO) Ireland](https://www.cso.ie/en/index.html) – Official source for Irish statistical data, including road fatalities and population.
-- [CURL Documentation](https://curl.se/) – Essential for making HTTP requests to APIs, such as retrieving road fatalities data from the CSO API.
-- [European Commission Road Safety Data](https://ec.europa.eu/transport/road_safety/specialist/statistics_en) – Comprehensive road safety statistics and reports.
-- [European Road Safety Report 2024](https://road-safety-charter.ec.europa.eu/content/annual-statistical-report-road-safety-eu-2024-0) – EU-wide road safety statistics.  
+- [CURL Documentation](https://curl.se/) – Making HTTP requests to APIs, such as retrieving road fatalities data from the CSO API.
+- [European Commission Road Safety Data](https://ec.europa.eu/transport/road_safety/specialist/statistics_en) – Comprehensive road safety statistics and reports across Europe.
+- [European Road Safety Report 2024](https://road-safety-charter.ec.europa.eu/content/annual-statistical-report-road-safety-eu-2024-0) – EU-wide road safety statistics.
 - [ETSC Road Safety Data](https://etsc.eu/euroadsafetydata/) – European Transport Safety Council analysis.
-- [European Road Safety Data](https://ec.europa.eu/transport/road_safety/specialist/statistics_en) – Provides statistical data on road safety across Europe for comparative analysis.
-- [Flask Official Documentation](https://flask.palletsprojects.com/en/stable/) – Covers Flask, the Python web framework used to build the project’s backend API for managing and analyzing road safety data.
-- [Flask-RESTful Documentation](https://flask-restful.readthedocs.io/en/latest/) – Details RESTful API development using Flask, ensuring efficient CRUD operations on fatalities data.
-- [Flask-Caching Documentation](https://flask-caching.readthedocs.io/en/latest/) – Explains caching strategies in Flask applications, useful for improving API response times when handling repeated queries
-- [GitHub Copilot](https://github.com/features/copilot) – AI-powered code completion tool used to enhance development efficiency while writing backend and data analysis scripts.
-- [Google Identity Platform OAuth 2.0 Documentation](https://developers.google.com/identity/protocols/oauth2) Practical guides for real-world OAuth integration in cloud platforms.
-- Ireland Road Safety Authority (RSA) [Road Safety Data](https://www.rsa.ie/en/road-safety/data/) – Provides official statistics and reports on road safety in Ireland, essential for understanding trends and patterns in fatalities.
-- [JSON-stat Format](https://json-stat.org/) – Defines the lightweight JSON-stat format, crucial for handling statistical data retrieved from the CSO API.
-- [jQuery Documentation](https://api.jquery.com/) – Used for DOM manipulation and AJAX requests in the frontend.
-- [Markdown Guide](https://www.markdownguide.org/) – Helps format README files effectively, ensuring clarity and readability for project documentation.
-- [Matplotlib Documentation](https://matplotlib.org/stable/contents.html) – Guides visualization of road safety trends using charts and graphs within Python.
-- [Microsoft Identity Platform OAuth 2.0 Documentation](https://learn.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow) – Provides insights into OAuth authentication implementation for Microsoft services and APIs.
-- [OAuth 2.0 Authorization Framework (RFC 6749)](https://datatracker.ietf.org/doc/html/rfc6749) – Defines the industry-standard OAuth 2.0 security protocol used for secure access control.
-- [OAuth 2.0 Simplified](https://aaronparecki.com/oauth-2-simplified/) – A simplified explanation of OAuth concepts, useful for understanding authentication flows in API security.
-- [OAuth.net](https://oauth.net/) – A collection of OAuth-related best practices and tutorials for secure authentication and delegated access.
-- [OS Module in Python](https://docs.python.org/3/library/os.html) – Documentation on Python’s OS module, used for file path manipulation and managing directories.
-- [Pandas Documentation](https://pandas.pydata.org/docs/) – Covers the Pandas library, essential for processing and analyzing road fatalities data efficiently.
-- [Pandas IO Tools (Excel)](https://pandas.pydata.org/docs/user_guide/io.html#excel-files) – For exporting data to Excel format.
-- [Postman Documentation](https://www.postman.com/) – Provides tools for testing and validating API endpoints, ensuring proper communication between frontend and backend.
+- [Flask-Caching Documentation](https://flask-caching.readthedocs.io/en/latest/) – Caching strategies in Flask applications.
+- [Flask Official Documentation](https://flask.palletsprojects.com/en/stable/) – Flask web framework documentation for backend API development.
+- [Flask-RESTful Documentation](https://flask-restful.readthedocs.io/en/latest/) – RESTful API development using Flask.
+- [GitHub Copilot](https://github.com/features/copilot) – AI-powered code completion tool used during development.
+- [Google Identity Platform OAuth 2.0 Documentation](https://developers.google.com/identity/protocols/oauth2) – Guides for OAuth integration in cloud platforms.
+- [Ireland Road Safety Authority (RSA) Data](https://www.rsa.ie/en/road-safety/data/) – Official statistics and reports on road safety in Ireland.
+- [JSON-stat Format](https://json-stat.org/) – Lightweight format for statistical data, used for CSO API data.
+- [jQuery Documentation](https://api.jquery.com/) – DOM manipulation and AJAX requests in the frontend.
+- [Markdown Guide](https://www.markdownguide.org/) – Formatting README files for clarity and readability.
+- [Matplotlib Documentation](https://matplotlib.org/stable/contents.html) – Visualization of trends using charts and graphs in Python.
+- [Matplotlib: Working with CSV Data](https://matplotlib.org/stable/users/explain/data/csv.html) – Reading and visualizing CSV data with matplotlib.
+- [Microsoft Identity Platform OAuth 2.0 Documentation](https://learn.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow) – OAuth authentication for Microsoft services and APIs.
+- [OAuth 2.0 Authorization Framework (RFC 6749)](https://datatracker.ietf.org/doc/html/rfc6749) – Industry-standard OAuth 2.0 security protocol.
+- [OAuth 2.0 Simplified](https://aaronparecki.com/oauth-2-simplified/) – Simplified explanation of OAuth concepts and authentication flows.
+- [OAuth.net](https://oauth.net/) – OAuth best practices and tutorials for secure authentication.
+- [OS Module in Python](https://docs.python.org/3/library/os.html) – File path manipulation and directory management in Python.
+- [Pandas Documentation](https://pandas.pydata.org/docs/) – Data processing and analysis with Pandas.
+- [Pandas IO Tools (Excel)](https://pandas.pydata.org/docs/user_guide/io.html#excel-files) – Exporting data to Excel format.
+- [Pandas: IO Tools (Text, CSV, HDF5, …)](https://pandas.pydata.org/docs/user_guide/io.html#csv-text-files) – Reading and writing CSV files with Pandas.
+- [Postman Documentation](https://www.postman.com/) – Testing and validating API endpoints.
+- [Python CSV Module Documentation](https://docs.python.org/3/library/csv.html) – CSV file handling in Python.
 - [Python Official Documentation](https://docs.python.org/3/) – General Python language reference.
-- [Python CSV Module Documentation](https://docs.python.org/3/library/csv.html) – Explains CSV file handling in Python, used to store and manage processed fatalities data.
-- [Requests Library Documentation](https://requests.readthedocs.io/en/latest/) – Guides making HTTP requests in Python, fundamental for fetching road safety data from APIs.
-- [Seaborn Documentation](https://seaborn.pydata.org/) – Helps in advanced data visualization techniques for representing road fatalities analysis clearly.
+- [Requests Library Documentation](https://requests.readthedocs.io/en/latest/) – Making HTTP requests in Python.
+- [Seaborn Documentation](https://seaborn.pydata.org/) – Advanced data visualization techniques.
+- [Seaborn: Data Structures](https://seaborn.pydata.org/tutorial/data_structure.html) – Using Seaborn with Pandas DataFrames.
+- [Visual Studio Code](https://code.visualstudio.com/) – Integrated development environment used for coding and debugging.
+- [Visual Studio Code Live Server Extension](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) – Live reloading of web pages during development.
 
 # END
