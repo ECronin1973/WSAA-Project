@@ -11,8 +11,6 @@ You’ll also find setup instructions, testing steps, and references for further
 - It guides you through setup, usage, and analysis.
 - It helps you understand the meaning and significance of the data and results.
 
-If you want to understand, run, or extend this project, start here.
-
 ## Table of Contents
 
 - [Overview](#overview)
@@ -21,38 +19,39 @@ If you want to understand, run, or extend this project, start here.
 - [License](#license)
 - [Project Structure](#project-structure)
   - [Script Dependency Summary](#script-dependency-summary)
-- [Technical Set Up](#technical-set-up)
+- [Technical Setup](#technical-setup)
 - [Pre-Requisites](#pre-requisites)
 - [How Flask Interacts with the CSO API and Data Flow](#how-flask-interacts-with-the-cso-api-and-data-flow)
 - [Getting Started](#getting-started)
 - [Manual Testing](#manual-testing)
-  - [API Testing with Postman](#api-testing-with-postman)
-  - [Test CRUD API Endpoints](#test-crud-api-endpoints)
-- [Endpoint Reference Table](#endpoint-reference-table)
+  - [Manual API Testing with Postman](#manual-api-testing-with-postman)
+    - [Testing Data Retrieval from CSO API](#testing-data-retrieval-from-cso-api)
+    - [Testing CRUD API Endpoints](#testing-crud-api-endpoints)
+- [API Endpoint Reference](#api-endpoint-reference)
 - [Automated Data Processing and Analysis](#automated-data-processing-and-analysis)
   - [Data Retrieval](#data-retrieval)
-    - [Fetch Road Fatalities Data](#1-fetch-road-fatalities-data)
-    - [Trend Analysis](#2-trend-analysis)
-    - [Fetch Population Data](#3-fetch-population-data)
+    - [Fetching Road Fatalities Data](#fetching-road-fatalities-data)
+    - [Trend Analysis](#trend-analysis)
+    - [Fetching Population Data](#fetching-population-data)
   - [Data Analysis](#data-analysis)
-    - [Monthly Trend Analysis](#4-monthly-trend-analysis)
+    - [Monthly Trend Analysis](#monthly-trend-analysis)
     - [Summary of Analysis](#summary-of-analysis)
     - [Quarterly Summary](#quarterly-summary)
     - [Why Filtering and Structuring Was Necessary](#why-filtering-and-structuring-was-necessary)
-    - [Analyse yearly fatality data totals per capita and per 100,000 population.  Compare with european averages](#analyse-yearly-fatality-data-totals-per-capita-and-per-100000-population--compare-with-european-averages)
-    - [Tasks performed by the code](#tasks-performed-by-the-code)
+    - [Ireland vs. European Averages](#ireland-vs-european-averages)
+    - [Tasks Performed by the Code](#tasks-performed-by-the-code)
 - [Code of Conduct](#code-of-conduct)
 - [Data Content Relevant To Task](#data-content-relevant-to-task)
 - [Insights on Fatalities and Population Data](#insights-on-fatalities-and-population-data)
 - [Road Fatalities in Ireland vs. European Average (Per 100,000 Population)](#road-fatalities-in-ireland-vs-european-average-per-100000-population)
   - [Comparison in Key Findings](#comparison-in-key-findings)
 - [Terminal Output](#terminal-output)
-- [Frontend Development & Running the Frontend](#frontend-development--running-the-frontend)
-  - [Features](#features-1)
-  - [File Structure](#file-structure)
+- [Frontend Development and Running the Frontend](#frontend-development-and-running-the-frontend)
+  - [Frontend Features](#frontend-features)
+  - [Frontend File Structure](#frontend-file-structure)
   - [How to Run the Frontend](#how-to-run-the-frontend)
   - [Troubleshooting](#troubleshooting)
-- [OAuth (Open Authorization)](#part-e-oauth-open-authorization)
+- [OAuth (Open Authorisation) Overview](#oauth-open-authorisation-overview)
 - [Conclusion](#conclusion)
 - [Acknowledgements](#acknowledgements)
 - [Project References](#project-references)
@@ -92,7 +91,7 @@ This project is licensed under the [Apache License 2.0](./LICENSE). See the LICE
 ---
 
 ## Project Structure
-```
+```plaintext
 WSAA-Project/
 │
 ├── data/
@@ -130,7 +129,6 @@ WSAA-Project/
 
 ### Script Dependency Summary
 
-```markdown
 | Script Name              | Input Files Required                                   | Output Files Generated                                                                 | Description                                                                                  |
 |--------------------------|--------------------------------------------------------|----------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|
 | 01_fatalities.py         | None (fetches from CSO API)                            | data/road_fatalities.csv                                                               | Fetches and saves raw road fatalities data from the CSO API                                  |
@@ -139,10 +137,10 @@ WSAA-Project/
 | 04_data_analysis.py      | data/five_yr_fatalities.csv                            | data/fatality_trends.csv, data/fatalities_trend_graph.png                              | analyses and visualises monthly trends in fatalities                                         |
 | 05_app.py                | data/five_yr_fatalities.csv                            | Serves API responses (no new files generated)                                           | Flask API for managing and updating road fatality records (CRUD operations)                  |
 | 06_analyse_fatalities.py | data/five_yr_fatalities.csv, data/population_breakdown.csv | data/fatality_analysis.csv, data/Fatalities_per_100000.png, data/fatality_analysis_chart.png | Calculates per capita and per 100,000 metrics, generates summary visualisations              |
-```
+
 ---
 
-## Technical Set Up
+## Technical Setup
 
 1. **Backend**:
    - Flask for RESTful API development.
@@ -244,10 +242,10 @@ pip install -r requirements.txt
 
 Manual testing ensures that your API endpoints and data processing scripts work as expected before integrating them into automated workflows or the frontend.
 
+### Manual API Testing with Postman
 
-## API Testing with Postman
+#### Testing Data Retrieval from CSO API
 
-### 1. Retrieve Data from CSO API
 Using CURL:
 
 ```bash
@@ -256,20 +254,26 @@ curl -X GET "https://ws.cso.ie/public/api.restful/PxStat.Data.Cube_API.ReadDatas
 
 This command fetches the latest road fatalities data in JSON-stat format from the CSO API.
 
-#### Using Postman:
+**Using Postman:**
 
 1. Open Postman and create a new request.
 2. Set the HTTP method to GET.
 3. Enter the URL:
-- https://ws.cso.ie/public/api.restful/PxStat.Data.Cube_API.ReadDataset/ROA29/JSON-stat/1.0/en
+   - https://ws.cso.ie/public/api.restful/PxStat.Data.Cube_API.ReadDataset/ROA29/JSON-stat/1.0/en
 4. Set the header:
-- Content-Type: application/json
+   - Content-Type: application/json
 5. Click Send and review the JSON-stat response
 
-### 2. Test CRUD API Endpoints
+#### Testing CRUD API Endpoints
+
 The backend API provides endpoints for creating, reading, updating, and deleting road fatalities records. Use Postman to test each operation:
 
-1. Create a New Record (POST)
+1. **Create a New Record (POST)**
+2. **Read All Records (GET)**
+3. **Update a Record (PUT)**
+4. **Read a Specific Record by ID (GET)**
+5. **Delete a Record (DELETE)**
+---
 
 #### 1. Create a New Record
 
@@ -462,22 +466,23 @@ This command was used to delete a record by specifying its id in the URL.
 
 **Flask Documentation**
 [Flask Official Documentation](https://flask.palletsprojects.com/en/stable/)
-Provides detailed information on how to build web applications using Flask.
+- Provides detailed information on how to build web applications using Flask.
 
 **Flask-RESTful Documentation**
 [Flask-RESTful Documentation](https://flask-restful.readthedocs.io/en/latest/)
-Explains how to create RESTful APIs using Flask-RESTful, including the Resource class and route management.
+- Explains how to create RESTful APIs using Flask-RESTful, including the Resource class and route management.
 
 **Postman Documentation**
 [Postman Documentation](https://www.postman.com/)
-Useful for testing CRUD API endpoints.
+- Useful for testing CRUD API endpoints.
 
 **Python Requests Library**
 [Requests Library Documentation](https://requests.readthedocs.io/en/latest/)
-Covers how to make HTTP requests and handle responses, which is useful for testing APIs programmatically.
+- Covers how to make HTTP requests and handle responses, which is useful for testing APIs programmatically.
+
 ---
 
-### Endpoint Reference Table
+## API Endpoint Reference
 
 | Endpoint                   | Purpose                                                                                                    | Used by        | Pagination/Query Parameters                |
 |----------------------------|------------------------------------------------------------------------------------------------------------|----------------|--------------------------------------------|
@@ -514,10 +519,10 @@ Covers how to make HTTP requests and handle responses, which is useful for testi
 
 ## Automated Data Processing and Analysis
 
-## Data Retrieval
+### Data Retrieval
 The data retrieval process involves fetching road fatalities and population data from the Central Statistics Office (CSO) API, processing it, and saving it in a structured format for further analysis. This is done through a series of Python scripts that automate the data fetching, parsing, and saving processes.
 
-## 1. Fetch Road Fatalities Data
+#### Fetching Road Fatalities Data
 
 ### Purpose:
 Retrieves data from CSO API and saves as [road_fatalities.csv](./data/road_fatalities.csv).
@@ -542,7 +547,7 @@ python src_files/01_fatalities.py
 - [Seaborn: Data Structures](https://seaborn.pydata.org/tutorial/data_structure.html) – Seaborn works seamlessly with pandas DataFrames, which are easily created from CSV files.
 - [JSON-stat Documentation](https://json-stat.org/) – Details on the JSON-stat format and its use in statistical data exchange.
 
-## 2. Trend Analysis
+#### Trend Analysis
 
 ### Purpose:
 Filters last five years, outputs [five_yr_fatalities.csv](./data/five_yr_fatalities.csv) for further analysis, and saves the results for trend analysis. This step is crucial for narrowing down the dataset to the most relevant years, allowing for focused analysis of recent trends in road fatalities.
@@ -569,7 +574,7 @@ For reading, manipulating, and exporting data in DataFrames.
 For constructing paths dynamically and ensuring compatibility across operating systems.
 ---
 
-## 3. Fetch Population Data
+#### Fetching Population Data
 Retrieves population data, saves as [population_breakdown.csv](./data/population_breakdown.csv). This step is essential for understanding the context of road fatalities in relation to the population size, allowing for per capita analysis and comparisons over time.
 
 ### Run script '03_population.py':
@@ -590,9 +595,9 @@ python src_files/03_population.py
 - [Pandas Documentation](https://pandas.pydata.org/)
 - [JSON-stat Format](https://json-stat.org/)
 
-## Data Analysis
+### Data Analysis
 
-### 4. Monthly Trend Analysis
+#### Monthly Trend Analysis
 
 ### Purpose:
 The purpose of this analysis is to examine road fatalities over the last five years, identify trends, and visualise the data. The analysis includes detecting increases or decreases in fatalities, splitting the data into quarters for better insights, and saving the results for further use. The results are presented in a line graph with quarterly splits and saved as a CSV file for trend analysis.
@@ -665,7 +670,7 @@ The trend data includes the following columns:
 - [Seaborn Documentation](https://seaborn.pydata.org/)
 - [Python OS Module](https://docs.python.org/3/library/os.html)
 
-### Summary of Analysis
+#### Summary of Analysis
 
 - **2021 saw a notable drop in fatalities in Q1, stabilizing by March.**
 - **Highest Single-Year Increase:** December 2021 saw the highest single-month increase in fatalities (+16) per 100,000 population.
@@ -678,7 +683,7 @@ The trend data includes the following columns:
 - **Recurring Stability in September:** Several Septembers showed minimal change or minor decreases, suggesting consistency.
 - **Influences:** Seasonal factors such as weather conditions, Irish legislative changes in road safety, increased travel during holidays, and enforcement efforts likely contribute to observed variations in Irish road fatalities.
 
-### Quarterly Summary:
+#### Quarterly Summary
 
 **January to March:**
 - 2020: Fatalities fluctuated from 9 to 17.
@@ -708,15 +713,15 @@ The trend data includes the following columns:
 - 2023: Significant spike to 22 in October, followed by a stabilization.
 - 2024: Fluctuating trend, peaking at 17 in November
 
-### Why Filtering and Structuring Was Necessary
+#### Why Filtering and Structuring Was Necessary
 
 Filtering ensures focus on the most recent trends while structured outputs in CSV format make further analysis and visualisation seamless. By narrowing the dataset to relevant years and exporting to CSV, the project supports efficient, reproducible, and tool-compatible analysis and visualisation.
 
-### Ireland vs European Averages
+### Ireland vs. European Averages
 
 This section will analyse yearly fatality data totals per capita and per 100,000 population.  Compare with european averages
 
-### Tasks performed by the code:
+### Tasks Performed by the Code:
 
 The code performs the following tasks:
 
@@ -826,18 +831,18 @@ The following image captures output when API usage is performed.
 
 ## Part D: Frontend Development
 
-## Frontend Development & Running the Frontend
+## Frontend Development and Running the Frontend
 
 The frontend provides a user-friendly web interface for visualizing road safety data. It allows users to view monthly road fatalities over the last five years in both tabular and graphical formats. The interface dynamically fetches data from the backend API and updates the table and chart without requiring a page reload.
 
-### Features
+### Frontend Features
 
 - **Interactive Dashboard:** Displays road fatalities data in a table and a line chart.
 - **Dynamic Data Fetching:** Uses jQuery and AJAX to fetch data from the backend API (`/api/grouped-fatalities`). Facilitates smooth data retrieval from the backend, updating the frontend dynamically without requiring a page reload.
 - **Real-Time Updates:** Table and chart update automatically without page reload.
 - **Responsive Design:** Built with HTML, CSS, and Chart.js for a modern look.
 
-### File Structure
+### Frontend File Structure
 
 - `static/index.html` – Main HTML file for the frontend.
 - `static/js/app.js` – JavaScript for fetching data and rendering the chart/table.
@@ -877,9 +882,9 @@ The frontend provides a user-friendly web interface for visualizing road safety 
 - If data fails to load: Verify that the backend is running and check the browser console (F12 → Console) for errors.
 
 ---
-## Part E: OAuth (Open Authorization)
+## Part E: OAuth (Open Authorisation) Overview
 
-OAuth (Open Authorization) is an open standard protocol that allows secure, delegated access to resources on behalf of a user. It is commonly used to grant third-party applications limited access to a user's resources (e.g., data or services) without exposing the user's credentials (like passwords).
+OAuth (Open Authorisation) is an open standard protocol that allows secure, delegated access to resources on behalf of a user. It is commonly used to grant third-party applications limited access to a user's resources (e.g., data or services) without exposing the user's credentials (like passwords).
 
 Due to the private nature of the repository, local API usage, and limited scope of the project, OAuth implementation was deemed unnecessary.
 
@@ -898,7 +903,7 @@ The project is primarily for coursework, development, or testing purposes, imple
 
 ### References for This Section
 
-- [RFC 6749 OAuth 2.0 Framework](https://datatracker.ietf.org/doc/html/rfc6749) – Official guidelines detailing OAuth 2.0 authorization flows and security protocols.
+- [RFC 6749 OAuth 2.0 Framework](https://datatracker.ietf.org/doc/html/rfc6749) – Official guidelines detailing OAuth 2.0 authorisation flows and security protocols.
 - [OAuth 2.0 Simplified](https://aaronparecki.com/oauth-2-simplified/)– A beginner-friendly guide explaining OAuth concepts and implementation steps.
 - [OAuth.net](https://oauth.net/) – A central hub offering OAuth resources, tutorials, and best practices.
 - [Google Identity Platform OAuth 2.0](https://developers.google.com/identity/protocols/oauth2) – Google's official documentation on integrating OAuth for secure access to APIs.
